@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ViewBons from './components/ViewBons.vue';
+import ViewBons from './views/ViewBons.vue';
 
 export default {
   name: 'App',
@@ -31,6 +31,8 @@ export default {
 #logo {
   text-align: center;
   margin-bottom: 20px;
+  height: 209px;
+  background-color:#000;
 }
 
 .form-control-label {

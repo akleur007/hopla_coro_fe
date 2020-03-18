@@ -7,6 +7,9 @@
           {{ entry.name }}
         </div>
         <div class="col-lg-3 col-sm-12">
+          {{ entry.qrCode }}
+        </div>
+        <div class="col-lg-3 col-sm-12">
             <button type="submit" class="btn btn-primary mr-2">Ändern</button>
         </div>
   </div>
@@ -14,7 +17,7 @@
 
 <script>
 export default {
-  name: 'BonEntry',
+  name: 'BonListEntry',
   props: {
     msg: String,
     entry: Object,

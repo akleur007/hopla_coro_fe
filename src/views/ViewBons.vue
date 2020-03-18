@@ -17,15 +17,15 @@
       </form>
       <h2>Angelegte Bons:</h2>
       <ul id="bonList">
-          <li v-for="(entry) in entrys" :key="entry.id">
-            <BonEntry :entry="entry"></BonEntry>
+          <li class="bon-list-entry" v-for="(entry) in entrys" :key="entry.id">
+            <BonListEntry :entry="entry"></BonListEntry>
           </li>
       </ul>
   </div>
 </template>
 
 <script>
-import BonEntry from './BonEntry.vue';
+import BonListEntry from '../components/BonListEntry.vue';
 
 export default {
   name: 'ViewBons',
@@ -36,18 +36,23 @@ export default {
     return {
       parentMessage: 'Parent',
       entrys: [
-        { email: 'mail@mail.de', name: 'Resul' },
-        { email: 'return@return.com', name: 'Günni' },
+        { email: 'mail@mail.de', name: 'Resul', qrCode: './codes/01-code.png' },
+        { email: 'return@return.com', name: 'Günni', qrCode: './codes/02-code.png' },
       ],
     };
   },
   components: {
-    BonEntry,
+    BonListEntry,
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
+  #bonList {
+    list-style-type: none;
+  }
+  .bon-list-entry {
+    margin-bottom: 10px;
+  }
 </style>
