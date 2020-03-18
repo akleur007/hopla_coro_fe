@@ -19,12 +19,9 @@
 </template>
 
 <script>
-import BonListEntry from '../components/BonListEntry.vue';
-
 export default {
   name: 'ViewLogin',
   props: {
-    
   },
   data() {
     return {
@@ -32,7 +29,6 @@ export default {
     };
   },
   components: {
-    
   },
 };
 </script>

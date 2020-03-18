@@ -3,17 +3,18 @@
     <div id="logo">
       <img alt="Vue logo" src="./assets/hopla_kalk_logo_2020.png">
     </div>
-    <ViewBons msg="Hallo Resul"/>
+    <div id="nav">
+      <router-link to="/">Login</router-link>
+      <router-link to="/bonlist">Bon Liste</router-link>
+    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
-import ViewBons from './views/ViewBons.vue';
-
 export default {
   name: 'App',
   components: {
-    ViewBons,
   },
 };
 </script>
