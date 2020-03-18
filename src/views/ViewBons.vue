@@ -2,9 +2,9 @@
   <div class="container">
       <form class="ng-pristine" onsubmit="sendMessage(event.preventDefault())">
           <div class="form-group row">
-              <label class="col-lg-2 col-sm-12 col-form-label form-control-label">E-mail Adresse</label>
+              <label class="col-lg-2 col-sm-12 col-form-label form-control-label">E-Mail Adresse</label>
               <div class="col-lg-3 col-sm-12">
-                  <input type="text" id="email-input" class="form-control" placeholder="E-mail Adresse">
+                  <input type="text" id="email-input" class="form-control" placeholder="E-Mail Adresse">
               </div>
               <label class="col-lg-1 col-sm-12 col-form-label form-control-label">Betrag</label>
               <div class="col-lg-3 col-sm-12">
@@ -36,8 +36,8 @@ export default {
     return {
       parentMessage: 'Parent',
       entrys: [
-        { email: 'mail@mail.de', name: 'Resul', qrCode: './codes/01-code.png' },
-        { email: 'return@return.com', name: 'Günni', qrCode: './codes/02-code.png' },
+        { email: 'mail@mail.de', name: 'Resul', qrCodeContent: './codes/02-code.png' },
+        { email: 'return@return.com', name: 'Günni', qrCodeContent: './codes/02-code.png' },
       ],
     };
   },

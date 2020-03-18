@@ -7,7 +7,7 @@
           {{ entry.name }}
         </div>
         <div class="col-lg-3 col-sm-12">
-          {{ entry.qrCode }}
+          <img id="main-img" :src='newQRCode'/>
         </div>
         <div class="col-lg-3 col-sm-12">
             <button type="submit" class="btn btn-primary mr-2">Ändern</button>
@@ -16,11 +16,21 @@
 </template>
 
 <script>
+import QRious from 'qrious';
+
 export default {
   name: 'BonListEntry',
   props: {
     msg: String,
     entry: Object,
+    qrcode: Object,
+  },
+  computed: {
+    newQRCode() {
+      this.qrcode = new QRious();
+      this.qrcode.value = this.entry.qrCodeContent;
+      return this.qrcode.toDataURL();
+    },
   },
 };
 </script>
