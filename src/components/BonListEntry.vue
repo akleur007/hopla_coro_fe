@@ -23,13 +23,12 @@ export default {
   props: {
     msg: String,
     entry: Object,
-    qrcode: Object,
   },
   computed: {
     newQRCode() {
-      this.qrcode = new QRious();
-      this.qrcode.value = this.entry.qrCodeContent;
-      return this.qrcode.toDataURL();
+      const qrcode = new QRious();
+      qrcode.value = this.entry.qrCodeContent;
+      return qrcode.toDataURL();
     },
   },
 };
