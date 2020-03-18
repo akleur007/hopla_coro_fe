@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <div id="logo">
+      <img alt="Vue logo" src="./assets/hopla_kalk_logo_2020.png">
+    </div>
     <ViewBons msg="Hallo Resul"/>
   </div>
 </template>
@@ -21,9 +23,18 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0;
+}
+
+#logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-control-label {
+  text-align: right;
 }
 
   @import 'assets/style.css';
