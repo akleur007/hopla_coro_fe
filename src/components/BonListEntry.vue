@@ -12,13 +12,17 @@
         <div class="col-lg-3 col-sm-12">
           <div class="row">
             <div class="col-lg-12">
-              <button type="submit" class="btn btn-primary mr-2">Ändern</button>
+              <button type="submit" class="btn btn-primary mr-2">
+                <router-link :to="`/bon/${entry.id}`">
+                  Ändern
+                </router-link>
+              </button>
             </div>
             <div class="col-lg-12">
-              <button type="submit" class="btn btn-info mr-2">E-Mail</button>
+              <button type="submit" class="btn btn-info mr-2" v-on:click="sendEmail">E-Mail</button>
             </div>
              <div class="col-lg-12">
-              <button type="submit" class="btn btn-danger mr-2">Löschen</button>
+              <button type="submit" class="btn btn-danger mr-2" v-on:click="deleteEntry">Löschen</button>
             </div>
           </div>
         </div>
@@ -43,6 +47,14 @@ export default {
       return qrcode.toDataURL();
     },
   },
+  methods: {
+    sendEmail() {
+      this.$emit('sendEmail', this.entry.id);
+    },
+    deleteEntry() {
+      this.$emit('deleteEntry', this.entry.id);
+    },
+  },
 };
 
 </script>
@@ -52,5 +64,12 @@ export default {
   .btn {
     margin-bottom: 10px;
     width: 100%;
+
+    a {
+      color: #ffffff;
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
 </style>

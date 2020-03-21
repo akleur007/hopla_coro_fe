@@ -18,15 +18,20 @@
       <h2>Angelegte Bons:</h2>
       <ul id="bonList"  class="list-group-striped">
           <li class="bon-list-entry list-group-item" v-for="(entry) in entrys" :key="entry.id">
-            <BonListEntry :entry="entry"></BonListEntry>
+            <BonListEntry :entry="entry" @deleteEntry="deleteEntry" @sendEmail="sendEntryEmail"></BonListEntry>
           </li>
       </ul>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 import crypto from 'crypto';
+import {
+  getBonList,
+  createBon,
+  deleteBon,
+  sendBonEmail,
+} from '../services/bonService';
 import BonListEntry from '../components/BonListEntry.vue';
 
 const creatRandomHash = () => {
@@ -51,25 +56,45 @@ export default {
     };
   },
   created() {
-    axios.get('http://localhost:3000/api/bons/')
-      .then((response) => {
-        // JSON responses are automatically parsed.
-        this.entrys = response.data.data.items;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-      });
+    this.listEntries();
   },
   methods: {
-    postEntry() {
-      console.log('sasdasd');
-      axios.post('http://localhost:3000/api/bons/', {
-        email: this.email,
-        credit: parseInt(this.credit, 10),
-        authKey: creatRandomHash(),
-      })
+    listEntries() {
+      getBonList()
         .then((response) => {
-          console.log(response);
+          this.entrys = response.data.data.items;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+    postEntry() {
+      const params = {
+        email: this.email,
+        credit: parseFloat(this.credit, 10),
+        authKey: creatRandomHash(),
+      };
+      createBon(params)
+        .then(() => {
+          this.listEntries();
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+    deleteEntry(id) {
+      deleteBon(id)
+        .then(() => {
+          this.listEntries();
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+    sendEntryEmail(id) {
+      sendBonEmail(id)
+        .then(() => {
+          this.listEntries();
         })
         .catch((e) => {
           this.errors.push(e);
