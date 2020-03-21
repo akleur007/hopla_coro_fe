@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-      <form class="ng-pristine" onsubmit="sendMessage(event.preventDefault())">
+      <form class="ng-pristine" @submit="postEntry()">
           <div class="form-group row">
               <label class="col-lg-2 col-sm-12 col-form-label form-control-label">E-Mail Adresse</label>
               <div class="col-lg-3 col-sm-12">
-                  <input type="text" id="email-input" class="form-control" placeholder="E-Mail Adresse">
+                  <input type="text" id="email-input" v-model="email" class="form-control" placeholder="E-Mail Adresse">
               </div>
               <label class="col-lg-1 col-sm-12 col-form-label form-control-label">Betrag</label>
               <div class="col-lg-3 col-sm-12">
-                  <input type="number" class="form-control" id="credit-input" placeholder="Betrag in €">
+                  <input type="number" step="0.01" id="credit-input" v-model="credit" class="form-control" placeholder="Betrag in €">
               </div>
               <div class="col-lg-3 col-sm-12">
                   <button type="submit" class="btn btn-primary mr-2">Eintragen</button>
@@ -16,8 +16,8 @@
           </div>
       </form>
       <h2>Angelegte Bons:</h2>
-      <ul id="bonList">
-          <li class="bon-list-entry" v-for="(entry) in entrys" :key="entry.id">
+      <ul id="bonList"  class="list-group-striped">
+          <li class="bon-list-entry list-group-item" v-for="(entry) in entrys" :key="entry.id">
             <BonListEntry :entry="entry"></BonListEntry>
           </li>
       </ul>
@@ -25,7 +25,16 @@
 </template>
 
 <script>
+import axios from 'axios';
+import crypto from 'crypto';
 import BonListEntry from '../components/BonListEntry.vue';
+
+const creatRandomHash = () => {
+  const currentDate = (new Date()).valueOf().toString();
+  const random = Math.random().toString();
+  const hash = crypto.createHash('sha1').update(currentDate + random).digest('hex');
+  return hash;
+};
 
 export default {
   name: 'ViewBons',
@@ -35,11 +44,37 @@ export default {
   data() {
     return {
       parentMessage: 'Parent',
-      entrys: [
-        { email: 'mail@mail.de', name: 'Resul', qrCodeContent: './codes/02-code.png' },
-        { email: 'return@return.com', name: 'Günni', qrCodeContent: './codes/02-code.png' },
-      ],
+      entrys: [],
+      errors: [],
+      email: '',
+      credit: '',
     };
+  },
+  created() {
+    axios.get('http://localhost:3000/api/bons/')
+      .then((response) => {
+        // JSON responses are automatically parsed.
+        this.entrys = response.data.data.items;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+      });
+  },
+  methods: {
+    postEntry() {
+      console.log('sasdasd');
+      axios.post('http://localhost:3000/api/bons/', {
+        email: this.email,
+        credit: parseInt(this.credit, 10),
+        authKey: creatRandomHash(),
+      })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
   },
   components: {
     BonListEntry,
@@ -53,6 +88,9 @@ export default {
     list-style-type: none;
   }
   .bon-list-entry {
-    margin-bottom: 10px;
+    margin-bottom: 0;
+  }
+  ul.list-group-striped li:nth-of-type(even) {
+    background: #e4e4e4;
   }
 </style>
