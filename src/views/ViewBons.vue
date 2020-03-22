@@ -48,7 +48,6 @@ export default {
   },
   data() {
     return {
-      parentMessage: 'Parent',
       entrys: [],
       errors: [],
       email: '',
@@ -94,6 +93,7 @@ export default {
     sendEntryEmail(id) {
       sendBonEmail(id)
         .then(() => {
+          console.log('email sent');
           this.listEntries();
         })
         .catch((e) => {

@@ -12,4 +12,4 @@ export const updateBon = async (params) => axios.put(`${apiBaseUrl}/${params.id}
 
 export const deleteBon = async (id) => axios.delete(`${apiBaseUrl}/${id}`);
 
-export const sendBonEmail = async (id) => axios.get(`${apiBaseUrl}/${id}/sendEmail`);
+export const sendBonEmail = async (id) => axios.get(`${apiBaseUrl}/${id}/sendmail`);

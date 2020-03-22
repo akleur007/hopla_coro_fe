@@ -27,7 +27,6 @@ export default {
   },
   data() {
     return {
-      parentMessage: 'Parent',
     };
   },
   components: {
