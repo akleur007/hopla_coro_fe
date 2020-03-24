@@ -2,17 +2,18 @@
 <div class="container">
   <div class="row">
     <form class="ng-pristine" @submit="updateEntry()">
-        <div class="form-group row">
-            <label class="col-lg-2 col-sm-12 col-form-label form-control-label">E-Mail Adresse</label>
-            <div class="col-lg-3 col-sm-12">
-                {{ entry.email }}
+        <div class="form-group row justify-content-between">
+            <div class="col-lg-4 col-sm-12 col-input">
+                <input type="text" id="name-input" v-model="entry.name" class="form-control" placeholder="Name">
             </div>
-            <label class="col-lg-1 col-sm-12 col-form-label form-control-label">Betrag</label>
-            <div class="col-lg-3 col-sm-12">
+            <div class="col-lg-4 col-sm-12 col-input">
+                <input type="text" id="email-input" v-model="entry.email" class="form-control" placeholder="E-Mail Adresse">
+            </div>
+            <div class="col-lg-2 col-sm-12 col-input">
                 <input type="number" step="0.01" id="credit-input" v-model="entry.credit" class="form-control" placeholder="Betrag in €">
             </div>
-            <div class="col-lg-3 col-sm-12">
-                <button type="submit" class="btn btn-primary mr-2">Speichern</button>
+            <div class="col-lg-2 col-sm-12 col-input text-right">
+                <button id="submit" type="submit" class="btn btn-primary">Speichern</button>
             </div>
         </div>
     </form>
@@ -49,6 +50,7 @@ export default {
     updateEntry() {
       const params = {
         id: this.entry.id,
+        name: this.entry.name,
         email: this.entry.email,
         credit: parseFloat(this.entry.credit, 10),
       };

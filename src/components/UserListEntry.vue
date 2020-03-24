@@ -1,26 +1,19 @@
 <template>
     <div class="row">
         <div class="col-lg-3 col-sm-12">
-          <div class="row">
-            <div class="col-lg-12">
-              {{ entry.name }}
-            </div>
-            <div class="col-lg-12">
-              {{ entry.email }}
-            </div>
-          </div>
+          {{ entry.username }}
         </div>
         <div class="col-lg-3 col-sm-12">
-          {{ entry.credit }}
+          {{ entry.email }}
         </div>
         <div class="col-lg-3 col-sm-12">
-          <img id="main-img" :src='newQRCode'/>
+          {{ entry.role }}
         </div>
         <div class="col-lg-3 col-sm-12">
           <div class="row">
             <div class="col-lg-12">
               <button type="submit" class="btn btn-primary mr-2">
-                <router-link :to="`/bon/${entry.id}`">
+                <router-link :to="`/user/${entry.id}`">
                   Ändern
                 </router-link>
               </button>
@@ -37,7 +30,6 @@
 </template>
 
 <script>
-import QRious from 'qrious';
 
 export default {
   name: 'BonListEntry',
@@ -46,13 +38,6 @@ export default {
     entry: Object,
   },
   computed: {
-    newQRCode() {
-      const qrcode = new QRious();
-      qrcode.size = 150;
-      qrcode.background = '#fff';
-      qrcode.value = this.entry.authKey;
-      return qrcode.toDataURL();
-    },
   },
   methods: {
     sendEmail() {

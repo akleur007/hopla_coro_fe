@@ -14,7 +14,10 @@
             <router-link to="/" class="nav-link">Login</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/bonlist" class="nav-link">Bon Liste</router-link>
+            <router-link to="/bonlist" class="nav-link">Bons</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/userlist" class="nav-link">Users</router-link>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -47,18 +50,22 @@ export default {
 
 #logo {
   text-align: center;
-  margin-bottom: 20px;
-  height: 209px;
-  background-color:#000;
+  margin-bottom: 10px;
+  height: 200px;
+  background-color:#1e2b37;
 }
 
 .navbar {
   margin-bottom: 20px;
 }
 
-.form-control-label {
-  text-align: right;
+.col-input {
+   margin-bottom: 15px;
 }
+
+// [class*="col-"] {
+//   margin-bottom: 15px;
+// }
 
   @import 'assets/style.css';
 </style>
