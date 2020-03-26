@@ -81,6 +81,11 @@ export default {
       };
       createBon(params)
         .then(() => {
+          this.flashMessage.show({
+            title: 'Bon geändert',
+            message: '',
+            wrapperClass: 'msg alert-success',
+          });
           this.listEntries();
         })
         .catch((e) => {
@@ -101,11 +106,21 @@ export default {
     sendEntryEmail(id) {
       sendBonEmail(id)
         .then(() => {
-          console.log('email sent');
+          console.log('email sent fe');
+          this.flashMessage.show({
+            title: 'Email gesendet',
+            message: '',
+            wrapperClass: 'msg alert-success',
+          });
           this.listEntries();
         })
         .catch((e) => {
           this.errors.push(e);
+          this.flashMessage.show({
+            title: 'Email konnte nicht gesendet werden',
+            message: '',
+            wrapperClass: 'msg alert-warning',
+          });
         });
     },
   },

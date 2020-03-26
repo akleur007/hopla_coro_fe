@@ -69,6 +69,11 @@ export default {
         })
         .catch((e) => {
           this.errors.push(e);
+          this.flashMessage.show({
+            title: 'User können nicht geladen werden',
+            message: '',
+            wrapperClass: 'alert-warning',
+          });
         });
     },
     postEntry() {

@@ -27,12 +27,17 @@
       </div>
     </nav>
     <router-view />
+    <FlashMessage role="alert"></FlashMessage>
   </div>
 </template>
 
 <script>
 export default {
   name: 'App',
+  data() {
+    return {
+    };
+  },
   components: {
   },
 };

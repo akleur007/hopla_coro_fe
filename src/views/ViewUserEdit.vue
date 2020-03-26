@@ -2,28 +2,47 @@
 <div class="container">
   <div class="row">
     <form class="ng-pristine" @submit="updateEntry()">
-        <div class="form-group row">
-              <div class="col-lg-4 col-sm-12 col-input">
-                  <input type="text" id="email-input" v-model="entry.email" class="form-control" placeholder="E-Mail Adresse">
-              </div>
-              <div class="col-lg-5 col-sm-12 col-input">
-                  <input type="text"  id="name-input" v-model="entry.username" class="form-control" placeholder="Name">
-              </div>
-              <div class="col-lg-4 col-sm-12 col-input">
-                  <input type="password"  id="password-input" v-model="entry.password" class="form-control" placeholder="Passwort">
-              </div>
-              <div class="col-lg-5 col-sm-12 col-input">
-                  <select id="role-input" v-model="entry.role" class="form-control">
-                    <option selected>Choose...</option>
-                    <option value="user">User</option>
-                    <option value="manager">Manager</option>
-                    <option value="admin">Admin</option>
-                  </select>
-              </div>
-              <div class="col-lg-3 col-sm-12">
-                  <button type="submit" class="btn btn-primary mr-2">Eintragen</button>
-              </div>
+      <div class="form-group row">
+        <div class="col-lg-5 col-sm-12">
+          <div class="row">
+            <div class="col-lg-12 col-input">
+              <input type="text" id="email-input" v-model="entry.email" class="form-control" placeholder="E-Mail Adresse">
+            </div>
+            <div class="col-lg-12 col-input">
+              <input type="password"  id="password-input" v-model="entry.password" class="form-control" placeholder="Passwort">
+            </div>
           </div>
+        </div>
+        <div class="col-lg-5 col-sm-12 col-input">
+          <div class="row">
+            <div class="col-lg-12 col-input">
+              <input type="text"  id="name-input" v-model="entry.username" class="form-control" placeholder="Name">
+            </div>
+            <div class="col-lg-12">
+              <select id="role-input col-input" v-model="entry.role" class="form-control">
+                  <option selected>Choose...</option>
+                  <option value="user">User</option>
+                  <option value="manager">Manager</option>
+                  <option value="admin">Admin</option>
+                </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-sm-12 col-input">
+          <div class="row">
+            <div class="col-lg-12 col-6 col-input">
+              <button class="btn btn-info float-lg-right float-md-left float-left">
+                <router-link :to="`/userlist`">
+                  Abbrechen
+                </router-link>
+              </button>
+            </div>
+            <div class="col-lg-12 col-6 col-input">
+              <button type="submit" class="btn btn-primary float-right">Eintragen</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </div>
@@ -69,9 +88,19 @@ export default {
       updateUser(params)
         .then(() => {
           this.$router.push({ path: '/userlist' });
+          this.flashMessage.show({
+            title: 'User geändert',
+            message: '',
+            wrapperClass: 'msg alert-success',
+          });
         })
         .catch((e) => {
           this.errors.push(e);
+          this.flashMessage.show({
+            title: 'User konnte nicht geändert werden',
+            message: '',
+            wrapperClass: 'msg alert-warning',
+          });
         });
     },
   },

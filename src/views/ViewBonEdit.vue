@@ -57,9 +57,19 @@ export default {
       updateBon(params)
         .then(() => {
           this.$router.push({ path: '/bonlist' });
+          this.flashMessage.show({
+            title: 'Bon geändert',
+            message: '',
+            wrapperClass: 'msg alert-success',
+          });
         })
         .catch((e) => {
           this.errors.push(e);
+          this.flashMessage.show({
+            title: 'Bon konnte nicht geändert werden',
+            message: '',
+            wrapperClass: 'msg alert-warning',
+          });
         });
     },
   },
