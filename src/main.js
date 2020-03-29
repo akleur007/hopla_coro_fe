@@ -1,7 +1,7 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FlashMessage from '@smartweb/vue-flash-message';
 import Vue from 'vue';
+import FlashMessage from '@smartweb/vue-flash-message';
 import App from './App.vue';
 import router from './router';
 
@@ -11,9 +11,9 @@ const flashMsgConfig = {
   strategy: 'multiple',
 };
 
+Vue.use(FlashMessage, flashMsgConfig);
+
 new Vue({
   router,
   render: (h) => h(App),
 }).$mount('#app');
-
-Vue.use(FlashMessage, flashMsgConfig);
