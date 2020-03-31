@@ -22,6 +22,7 @@
 
 <script>
 import { authUser } from '../services/userService';
+import TokenService from '../services/tokenService';
 
 export default {
   name: 'ViewLogin',
@@ -30,6 +31,7 @@ export default {
   data() {
     return {
       user: {},
+      errors: [],
     };
   },
   components: {
@@ -41,8 +43,9 @@ export default {
         password: this.user.password,
       };
       authUser(params)
-        .then(() => {
-          // this.$router.push({ path: '/bonlist' });
+        .then((res) => {
+          localStorage.setItem('user', res.data.data.user);
+          TokenService.saveToken(res.data.data.token);
           this.flashMessage.show({
             title: `Hallo ${this.user.username}`,
             message: '',
@@ -53,7 +56,7 @@ export default {
           this.errors.push(e);
           this.flashMessage.show({
             title: 'Name oder Passwort falsch',
-            message: '',
+            message: e,
             wrapperClass: 'msg alert-warning',
           });
         });
