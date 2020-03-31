@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form class="ng-pristine" @submit="doSplitText()">
+    <!-- <form class="ng-pristine" @submit="doSplitText()">
           <div class="form-group row justify-content-between">
               <div class="col-lg-12 col-sm-12 col-input">
                   <textarea id="split-text" rows="6" cols="50" v-model="splitText" class="form-control" placeholder="paypal Textblock">
@@ -10,7 +10,7 @@
                   <button id="submit-it" type="submit" class="btn btn-primary">Separieren</button>
               </div>
           </div>
-      </form>
+      </form> -->
       <form class="ng-pristine" @submit="postEntry()">
           <div class="form-group row justify-content-between">
               <div class="col-lg-4 col-sm-12 col-input">
@@ -146,7 +146,7 @@ export default {
           });
         });
     },
-    doSplitText() {
+    /* doSplitText() {
       const t = this.splitText;
       const name = t.split(' hat Ihnen ')[0];
       const credit = t.split(' hat Ihnen ')[1].split(' EUR')[0];
@@ -157,7 +157,7 @@ export default {
       console.log(name);
       console.log(credit);
       console.log(email);
-    },
+    }, */
   },
   components: {
     BonListEntry,

@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import crypto from 'crypto';
 import {
   getUserList,
   createUser,
@@ -81,10 +80,7 @@ export default {
         email: this.email,
         username: this.username,
         role: this.role,
-        password: crypto
-          .createHash('sha1')
-          .update(this.password)
-          .digest('base64'),
+        password: this.password,
       };
       createUser(params)
         .then(() => {
