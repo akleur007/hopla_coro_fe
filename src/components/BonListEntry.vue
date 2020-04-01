@@ -3,15 +3,15 @@
         <div class="col-lg-3 col-sm-12">
           <div class="row">
             <div class="col-lg-12">
-              {{ entry.name }}
+              {{ bon.name }}
             </div>
             <div class="col-lg-12">
-              {{ entry.email }}
+              {{ bon.email }}
             </div>
           </div>
         </div>
         <div class="col-lg-3 col-sm-12">
-          {{ entry.credit }}
+          {{ bon.credit }}
         </div>
         <div class="col-lg-3 col-sm-12">
           <img id="main-img" :src='newQRCode'/>
@@ -20,7 +20,7 @@
           <div class="row">
             <div class="col-lg-12">
               <button type="submit" class="btn btn-primary mr-2">
-                <router-link :to="`/bon/${entry.id}`">
+                <router-link :to="`/bon/${bon.id}`">
                   Ändern
                 </router-link>
               </button>
@@ -43,24 +43,28 @@ export default {
   name: 'BonListEntry',
   props: {
     msg: String,
-    entry: Object,
+    bon: Object,
   },
   computed: {
     newQRCode() {
       const qrcode = new QRious();
       qrcode.size = 150;
       qrcode.background = '#fff';
-      qrcode.value = this.entry.authKey;
+      qrcode.value = this.bon.authKey;
       return qrcode.toDataURL();
     },
   },
   methods: {
     sendEmail() {
-      this.$emit('sendEmail', this.entry.id);
+      this.$emit('sendEmail', this.bon.id);
     },
     deleteEntry() {
-      this.$emit('deleteEntry', this.entry.id);
+      this.$emit('deleteEntry', this.bon.id);
     },
+  },
+  created() {
+    // this.listEntries();
+    // this.fetchBons();
   },
 };
 

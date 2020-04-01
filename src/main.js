@@ -1,10 +1,10 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Vuex from 'vuex';
 import Vue from 'vue';
 import FlashMessage from '@smartweb/vue-flash-message';
 import App from './App.vue';
 import router from './router';
+import store from './store';
 
 Vue.config.productionTip = false;
 const flashMsgConfig = {
@@ -13,13 +13,6 @@ const flashMsgConfig = {
 };
 
 Vue.use(FlashMessage, flashMsgConfig);
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
-  state: {
-    token: localStorage.getItem('user-token') || '',
-  },
-});
 
 new Vue({
   router,

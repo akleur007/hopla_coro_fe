@@ -1,16 +1,5 @@
 <template>
   <div class="container">
-    <!-- <form class="ng-pristine" @submit="doSplitText()">
-          <div class="form-group row justify-content-between">
-              <div class="col-lg-12 col-sm-12 col-input">
-                  <textarea id="split-text" rows="6" cols="50" v-model="splitText" class="form-control" placeholder="paypal Textblock">
-                  </textarea>
-              </div>
-              <div class="col-lg-2 col-sm-12 col-input text-right">
-                  <button id="submit-it" type="submit" class="btn btn-primary">Separieren</button>
-              </div>
-          </div>
-      </form> -->
       <form class="ng-pristine" @submit="postEntry()">
           <div class="form-group row justify-content-between">
               <div class="col-lg-4 col-sm-12 col-input">
@@ -29,8 +18,8 @@
       </form>
       <h2>Angelegte Bons:</h2>
       <ul id="bonList"  class="list-group-striped">
-          <li class="bon-list-entry list-group-item" v-for="(entry) in entrys" :key="entry.id">
-            <BonListEntry :entry="entry" @deleteEntry="deleteEntry" @sendEmail="sendEntryEmail"></BonListEntry>
+          <li class="bon-list-entry list-group-item" v-for="(bon) in allBons" :key="bon.id">
+            <BonListEntry :bon="bon" @deleteEntry="deleteEntry" @sendEmail="sendEntryEmail"></BonListEntry>
           </li>
       </ul>
   </div>
@@ -38,10 +27,11 @@
 
 <script>
 import crypto from 'crypto';
+import { mapGetters, mapActions } from 'vuex';
 import {
   getBonList,
-  createBon,
-  deleteBon,
+  // createBon,
+  // deleteBon,
   sendBonEmail,
 } from '../services/bonService';
 import BonListEntry from '../components/BonListEntry.vue';
@@ -60,18 +50,15 @@ export default {
   },
   data() {
     return {
-      entrys: [],
+      bons: [],
       errors: [],
       name: '',
       email: '',
       credit: '',
-      splitText: '',
     };
   },
-  created() {
-    this.listEntries();
-  },
   methods: {
+    ...mapActions(['fetchBons', 'addBon', 'changeBon', 'removeBon']),
     listEntries() {
       getBonList()
         .then((response) => {
@@ -89,14 +76,14 @@ export default {
         credit: parseFloat(this.credit, 10),
         authKey: createRandomHash(),
       };
-      createBon(params)
+      this.addBon(params)
         .then(() => {
           this.flashMessage.show({
             title: 'Bon angelegt',
             message: '',
             wrapperClass: 'msg alert-success',
           });
-          this.listEntries();
+          this.fetchBons();
         })
         .catch((e) => {
           const serverError = e.response.data;
@@ -118,9 +105,10 @@ export default {
         });
     },
     deleteEntry(id) {
-      deleteBon(id)
+      // deleteBon(id)
+      this.removeBon(id)
         .then(() => {
-          this.listEntries();
+          this.fetchBons();
         })
         .catch((e) => {
           this.errors.push(e);
@@ -146,18 +134,11 @@ export default {
           });
         });
     },
-    /* doSplitText() {
-      const t = this.splitText;
-      const name = t.split(' hat Ihnen ')[0];
-      const credit = t.split(' hat Ihnen ')[1].split(' EUR')[0];
-      const email = t.split('quote')[1].replace(/\s/g, '');
-      this.name = name;
-      this.email = email;
-      this.credit = parseFloat(credit.replace(',', '.'), 10);
-      console.log(name);
-      console.log(credit);
-      console.log(email);
-    }, */
+  },
+  computed: mapGetters(['allBons']),
+  created() {
+    // this.listEntries();
+    this.fetchBons();
   },
   components: {
     BonListEntry,

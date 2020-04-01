@@ -22,7 +22,8 @@
 </template>
 
 <script>
-import { getBon, updateBon } from '../services/bonService';
+import { mapActions } from 'vuex';
+// import { getBon, updateBon } from '../services/bonService';
 
 export default {
   name: 'ViewBonEdit',
@@ -38,15 +39,20 @@ export default {
     },
   },
   mounted() {
-    getBon(this.itemId)
+    console.log(`rrr: ${this.store.state}`);
+    // mapActions(['fetchBon']);
+    // getBon(this.itemId)
+    /* this.fetchBon(this.itemId)
       .then((response) => {
+        console.log(`rrr: ${this.store.state}`);
         this.entry = response.data.data.resource;
       })
       .catch((e) => {
         this.errors.push(e);
-      });
+      }); */
   },
   methods: {
+    ...mapActions(['changeBon']),
     updateEntry() {
       const params = {
         id: this.entry.id,
@@ -54,7 +60,8 @@ export default {
         email: this.entry.email,
         credit: parseFloat(this.entry.credit, 10),
       };
-      updateBon(params)
+      // updateBon(params)
+      this.changeBon(params)
         .then(() => {
           this.$router.push({ path: '/bonlist' });
           this.flashMessage.show({
