@@ -11,6 +11,7 @@ const state = {
 
 const getters = {
   allBons: (state) => state.bons,
+  activeBon: (state) => state.activeBon,
 };
 
 const actions = {
@@ -18,36 +19,30 @@ const actions = {
     const response = await axios.get(apiBaseUrl);
     commit('setBons', response.data.data.items);
   },
-  // Hier ----------------------------
-  /* async fetchBon({ commit }, id) {
+  async fetchBon({ commit }, id) {
     const response = await axios.get(`${apiBaseUrl}/${id}`);
-    commit('setBon', response.data.data.resource);
-    // console.log(response.data.data.resource);
-  }, */
+    commit('setActiveBon', response.data.data.resource);
+  },
   async addBon({ commit }, params) {
     const response = await axios.post(apiBaseUrl, params);
     commit('createBon', response.data.data.item);
   },
-  async changeBon({ commit }, params) {
+  async updateBon({ commit }, params) {
     const response = await axios.put(`${apiBaseUrl}/${params.id}`, params);
-    commit('updateBon', response.data.data.item);
+    console.log(`ac updateBon: ${response.data.data}`);
+    commit('updateBon', response.data.data);
   },
   async removeBon({ commit }, id) {
     const response = await axios.delete(`${apiBaseUrl}/${id}`);
-    commit('deleteBon', response.data.data.item);
+    commit('deleteBon', response.data.data.resource);
   },
 };
 
 const mutations = {
   setBons: (state, bons) => { state.bons = bons; },
-  // Hier ------------------
-  /* setBon: (state, id) => {
-    const index = state.bons.findIndex((bon) => bon.id === id);
-    if (index !== -1) {
-      state.activeBon = activeBon;
-    }
-  }, */
-  // { state.activeBon = activeBon; },
+  setActiveBon: (state, activeBon) => {
+    state.activeBon = activeBon;
+  },
   createBon: (state, bon) => state.bons.unshift(bon),
   deleteBon: (state, id) => (state.bons.filter((bon) => bon.id !== id)),
   updateBon: (state, updBon) => {
