@@ -16,6 +16,10 @@ $dark:#1e2b37;
 // @import "bootstrap";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
+.msg {
+    border-radius: 4px;;
+}
+
 .alert-primary {
     color: #004085;
     background-color: #cce5ff;
@@ -29,9 +33,9 @@ $dark:#1e2b37;
 }
 
 .alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+    color: #e2f89e;
+    background-color: #a2bf4d;
+    border-color: #6b802d;
 }
 
 .alert-danger {
@@ -41,9 +45,9 @@ $dark:#1e2b37;
 }
 
 .alert-warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border-color: #ffeeba;
+    color: #9e6c3c;
+    background-color: #e29e60;
+    border-color: #9e6c3c;
 }
 
 .alert-info {

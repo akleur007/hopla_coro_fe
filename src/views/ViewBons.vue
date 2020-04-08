@@ -28,13 +28,9 @@
 <script>
 import crypto from 'crypto';
 import { mapGetters, mapActions } from 'vuex';
-import {
-  getBonList,
-  // createBon,
-  // deleteBon,
-  sendBonEmail,
-} from '../services/bonService';
+import BonService from '../services/bonService';
 import BonListEntry from '../components/BonListEntry.vue';
+import showMessage from '../mixins/messages';
 
 const createRandomHash = () => {
   const currentDate = (new Date()).valueOf().toString();
@@ -57,18 +53,15 @@ export default {
       credit: '',
     };
   },
+  created() {
+    this.fetchBons();
+  },
+  components: {
+    BonListEntry,
+  },
   methods: {
     ...mapActions(['fetchBons', 'addBon', 'changeBon', 'removeBon']),
-    listEntries() {
-      getBonList()
-        .then((response) => {
-          this.entrys = response.data.data.items;
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
-    },
-    postEntry() {
+    async postEntry() {
       const label = 'Bon';
       const params = {
         name: this.name,
@@ -76,73 +69,39 @@ export default {
         credit: parseFloat(this.credit, 10),
         authKey: createRandomHash(),
       };
-      this.addBon(params)
-        .then(() => {
-          this.flashMessage.show({
-            title: 'Bon angelegt',
-            message: '',
-            wrapperClass: 'msg alert-success',
-          });
-          this.fetchBons();
-        })
-        .catch((e) => {
-          const serverError = e.response.data;
-          let msg = '';
-          switch (serverError.data.code) {
-            case 'ER_DUP_ENTRY':
-              msg = `${label} schon vergeben!`;
-              break;
-            default:
-              msg = `Fehler beim ${label} Anlegen`;
-              break;
-          }
-          this.errors.push(e);
-          this.flashMessage.show({
-            title: 'Bon konnte nicht angelegt werden',
-            message: `${msg}`,
-            wrapperClass: 'msg alert-warning',
-          });
-        });
+      try {
+        await this.addBon(params);
+        this.showSimpleMessage('Bon angelegt', 'success');
+        this.fetchBons();
+      } catch (e) {
+        this.errors.push(e);
+        const serverError = e.response.data;
+        const msg = (serverError.data.code === 'ER_DUP_ENTRY') ? `${label} schon vergeben!` : `Fehler beim ${label} anlegen`;
+        this.showSimpleMessage(msg, 'warning');
+      }
     },
-    deleteEntry(id) {
-      // deleteBon(id)
-      this.removeBon(id)
-        .then(() => {
-          this.fetchBons();
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+    async deleteEntry(id) {
+      try {
+        await this.removeBon(id);
+        this.fetchBons();
+        this.showSimpleMessage('Bon gelöscht', 'success');
+      } catch (e) {
+        this.errors.push(e);
+        this.showSimpleMessage('Bon konnte nicht gelöscht werden', 'warning');
+      }
     },
-    sendEntryEmail(id) {
-      sendBonEmail(id)
-        .then(() => {
-          console.log('email sent fe');
-          this.flashMessage.show({
-            title: 'Email gesendet',
-            message: '',
-            wrapperClass: 'msg alert-success',
-          });
-          this.listEntries();
-        })
-        .catch((e) => {
-          this.errors.push(e);
-          this.flashMessage.show({
-            title: 'Email konnte nicht gesendet werden',
-            message: '',
-            wrapperClass: 'msg alert-warning',
-          });
-        });
+    async sendEntryEmail(id) {
+      try {
+        await BonService.sendBonMail(id);
+        this.showSimpleMessage('Email gesendet', 'success');
+      } catch (e) {
+        this.errors.push(e);
+        this.showSimpleMessage('Email konnte nicht gesendet werden', 'warning');
+      }
     },
   },
   computed: mapGetters(['allBons']),
-  created() {
-    // this.listEntries();
-    this.fetchBons();
-  },
-  components: {
-    BonListEntry,
-  },
+  mixins: [showMessage],
 };
 </script>
 

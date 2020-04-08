@@ -2,16 +2,28 @@ import axios from 'axios';
 
 const apiBaseUrl = 'http://localhost:3000/api/users';
 
-export const getUserList = async () => axios.get(apiBaseUrl);
+const UserService = {
+  async getUserList() {
+    return axios.get(apiBaseUrl);
+  },
+  async createUser(params) {
+    return axios.post(apiBaseUrl, params);
+  },
+  async getUser(id) {
+    return axios.get(`${apiBaseUrl}/${id}`);
+  },
+  async authUser(params) {
+    return axios.post(`${apiBaseUrl}/authenticate`, params);
+  },
+  async updateUser(params) {
+    return axios.put(`${apiBaseUrl}/${params.id}`, params);
+  },
+  async deleteUser(id) {
+    return axios.delete(`${apiBaseUrl}/${id}`);
+  },
+  async sendUserEmail(id) {
+    return axios.get(`${apiBaseUrl}/${id}/sendmail`);
+  },
+};
 
-export const createUser = async (params) => axios.post(apiBaseUrl, params);
-
-export const getUser = async (id) => axios.get(`${apiBaseUrl}/${id}`);
-
-export const authUser = async (params) => axios.post(`${apiBaseUrl}/authenticate`, params);
-
-export const updateUser = async (params) => axios.put(`${apiBaseUrl}/${params.id}`, params);
-
-export const deleteUser = async (id) => axios.delete(`${apiBaseUrl}/${id}`);
-
-export const sendUserEmail = async (id) => axios.get(`${apiBaseUrl}/${id}/sendmail`);
+export default UserService;

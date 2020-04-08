@@ -12,11 +12,9 @@
         <div class="col-lg-3 col-sm-12">
           <div class="row">
             <div class="col-lg-12">
-              <button type="submit" class="btn btn-primary mr-2">
-                <router-link :to="`/user/${entry.id}`">
+              <router-link :to="`/user/${entry.id}`" class="btn btn-primary mr-2">
                   Ändern
-                </router-link>
-              </button>
+              </router-link>
             </div>
             <div class="col-lg-12">
               <button type="submit" class="btn btn-info mr-2" v-on:click="sendEmail">E-Mail</button>

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { authUser } from '../services/userService';
+import UserService from '../services/userService';
 import TokenService from '../services/tokenService';
 
 export default {
@@ -42,7 +42,7 @@ export default {
         username: this.user.username,
         password: this.user.password,
       };
-      authUser(params)
+      UserService.authUser(params)
         .then((res) => {
           localStorage.setItem('user', res.data.data.user);
           TokenService.saveToken(res.data.data.token);

@@ -23,6 +23,7 @@
 
 <script>
 import { /* mapState, */ mapActions } from 'vuex';
+import showMessage from '../mixins/messages';
 // import { getBon, updateBon } from '../services/bonService';
 
 export default {
@@ -37,7 +38,6 @@ export default {
     itemId() {
       return parseInt(this.$route.params.id, 10);
     },
-    // ...mapState(['activeBon']),
     activeBon: {
       get() {
         return this.$store.state.bons.activeBon;
@@ -52,34 +52,19 @@ export default {
   },
   methods: {
     ...mapActions(['fetchBon', 'updateBon']),
-    updateEntry() {
-      const params = {
-        id: this.activeBon.id,
-        name: this.activeBon.name,
-        email: this.activeBon.email,
-        credit: parseFloat(this.activeBon.credit, 10),
-      };
-      console.log(`update params: ${params.credit}`);
-      // updateBon(params)
-      this.updateBon(params)
-        .then(() => {
-          this.$router.push({ path: '/bonlist' });
-          this.flashMessage.show({
-            title: 'Bon geändert',
-            message: '',
-            wrapperClass: 'msg alert-success',
-          });
-        })
-        .catch((e) => {
-          this.errors.push(e);
-          this.flashMessage.show({
-            title: 'Bon konnte nicht geändert werden',
-            message: '',
-            wrapperClass: 'msg alert-warning',
-          });
-        });
+    async updateEntry() {
+      try {
+        await this.updateBon(this.activeBon);
+        this.$router.push({ path: '/bonlist' });
+        this.showSimpleMessage('Bon geändert', 'success');
+      } catch (e) {
+        this.errors.push(e);
+        console.log(`E: ${e}`);
+        this.showSimpleMessage('Bon konnte nicht geändert werden', 'warning');
+      }
     },
   },
+  mixins: [showMessage],
 };
 
 </script>

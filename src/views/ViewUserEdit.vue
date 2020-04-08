@@ -6,20 +6,20 @@
         <div class="col-lg-5 col-sm-12">
           <div class="row">
             <div class="col-lg-12 col-input">
-              <input type="text" id="email-input" v-model="entry.email" class="form-control" placeholder="E-Mail Adresse">
+              <input type="text" id="email-input" v-model="activeUser.email" class="form-control" placeholder="E-Mail Adresse">
             </div>
             <div class="col-lg-12 col-input">
-              <input type="password"  id="password-input" v-model="entry.password" class="form-control" placeholder="Passwort">
+              <input type="password"  id="password-input" v-model="activeUser.password" class="form-control" placeholder="Passwort">
             </div>
           </div>
         </div>
         <div class="col-lg-5 col-sm-12 col-input">
           <div class="row">
             <div class="col-lg-12 col-input">
-              <input type="text"  id="name-input" v-model="entry.username" class="form-control" placeholder="Name">
+              <input type="text"  id="name-input" v-model="activeUser.username" class="form-control" placeholder="Name">
             </div>
             <div class="col-lg-12">
-              <select id="role-input col-input" v-model="entry.role" class="form-control">
+              <select id="role-input col-input" v-model="activeUser.role" class="form-control">
                   <option selected>Choose...</option>
                   <option value="user">User</option>
                   <option value="manager">Manager</option>
@@ -49,7 +49,10 @@
 </template>
 
 <script>
-import { getUser, updateUser } from '../services/userService';
+import { mapActions } from 'vuex';
+import showMessage from '../mixins/messages';
+
+const label = 'User';
 
 export default {
   name: 'ViewUserEdit',
@@ -57,53 +60,40 @@ export default {
     return {
       entry: {},
       errors: [],
-      email: '',
-      username: '',
-      password: '',
-      role: '',
     };
   },
   computed: {
     itemId() {
       return this.$route.params.id;
     },
-  },
-  mounted() {
-    getUser(this.itemId)
-      .then((response) => {
-        this.entry = response.data.data.resource;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-      });
-  },
-  methods: {
-    updateEntry() {
-      const params = {
-        id: this.entry.id,
-        email: this.entry.email,
-        username: this.entry.username,
-        role: this.entry.role,
-      };
-      updateUser(params)
-        .then(() => {
-          this.$router.push({ path: '/userlist' });
-          this.flashMessage.show({
-            title: 'User geändert',
-            message: '',
-            wrapperClass: 'msg alert-success',
-          });
-        })
-        .catch((e) => {
-          this.errors.push(e);
-          this.flashMessage.show({
-            title: 'User konnte nicht geändert werden',
-            message: '',
-            wrapperClass: 'msg alert-warning',
-          });
-        });
+    activeUser: {
+      get() {
+        return this.$store.state.users.activeUser;
+      },
+      set(params) {
+        this.$store.commit('updateUser', params);
+      },
     },
   },
+  mounted() {
+    this.fetchUser(this.itemId);
+  },
+  methods: {
+    ...mapActions(['fetchUser', 'updateUser']),
+    async updateEntry() {
+      try {
+        await this.updateUser(this.activeUser);
+        // await this.activeUser.set(this.activeUser);
+        // this.$router.push({ path: '/userlist' });
+        this.showSimpleMessage(`${label} geändert`, 'success');
+      } catch (e) {
+        console.log(`E: ${e}`);
+        this.errors.push(e);
+        this.showSimpleMessage(`${label} konnte nicht geändert werden`, 'warning');
+      }
+    },
+  },
+  mixins: [showMessage],
 };
 
 </script>

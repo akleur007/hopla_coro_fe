@@ -26,24 +26,23 @@
       </form>
       <h2>Angelegte User:</h2>
       <ul id="usersList"  class="list-group-striped">
-          <li class="users-list-entry list-group-item" v-for="(entry) in entrys" :key="entry.id">
-            <UserListEntry :entry="entry" @deleteEntry="deleteEntry" @sendEmail="sendUserEmail"></UserListEntry>
+          <li class="users-list-entry list-group-item" v-for="(entry) in allUsers" :key="entry.id">
+            <UserListEntry :entry="entry" @deleteEntry="deleteEntry" @sendEmail="sendEntryEmail"></UserListEntry>
           </li>
       </ul>
   </div>
 </template>
 
 <script>
-import {
-  getUserList,
-  createUser,
-  deleteUser,
-  sendUserEmail,
-} from '../services/userService';
+import { mapGetters, mapActions } from 'vuex';
+import UserService from '../services/userService';
 import UserListEntry from '../components/UserListEntry.vue';
+import showMessage from '../mixins/messages';
+
+const label = 'User';
 
 export default {
-  name: 'ViewUserUsers',
+  name: 'ViewUsers',
   props: {
     msg: String,
   },
@@ -58,61 +57,48 @@ export default {
     };
   },
   created() {
-    this.listUsers();
+    this.fetchUsers();
+  },
+  components: {
+    UserListEntry,
   },
   methods: {
-    listUsers() {
-      getUserList()
-        .then((response) => {
-          this.entrys = response.data.data.items;
-        })
-        .catch((e) => {
-          this.errors.push(e);
-          this.flashMessage.show({
-            title: 'User können nicht geladen werden',
-            message: '',
-            wrapperClass: 'alert-warning',
-          });
-        });
-    },
-    postEntry() {
+    ...mapActions(['fetchUsers', 'addUser', 'changeUser', 'removeUser']),
+    async postEntry() {
       const params = {
         email: this.email,
         username: this.username,
         role: this.role,
         password: this.password,
       };
-      createUser(params)
-        .then(() => {
-          this.listUsers();
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+      try {
+        await this.addUser(params);
+        this.showSimpleMessage(`${label} angelegt`, 'success');
+        this.fetchUsers();
+      } catch (e) {
+        this.errors.push(e);
+      }
     },
-    deleteEntry(id) {
-      deleteUser(id)
-        .then(() => {
-          this.listUsers();
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+    async deleteEntry(id) {
+      try {
+        await this.removeUser(id);
+        this.fetchUsers();
+        this.showSimpleMessage(`${label} gelöscht`, 'success');
+      } catch (e) {
+        this.errors.push(e);
+      }
     },
-    sendUserEmail(id) {
-      sendUserEmail(id)
-        .then(() => {
-          console.log('email sent');
-          this.listEntries();
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+    async sendEntryEmail(id) {
+      try {
+        await UserService.sendUserEmail(id);
+        this.showSimpleMessage(`Email an ${label} gesendet`, 'success');
+      } catch (e) {
+        this.errors.push(e);
+      }
     },
   },
-  components: {
-    UserListEntry,
-  },
+  computed: mapGetters(['allUsers']),
+  mixins: [showMessage],
 };
 </script>
 
