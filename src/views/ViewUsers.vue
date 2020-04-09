@@ -63,7 +63,7 @@ export default {
     UserListEntry,
   },
   methods: {
-    ...mapActions(['fetchUsers', 'addUser', 'changeUser', 'removeUser']),
+    ...mapActions('users', ['fetchUsers', 'addUser', 'changeUser', 'removeUser']),
     async postEntry() {
       const params = {
         email: this.email,
@@ -97,7 +97,7 @@ export default {
       }
     },
   },
-  computed: mapGetters(['allUsers']),
+  computed: mapGetters('users', ['allUsers']),
   mixins: [showMessage],
 };
 </script>

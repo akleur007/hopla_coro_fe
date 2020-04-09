@@ -79,12 +79,12 @@ export default {
     this.fetchUser(this.itemId);
   },
   methods: {
-    ...mapActions(['fetchUser', 'updateUser']),
+    ...mapActions('users', ['fetchUser', 'updateUser']),
     async updateEntry() {
       try {
         await this.updateUser(this.activeUser);
         // await this.activeUser.set(this.activeUser);
-        // this.$router.push({ path: '/userlist' });
+        this.$router.push({ path: '/userlist' });
         this.showSimpleMessage(`${label} geändert`, 'success');
       } catch (e) {
         console.log(`E: ${e}`);

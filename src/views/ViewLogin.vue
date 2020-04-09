@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import showMessage from '../mixins/messages';
 import UserService from '../services/userService';
 import TokenService from '../services/tokenService';
 
@@ -37,31 +38,24 @@ export default {
   components: {
   },
   methods: {
-    loginUser() {
+    async loginUser() {
       const params = {
         username: this.user.username,
         password: this.user.password,
       };
-      UserService.authUser(params)
-        .then((res) => {
-          localStorage.setItem('user', res.data.data.user);
-          TokenService.saveToken(res.data.data.token);
-          this.flashMessage.show({
-            title: `Hallo ${this.user.username}`,
-            message: '',
-            wrapperClass: 'msg alert-success',
-          });
-        })
-        .catch((e) => {
-          this.errors.push(e);
-          this.flashMessage.show({
-            title: 'Name oder Passwort falsch',
-            message: e,
-            wrapperClass: 'msg alert-warning',
-          });
-        });
+      try {
+        const res = await UserService.authUser(params);
+        localStorage.setItem('user', res.data.data.user);
+        TokenService.saveToken(res.data.data.token);
+        this.showSimpleMessage(`Hallo ${res.data.data.user.username}`, 'success');
+        this.$router.push({ path: '/userlist' });
+      } catch (e) {
+        this.errors.push(e);
+        this.showSimpleMessage('Name oder Passwort falsch', 'warning');
+      }
     },
   },
+  mixins: [showMessage],
 };
 </script>
 

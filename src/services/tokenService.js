@@ -1,35 +1,28 @@
 const TOKEN_KEY = 'user-token';
 const REFRESH_TOKEN_KEY = 'refresh-token';
 
-/**
- * Manage the how Access Tokens are being stored and retreived from storage.
- *
- * Current implementation stores to localStorage. Local Storage should always be
- * accessed through this instace.
-* */
-
 const TokenService = {
-  getToken() {
+  async getToken() {
     return localStorage.getItem(TOKEN_KEY);
   },
 
-  saveToken(accessToken) {
+  async saveToken(accessToken) {
     localStorage.setItem(TOKEN_KEY, accessToken);
   },
 
-  removeToken() {
+  async removeToken() {
     localStorage.removeItem(TOKEN_KEY);
   },
 
-  getRefreshToken() {
+  async getRefreshToken() {
     return localStorage.getItem(REFRESH_TOKEN_KEY);
   },
 
-  saveRefreshToken(refreshToken) {
+  async saveRefreshToken(refreshToken) {
     localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
   },
 
-  removeRefreshToken() {
+  async removeRefreshToken() {
     localStorage.removeItem(REFRESH_TOKEN_KEY);
   },
 

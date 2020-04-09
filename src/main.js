@@ -2,9 +2,19 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Vue from 'vue';
 import FlashMessage from '@smartweb/vue-flash-message';
+import TokenService from './services/tokenService';
+import ApiService from './services/apiService';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+
+const apiBaseUrl = 'http://localhost:3000/api';
+
+ApiService.init(apiBaseUrl);
+
+if (TokenService.getToken()) {
+  ApiService.setHeader();
+}
 
 Vue.config.productionTip = false;
 const flashMsgConfig = {
@@ -19,7 +29,6 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount('#app');
-
 
 // Clear console on hot load
 

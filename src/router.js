@@ -6,7 +6,7 @@ import ViewBons from './views/ViewBons.vue';
 import ViewBonEdit from './views/ViewBonEdit.vue';
 import ViewUsers from './views/ViewUsers.vue';
 import ViewUserEdit from './views/ViewUserEdit.vue';
-import TokenService from './services/tokenService';
+// import TokenService from './services/tokenService';
 
 Vue.use(Router);
 
@@ -23,7 +23,7 @@ const router = new Router({
       name: 'login',
       component: ViewLogin,
       meta: {
-        public: true, // Allow access to even if not logged in
+        public: true,
         onlyWhenLoggedOut: true,
       },
     },
@@ -46,14 +46,26 @@ const router = new Router({
       path: '/user/:id',
       name: 'user-edit',
       component: ViewUserEdit,
+      meta: {
+        public: true,
+        onlyWhenLoggedOut: true,
+      },
     },
   ],
 });
 
-router.beforeEach((to, from, next) => {
+/* router.beforeEach(async (to, from, next) => {
   const isPublic = to.matched.some((record) => record.meta.public);
   const onlyWhenLoggedOut = to.matched.some((record) => record.meta.onlyWhenLoggedOut);
-  const loggedIn = !!TokenService.getToken();
+  let loggedIn = false;
+  try {
+    const token = await TokenService.getToken();
+    if (token != null) loggedIn = true;
+  } catch (e) {
+    loggedIn = false;
+  }
+
+  console.log(loggedIn);
 
   if (!isPublic && !loggedIn) {
     return next({
@@ -62,12 +74,11 @@ router.beforeEach((to, from, next) => {
     });
   }
 
-  // Do not allow user to visit login page or register page if they are logged in
   if (loggedIn && onlyWhenLoggedOut) {
     return next('/');
   }
 
   return next();
-});
+}); */
 
 export default router;

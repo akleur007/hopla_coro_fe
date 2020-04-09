@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import bons from './modules/bons';
-import users from './modules/users';
+import users from './modules/users/index';
 
 Vue.use(Vuex);
 
