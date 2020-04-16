@@ -1,25 +1,23 @@
-import axios from 'axios';
-
-const apiBaseUrl = 'http://localhost:3000/api/bons';
+import ApiService from './apiService';
 
 const BonService = {
   async getBonList() {
-    return axios.get(apiBaseUrl);
+    return ApiService.get('bons');
   },
   async getBon(id) {
-    return axios.get(`${apiBaseUrl}/${id}`);
+    return ApiService.get(`bons/${id}`);
   },
   async createBon(params) {
-    return axios.post(apiBaseUrl, params);
+    return ApiService.post('bons', params);
   },
   async updateBon(params) {
-    return axios.put(`${apiBaseUrl}/${params.id}`, params);
+    return ApiService.put(`bons/${params.id}`, params);
   },
   async deleteBon(id) {
-    return axios.delete(`${apiBaseUrl}/${id}`);
+    return ApiService.delete(`bons/${id}`);
   },
   async sendBonMail(id) {
-    return axios.get(`${apiBaseUrl}/${id}/sendmail`);
+    return ApiService.get(`bons/${id}/sendmail`);
   },
 };
 export default BonService;

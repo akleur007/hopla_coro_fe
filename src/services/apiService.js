@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import TokenService from './tokenService';
+import TokenService from './tokenService';
 
 
 const ApiService = {
@@ -8,8 +8,9 @@ const ApiService = {
     axios.defaults.baseURL = baseURL;
   },
 
-  setHeader() {
-    // axios.defaults.headers.common.Authorization = `Bearer ${TokenService.getToken()}`;
+  async setHeader() {
+    const token = await TokenService.getToken();
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   },
 
   removeHeader() {

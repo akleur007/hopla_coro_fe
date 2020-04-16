@@ -1,8 +1,5 @@
-import axios from 'axios';
 import TokenService from './tokenService';
 import ApiService from './apiService';
-
-const apiBaseUrl = 'http://localhost:3000/api/users';
 
 export class AuthenticationError extends Error {
   constructor(errorCode, message) {
@@ -16,25 +13,21 @@ export class AuthenticationError extends Error {
 const UserService = {
   async getUserList() {
     return ApiService.get('users');
-    // return axios.get(apiBaseUrl);
   },
   async createUser(params) {
-    return axios.post(apiBaseUrl, params);
+    return ApiService.post('users', params);
   },
   async getUser(id) {
-    return axios.get(`${apiBaseUrl}/${id}`);
+    return ApiService.get(`users/${id}`);
   },
-  async authUser(params) {
-    return axios.post(`${apiBaseUrl}/authenticate`, params);
-  },
-  async login(username, password) {
+  async login(params) {
     const requestData = {
       method: 'post',
-      url: '/o/token/',
+      url: 'users/authenticate',
       data: {
         grant_type: 'password',
-        username,
-        password,
+        username: params.username,
+        password: params.password,
       },
       auth: {
         username: process.env.VUE_APP_CLIENT_ID,
@@ -43,14 +36,14 @@ const UserService = {
     };
     try {
       const response = await ApiService.customRequest(requestData);
-      TokenService.saveToken(response.data.access_token);
-      TokenService.saveRefreshToken(response.data.refresh_token);
+      TokenService.saveToken(response.data.data.accessToken);
+      // TokenService.saveRefreshToken(response.data.data.refresh_token);
       ApiService.setHeader();
-      ApiService.mount401Interceptor();
+      // ApiService.mount401Interceptor();
 
-      return response.data.access_token;
+      return response.data.data;
     } catch (error) {
-      throw new AuthenticationError(error.response.status, error.response.data.detail);
+      throw new AuthenticationError(error.response.status, error.response.data.data.message);
     }
   },
   async refreshToken() {
@@ -58,7 +51,7 @@ const UserService = {
 
     const requestData = {
       method: 'post',
-      url: '/o/token/',
+      url: 'users/refreshtoken',
       data: {
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
@@ -82,18 +75,18 @@ const UserService = {
   },
   logout() {
     TokenService.removeToken();
-    TokenService.removeRefreshToken();
+    // TokenService.removeRefreshToken();
     ApiService.removeHeader();
-    ApiService.unmount401Interceptor();
+    // ApiService.unmount401Interceptor();
   },
   async updateUser(params) {
-    return axios.put(`${apiBaseUrl}/${params.id}`, params);
+    return ApiService.put(`users/${params.id}`, params);
   },
   async deleteUser(id) {
-    return axios.delete(`${apiBaseUrl}/${id}`);
+    return ApiService.delete(`users/${id}`);
   },
   async sendUserEmail(id) {
-    return axios.get(`${apiBaseUrl}/${id}/sendmail`);
+    return ApiService.get(`users/${id}/sendmail`);
   },
 };
 

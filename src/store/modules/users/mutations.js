@@ -15,9 +15,11 @@ export const LOGIN_REQUEST = (state) => {
   state.authenticationErrorCode = 0;
 };
 
-export const LOGIN_SUCESS = (state, accessToken) => {
-  state.accessToken = accessToken;
+export const LOGIN_SUCCESS = (state, params) => {
+  state.accessToken = params.accessToken;
   state.authenticating = false;
+  state.user = params.user;
+  state.user.loggedIn = true;
 };
 
 export const LOGIN_ERROR = (state, { errorCode, errorMessage }) => {
@@ -28,6 +30,8 @@ export const LOGIN_ERROR = (state, { errorCode, errorMessage }) => {
 
 export const LOGOUT_SUCCESS = (state) => {
   state.accessToken = '';
+  state.user.loggedIn = false;
+  state.user = {};
 };
 
 export const CREATE_USER = (state, user) => [user, ...state.users];

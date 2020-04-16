@@ -1,5 +1,6 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
+import createPersistedState from 'vuex-persistedstate';
 import bons from './modules/bons';
 import users from './modules/users/index';
 
@@ -10,4 +11,5 @@ export default new Vuex.Store({
     bons,
     users,
   },
+  plugins: [createPersistedState()],
 });

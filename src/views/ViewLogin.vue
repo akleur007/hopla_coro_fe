@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <form class="ng-pristine" @submit="loginUser()">
+      <form class="ng-pristine" @submit="login()">
           <div class="form-group row">
               <label class="col-lg-2 col-sm-12 col-form-label form-control-label">Name</label>
               <div class="col-lg-3 col-sm-12">
@@ -21,9 +21,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import showMessage from '../mixins/messages';
-import UserService from '../services/userService';
-import TokenService from '../services/tokenService';
 
 export default {
   name: 'ViewLogin',
@@ -35,22 +34,25 @@ export default {
       errors: [],
     };
   },
+  created() {
+    this.logoutUser();
+  },
   components: {
   },
+  computed: mapGetters('users', ['getUser']),
   methods: {
-    async loginUser() {
+    ...mapActions('users', ['loginUser', 'logoutUser']),
+    async login() {
       const params = {
         username: this.user.username,
         password: this.user.password,
       };
       try {
-        const res = await UserService.authUser(params);
-        localStorage.setItem('user', res.data.data.user);
-        TokenService.saveToken(res.data.data.token);
-        this.showSimpleMessage(`Hallo ${res.data.data.user.username}`, 'success');
-        this.$router.push({ path: '/userlist' });
+        await this.loginUser(params);
+        this.showSimpleMessage(`Hallo ${this.getUser.username}`, 'success');
       } catch (e) {
         this.errors.push(e);
+        console.log(`Err: ${e}`);
         this.showSimpleMessage('Name oder Passwort falsch', 'warning');
       }
     },

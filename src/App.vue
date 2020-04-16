@@ -11,7 +11,8 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <router-link to="/login" class="nav-link">Login</router-link>
+            <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link">Logout</router-link>
+            <router-link to="/login" v-else class="nav-link">Login</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/bonlist" class="nav-link">Bons</router-link>
@@ -32,6 +33,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
@@ -39,6 +41,7 @@ export default {
     return {
     };
   },
+  computed: mapGetters('users', ['loggedIn', 'getUser']),
   components: {
   },
 };

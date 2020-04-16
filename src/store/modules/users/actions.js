@@ -1,4 +1,5 @@
 import UserService, { AuthenticationError } from '../../../services/userService';
+import router from '../../../router';
 
 export const fetchUsers = async ({ commit }) => {
   const response = await UserService.getUserList();
@@ -10,19 +11,13 @@ export const fetchUser = async ({ commit }, id) => {
   commit('SET_ACTIVE_USER', response.data.data.resource);
 };
 
-export const authUser = async ({ commit }, params) => {
-  const response = await UserService.authUser(params);
-  commit('AUTH_USER', response.data.data.resource);
-};
-
-export const login = async ({ commit }, { username, password }) => {
+export const loginUser = async ({ commit }, params) => {
   commit('LOGIN_REQUEST');
 
   try {
-    const token = await UserService.login(username, password);
-    commit('LOGIN_SUCCESS', token);
-
-    this.$router.push(this.$router.history.current.query.redirect || '/');
+    const res = await UserService.login(params);
+    commit('LOGIN_SUCCESS', res);
+    router.push(router.history.current.query.redirect || '/');
 
     return true;
   } catch (e) {
@@ -37,10 +32,9 @@ export const login = async ({ commit }, { username, password }) => {
   }
 };
 
-export const logout = ({ commit }) => {
+export const logoutUser = ({ commit }) => {
   UserService.logout();
   commit('LOGOUT_SUCCESS');
-  this.$router.push('/login');
 };
 
 export const addUser = async ({ commit }, params) => {

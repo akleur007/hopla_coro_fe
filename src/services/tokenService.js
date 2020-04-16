@@ -10,7 +10,7 @@ const TokenService = {
     localStorage.setItem(TOKEN_KEY, accessToken);
   },
 
-  async removeToken() {
+  removeToken() {
     localStorage.removeItem(TOKEN_KEY);
   },
 

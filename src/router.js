@@ -6,7 +6,7 @@ import ViewBons from './views/ViewBons.vue';
 import ViewBonEdit from './views/ViewBonEdit.vue';
 import ViewUsers from './views/ViewUsers.vue';
 import ViewUserEdit from './views/ViewUserEdit.vue';
-// import TokenService from './services/tokenService';
+import TokenService from './services/tokenService';
 
 Vue.use(Router);
 
@@ -24,7 +24,7 @@ const router = new Router({
       component: ViewLogin,
       meta: {
         public: true,
-        onlyWhenLoggedOut: true,
+        // onlyWhenLoggedOut: true,
       },
     },
     {
@@ -54,7 +54,7 @@ const router = new Router({
   ],
 });
 
-/* router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const isPublic = to.matched.some((record) => record.meta.public);
   const onlyWhenLoggedOut = to.matched.some((record) => record.meta.onlyWhenLoggedOut);
   let loggedIn = false;
@@ -64,8 +64,6 @@ const router = new Router({
   } catch (e) {
     loggedIn = false;
   }
-
-  console.log(loggedIn);
 
   if (!isPublic && !loggedIn) {
     return next({
@@ -79,6 +77,6 @@ const router = new Router({
   }
 
   return next();
-}); */
+});
 
 export default router;
