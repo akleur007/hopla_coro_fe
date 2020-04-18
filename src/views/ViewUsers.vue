@@ -38,6 +38,7 @@ import { mapGetters, mapActions } from 'vuex';
 import UserService from '../services/userService';
 import UserListEntry from '../components/UserListEntry.vue';
 import showMessage from '../mixins/messages';
+import errorHandler from '../mixins/errors';
 
 const label = 'User';
 
@@ -56,8 +57,13 @@ export default {
       role: 'user',
     };
   },
-  created() {
-    this.fetchUsers();
+  async created() {
+    try {
+      await this.fetchUsers();
+      this.handleApiError();
+    } catch (err) {
+      this.handleApiError(err);
+    }
   },
   components: {
     UserListEntry,
@@ -98,7 +104,7 @@ export default {
     },
   },
   computed: mapGetters('users', ['allUsers']),
-  mixins: [showMessage],
+  mixins: [showMessage, errorHandler],
 };
 </script>
 

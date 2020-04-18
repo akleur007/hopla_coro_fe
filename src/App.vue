@@ -3,7 +3,7 @@
     <div id="logo">
       <img alt="Vue logo" src="./assets/hopla_kalk_logo_2020.png">
     </div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -19,6 +19,9 @@
           </li>
           <li class="nav-item">
             <router-link to="/userlist" class="nav-link">Users</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/error" class="nav-link">Error</router-link>
           </li>
         </ul>
         <!-- <form class="form-inline my-2 my-lg-0">

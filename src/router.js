@@ -6,6 +6,7 @@ import ViewBons from './views/ViewBons.vue';
 import ViewBonEdit from './views/ViewBonEdit.vue';
 import ViewUsers from './views/ViewUsers.vue';
 import ViewUserEdit from './views/ViewUserEdit.vue';
+import ViewError from './views/ViewError.vue';
 import TokenService from './services/tokenService';
 
 Vue.use(Router);
@@ -49,6 +50,14 @@ const router = new Router({
       meta: {
         public: true,
         onlyWhenLoggedOut: true,
+      },
+    },
+    {
+      path: '/error',
+      name: 'show-error',
+      component: ViewError,
+      meta: {
+        public: true,
       },
     },
   ],

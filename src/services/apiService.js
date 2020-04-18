@@ -1,6 +1,7 @@
 import axios from 'axios';
 import TokenService from './tokenService';
 
+axios.interceptors.response.use((response) => response, (error) => Promise.reject(error));
 
 const ApiService = {
 
