@@ -2,8 +2,9 @@ import { mapActions } from 'vuex';
 
 const errorHandler = {
   methods: {
-    ...mapActions('errors', ['setActiveError']),
+    ...mapActions('errors', ['setActiveError', 'removeActiveError']),
     handleApiError(error) {
+      console.log('errorrr: ', error);
       if (!error || error === '') {
         this.removeActiveError();
       } else {

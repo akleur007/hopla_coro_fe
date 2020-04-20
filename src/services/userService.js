@@ -85,6 +85,9 @@ const UserService = {
   async deleteUser(id) {
     return ApiService.delete(`users/${id}`);
   },
+  async getUserRoles() {
+    return ApiService.get('users/auth-roles');
+  },
   async sendUserEmail(id) {
     return ApiService.get(`users/${id}/sendmail`);
   },

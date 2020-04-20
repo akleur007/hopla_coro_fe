@@ -20,10 +20,8 @@
             </div>
             <div class="col-lg-12">
               <select id="role-input col-input" v-model="activeUser.role" class="form-control">
-                  <option selected>Choose...</option>
-                  <option value="user">User</option>
-                  <option value="manager">Manager</option>
-                  <option value="admin">Admin</option>
+                <option selected>Choose...</option>
+                <option v-for="(role) in userRoles" :key="role.id" :value="role.value">{{ role.name }}</option>
                 </select>
             </div>
           </div>
@@ -49,7 +47,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import showMessage from '../mixins/messages';
 
 const label = 'User';
@@ -63,6 +61,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('users', ['userRoles']),
     itemId() {
       return this.$route.params.id;
     },
@@ -77,9 +76,10 @@ export default {
   },
   mounted() {
     this.fetchUser(this.itemId);
+    this.getUserRoles();
   },
   methods: {
-    ...mapActions('users', ['fetchUser', 'updateUser']),
+    ...mapActions('users', ['fetchUser', 'getUserRoles', 'updateUser']),
     async updateEntry() {
       try {
         await this.updateUser(this.activeUser);

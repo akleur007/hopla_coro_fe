@@ -14,9 +14,7 @@
               <div class="col-lg-5 col-sm-12 col-input">
                   <select id="role-input" v-model="role" class="form-control">
                     <option selected>Choose...</option>
-                    <option value="user">User</option>
-                    <option value="manager">Manager</option>
-                    <option value="admin">Admin</option>
+                    <option v-for="(role) in userRoles" :key="role.id" :value="role.value">{{ role.name }}</option>
                   </select>
               </div>
               <div class="col-lg-3 col-sm-12 text-right">
@@ -55,6 +53,7 @@ export default {
       username: '',
       password: '',
       role: 'user',
+      userRole: [],
     };
   },
   async created() {
@@ -103,7 +102,7 @@ export default {
       }
     },
   },
-  computed: mapGetters('users', ['allUsers']),
+  computed: mapGetters('users', ['allUsers', 'userRoles']),
   mixins: [showMessage, errorHandler],
 };
 </script>

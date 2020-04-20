@@ -51,3 +51,8 @@ export const removeUser = async ({ commit }, id) => {
   const response = await UserService.deleteUser(id);
   commit('DELETE_USER', response.data.data.resource);
 };
+
+export const getUserRoles = async ({ commit }) => {
+  const response = await UserService.getUserRoles();
+  commit('SET_USER_ROLES', response.data.data.userRoles);
+};

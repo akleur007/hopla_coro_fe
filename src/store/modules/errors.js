@@ -21,9 +21,9 @@ const actions = {
   setActiveError({ commit }, error) {
     commit('SET_ACTIVE_ERROR', error);
   },
-  /* removeActiveError({ commit }) {
+  removeActiveError({ commit }) {
     commit('REMOVE_ACTIVE_ERROR');
-  }, */
+  },
 };
 
 const mutations = {
@@ -32,7 +32,7 @@ const mutations = {
     state.activeError = activeError;
   },
   REMOVE_ACTIVE_ERROR: (state) => {
-    state.activeError = {};
+    state.activeError = undefined;
   },
 };
 

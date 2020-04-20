@@ -47,10 +47,6 @@ const router = new Router({
       path: '/user/:id',
       name: 'user-edit',
       component: ViewUserEdit,
-      meta: {
-        public: true,
-        onlyWhenLoggedOut: true,
-      },
     },
     {
       path: '/error',

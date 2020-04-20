@@ -45,3 +45,7 @@ export const UPDATE_USER = (state, updUser) => {
   }
   // state.activeUser = {};
 };
+
+export const SET_USER_ROLES = (state, userRoles) => {
+  state.userRoles = userRoles;
+};
