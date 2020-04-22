@@ -88,6 +88,9 @@ const UserService = {
   async getUserRoles() {
     return ApiService.get('users/auth-roles');
   },
+  async validateUserRole(role) {
+    return ApiService.get(`users/validate-user-role/${role}`);
+  },
   async sendUserEmail(id) {
     return ApiService.get(`users/${id}/sendmail`);
   },

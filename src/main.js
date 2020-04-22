@@ -8,7 +8,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-const apiBaseUrl = 'http://localhost:3000/api';
+// const apiBaseUrl = 'http://localhost:3000/api';
+const apiBaseUrl = 'http://192.168.178.20:3000/api';
 
 ApiService.init(apiBaseUrl);
 

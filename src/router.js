@@ -16,12 +16,17 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: ViewHome,
+      meta: {
+        isMenu: true,
+        menuName: 'Home',
+        requiredRole: 'guest',
+      },
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: ViewLogin,
       meta: {
         public: true,
@@ -30,8 +35,13 @@ const router = new Router({
     },
     {
       path: '/bonlist',
-      name: 'make Bons',
+      name: 'Bons',
       component: ViewBons,
+      meta: {
+        isMenu: true,
+        menuName: 'Bons',
+        requiredRole: 'manager',
+      },
     },
     {
       path: '/bon/:id',
@@ -40,8 +50,13 @@ const router = new Router({
     },
     {
       path: '/userlist',
-      name: 'make-users',
+      name: 'Users',
       component: ViewUsers,
+      meta: {
+        isMenu: true,
+        menuName: 'Users',
+        requiredRole: 'manager',
+      },
     },
     {
       path: '/user/:id',
@@ -50,10 +65,12 @@ const router = new Router({
     },
     {
       path: '/error',
-      name: 'show-error',
+      name: 'Error',
       component: ViewError,
       meta: {
-        public: true,
+        isMenu: true,
+        menuName: 'Error',
+        requiredRole: 'admin',
       },
     },
   ],

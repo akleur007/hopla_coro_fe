@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="logo">
-      <img alt="Vue logo" src="./assets/hopla_kalk_logo_2020.png">
+      <img alt="Vue logo"  class="img-fluid" src="./assets/hopla_kalk_logo_2020.png">
     </div>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,18 +9,14 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link">Logout</router-link>
-            <router-link to="/login" v-else class="nav-link">Login</router-link>
-          </li>
-          <li class="nav-item">
+        <ul class="navbar-nav mrl-auto">
+          <li class="nav-item" v-if="this.isManager">
             <router-link to="/bonlist" class="nav-link">Bons</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="this.isManager">
             <router-link to="/userlist" class="nav-link">Users</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="this.isAdmin">
             <router-link to="/error" class="nav-link">Error</router-link>
           </li>
         </ul>
@@ -28,6 +24,12 @@
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
         </form> -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link">Logout</router-link>
+            <router-link to="/login" v-else class="nav-link">Login</router-link>
+          </li>
+        </ul>
       </div>
     </nav>
     <router-view />
@@ -37,14 +39,39 @@
 
 <script>
 import { mapGetters } from 'vuex';
+// import UserService from './services/userService';
+
+/* const validateUserRole = async (role) => {
+  try {
+    const hasRole = await UserService.validateUserRole(role);
+    console.log('hasRole: ', hasRole.data);
+    return hasRole.data;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}; */
 
 export default {
   name: 'App',
+  methods: {
+  },
   data() {
     return {
+      isUser: false,
+      isManager: false,
+      isAdmin: false,
     };
   },
-  computed: mapGetters('users', ['loggedIn', 'getUser']),
+  /* async created() {
+    this.isUser = await validateUserRole('user');
+    this.isManager = await validateUserRole('manager');
+    this.isAdmin = await validateUserRole('admin');
+  }, */
+  computed: {
+    ...mapGetters('users', ['loggedIn', 'getUser', 'userRoles', 'checkUserRole']),
+    // isManager: this.checkUserRole('manager'),
+  },
   components: {
   },
 };

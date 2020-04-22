@@ -13,7 +13,6 @@ export const fetchUser = async ({ commit }, id) => {
 
 export const loginUser = async ({ commit }, params) => {
   commit('LOGIN_REQUEST');
-
   try {
     const res = await UserService.login(params);
     commit('LOGIN_SUCCESS', res);
