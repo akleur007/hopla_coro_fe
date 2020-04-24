@@ -55,3 +55,23 @@ export const getUserRoles = async ({ commit }) => {
   const response = await UserService.getUserRoles();
   commit('SET_USER_ROLES', response.data.data.userRoles);
 };
+
+export const setMainMenu = async ({ commit, state }) => {
+  const { routes } = router.options;
+  const r = await UserService.getUserRole();
+  const userRole = r.data;
+  const metaItems = routes.filter((item) => item.meta); // item has meta
+  const menuItems = metaItems.filter((item) => item.meta.isMenuItem); // item has menu
+  const userRoleIndex = state.userRoles.findIndex((element) => element.value === userRole); // user role index
+
+  const menuReady = menuItems.filter((item) => {
+    const i = state.userRoles.findIndex((element) => element.value === item.meta.requiredRole);
+    return userRoleIndex >= i;
+  });
+  /* console.log(userRole);
+  console.log('routes: ', routes);
+  console.log(menuItems);
+  console.log(menuReady); */
+
+  commit('SET_MAIN_MENU', menuReady);
+};

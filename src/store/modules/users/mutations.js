@@ -49,3 +49,7 @@ export const UPDATE_USER = (state, updUser) => {
 export const SET_USER_ROLES = (state, userRoles) => {
   state.userRoles = userRoles;
 };
+
+export const SET_MAIN_MENU = (state, menu) => {
+  state.mainMenu = menu;
+};

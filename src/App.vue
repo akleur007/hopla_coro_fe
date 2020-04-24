@@ -10,15 +10,7 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mrl-auto">
-          <li class="nav-item" v-if="this.isManager">
-            <router-link to="/bonlist" class="nav-link">Bons</router-link>
-          </li>
-          <li class="nav-item" v-if="this.isManager">
-            <router-link to="/userlist" class="nav-link">Users</router-link>
-          </li>
-          <li class="nav-item" v-if="this.isAdmin">
-            <router-link to="/error" class="nav-link">Error</router-link>
-          </li>
+          <menu-item v-for="(route, i) in mainMenu" :key="i" :route="route"></menu-item>
         </ul>
         <!-- <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -38,42 +30,37 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-// import UserService from './services/userService';
-
-/* const validateUserRole = async (role) => {
-  try {
-    const hasRole = await UserService.validateUserRole(role);
-    console.log('hasRole: ', hasRole.data);
-    return hasRole.data;
-  } catch (err) {
-    console.log(err);
-    return false;
-  }
-}; */
+import { mapActions, mapGetters } from 'vuex';
+import MenuItem from './components/MenuItem.vue';
+import errorHandler from './mixins/errors';
+import ApiService from './services/apiService';
 
 export default {
   name: 'App',
-  methods: {
-  },
   data() {
     return {
-      isUser: false,
-      isManager: false,
-      isAdmin: false,
     };
   },
-  /* async created() {
-    this.isUser = await validateUserRole('user');
-    this.isManager = await validateUserRole('manager');
-    this.isAdmin = await validateUserRole('admin');
-  }, */
+  async mounted() {
+    try {
+      await ApiService.setHeader();
+      await this.getUserRoles();
+      await this.setMainMenu();
+      this.handleApiError();
+    } catch (err) {
+      this.handleApiError(err);
+    }
+  },
+  methods: {
+    ...mapActions('users', ['setMainMenu', 'getUserRoles']),
+  },
   computed: {
-    ...mapGetters('users', ['loggedIn', 'getUser', 'userRoles', 'checkUserRole']),
-    // isManager: this.checkUserRole('manager'),
+    ...mapGetters('users', ['loggedIn', 'getUser', 'userRoles', 'mainMenu']),
   },
   components: {
+    MenuItem,
   },
+  mixins: [errorHandler],
 };
 </script>
 

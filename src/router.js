@@ -15,12 +15,11 @@ const router = new Router({
   linkActiveClass: 'active',
   routes: [
     {
-      path: '/',
+      path: '/#',
       name: 'Home',
       component: ViewHome,
       meta: {
-        isMenu: true,
-        menuName: 'Home',
+        isMenuItem: true,
         requiredRole: 'guest',
       },
     },
@@ -29,8 +28,8 @@ const router = new Router({
       name: 'Login',
       component: ViewLogin,
       meta: {
-        public: true,
-        // onlyWhenLoggedOut: true,
+        requiredRole: 'guest',
+        onlyWhenLoggedOut: true,
       },
     },
     {
@@ -38,8 +37,7 @@ const router = new Router({
       name: 'Bons',
       component: ViewBons,
       meta: {
-        isMenu: true,
-        menuName: 'Bons',
+        isMenuItem: true,
         requiredRole: 'manager',
       },
     },
@@ -53,8 +51,7 @@ const router = new Router({
       name: 'Users',
       component: ViewUsers,
       meta: {
-        isMenu: true,
-        menuName: 'Users',
+        isMenuItem: true,
         requiredRole: 'manager',
       },
     },
@@ -68,8 +65,7 @@ const router = new Router({
       name: 'Error',
       component: ViewError,
       meta: {
-        isMenu: true,
-        menuName: 'Error',
+        isMenuItem: true,
         requiredRole: 'admin',
       },
     },
@@ -77,7 +73,7 @@ const router = new Router({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const isPublic = to.matched.some((record) => record.meta.public);
+  const isPublic = to.matched.some((record) => record.meta.requiredRole === 'guest');
   const onlyWhenLoggedOut = to.matched.some((record) => record.meta.onlyWhenLoggedOut);
   let loggedIn = false;
   try {
