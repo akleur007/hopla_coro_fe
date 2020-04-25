@@ -35,13 +35,13 @@ export default {
     };
   },
   created() {
-    this.logoutUser();
+    this.logout();
   },
   components: {
   },
   computed: mapGetters('users', ['getUser']),
   methods: {
-    ...mapActions('users', ['loginUser', 'logoutUser']),
+    ...mapActions('users', ['loginUser', 'logoutUser', 'setMainMenu']),
     async login() {
       const params = {
         username: this.user.username,
@@ -49,12 +49,20 @@ export default {
       };
       try {
         await this.loginUser(params);
+        this.setMainMenu();
         this.showSimpleMessage(`Hallo ${this.getUser.username}`, 'success');
       } catch (e) {
         this.errors.push(e);
         console.log(`Err: ${e}`);
         this.showSimpleMessage('Name oder Passwort falsch', 'warning');
       }
+    },
+    async logout() {
+      if (this.getUser.loggedIn) {
+        this.showSimpleMessage('Tschö', 'warning');
+      }
+      await this.logoutUser();
+      this.setMainMenu();
     },
   },
   mixins: [showMessage],

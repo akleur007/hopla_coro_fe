@@ -73,11 +73,12 @@ const UserService = {
       throw new AuthenticationError(error.response.status, error.response.data.detail);
     }
   },
-  logout() {
-    TokenService.removeToken();
+  async logout() {
+    await TokenService.removeToken();
     // TokenService.removeRefreshToken();
     ApiService.removeHeader();
     // ApiService.unmount401Interceptor();
+    return true;
   },
   async updateUser(params) {
     return ApiService.put(`users/${params.id}`, params);

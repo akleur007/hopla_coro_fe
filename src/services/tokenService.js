@@ -7,11 +7,11 @@ const TokenService = {
   },
 
   async saveToken(accessToken) {
-    localStorage.setItem(TOKEN_KEY, accessToken);
+    return localStorage.setItem(TOKEN_KEY, accessToken);
   },
 
-  removeToken() {
-    localStorage.removeItem(TOKEN_KEY);
+  async removeToken() {
+    return localStorage.removeItem(TOKEN_KEY);
   },
 
   async getRefreshToken() {

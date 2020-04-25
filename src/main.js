@@ -1,7 +1,6 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Vue from 'vue';
-import AsyncComputed from 'vue-async-computed';
 import FlashMessage from '@smartweb/vue-flash-message';
 import TokenService from './services/tokenService';
 import ApiService from './services/apiService';
@@ -24,7 +23,7 @@ const flashMsgConfig = {
   strategy: 'multiple',
 };
 
-Vue.use(FlashMessage, flashMsgConfig, AsyncComputed);
+Vue.use(FlashMessage, flashMsgConfig);
 
 new Vue({
   router,

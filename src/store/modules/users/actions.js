@@ -26,13 +26,12 @@ export const loginUser = async ({ commit }, params) => {
         errorMessage: e.message,
       });
     }
-
     return false;
   }
 };
 
-export const logoutUser = ({ commit }) => {
-  UserService.logout();
+export const logoutUser = async ({ commit }) => {
+  await UserService.logout();
   commit('LOGOUT_SUCCESS');
 };
 
@@ -51,17 +50,11 @@ export const removeUser = async ({ commit }, id) => {
   commit('DELETE_USER', response.data.data.resource);
 };
 
-export const getUserRoles = async ({ commit }) => {
-  const response = await UserService.getUserRoles();
-  commit('SET_USER_ROLES', response.data.data.userRoles);
-};
-
 export const setMainMenu = async ({ commit, state }) => {
   const { routes } = router.options;
   const r = await UserService.getUserRole();
   const userRole = r.data;
-  const metaItems = routes.filter((item) => item.meta); // item has meta
-  const menuItems = metaItems.filter((item) => item.meta.isMenuItem); // item has menu
+  const menuItems = routes.filter((item) => item.meta && item.meta.isMenuItem);
   const userRoleIndex = state.userRoles.findIndex((element) => element.value === userRole); // user role index
 
   const menuReady = menuItems.filter((item) => {
@@ -72,6 +65,12 @@ export const setMainMenu = async ({ commit, state }) => {
   console.log('routes: ', routes);
   console.log(menuItems);
   console.log(menuReady); */
-
+  // console.log(commit, menuReady);
   commit('SET_MAIN_MENU', menuReady);
+  return true;
+};
+
+export const getUserRoles = async ({ commit }) => {
+  const response = await UserService.getUserRoles();
+  commit('SET_USER_ROLES', response.data.data.userRoles);
 };

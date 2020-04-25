@@ -15,7 +15,7 @@ const ApiService = {
   },
 
   removeHeader() {
-    axios.defaults.headers.common = {};
+    axios.defaults.headers.common.Authorization = {};
   },
 
   get(resource) {

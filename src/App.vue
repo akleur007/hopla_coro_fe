@@ -55,7 +55,7 @@ export default {
     ...mapActions('users', ['setMainMenu', 'getUserRoles']),
   },
   computed: {
-    ...mapGetters('users', ['loggedIn', 'getUser', 'userRoles', 'mainMenu']),
+    ...mapGetters('users', ['getUser', 'mainMenu']),
   },
   components: {
     MenuItem,

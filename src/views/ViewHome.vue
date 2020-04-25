@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-      <div>
-        <h1>Home</h1>
-      </div>
+      <h1>Home</h1>
+      <p>Zuhause ist es doch auch schön</p>
   </div>
 </template>
 

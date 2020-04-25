@@ -15,7 +15,7 @@ const router = new Router({
   linkActiveClass: 'active',
   routes: [
     {
-      path: '/#',
+      path: '/',
       name: 'Home',
       component: ViewHome,
       meta: {
@@ -29,7 +29,6 @@ const router = new Router({
       component: ViewLogin,
       meta: {
         requiredRole: 'guest',
-        onlyWhenLoggedOut: true,
       },
     },
     {
@@ -74,7 +73,6 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   const isPublic = to.matched.some((record) => record.meta.requiredRole === 'guest');
-  const onlyWhenLoggedOut = to.matched.some((record) => record.meta.onlyWhenLoggedOut);
   let loggedIn = false;
   try {
     const token = await TokenService.getToken();
@@ -88,10 +86,6 @@ router.beforeEach(async (to, from, next) => {
       path: '/login',
       query: { redirect: to.fullPath }, // Store the full path to redirect the user to after login
     });
-  }
-
-  if (loggedIn && onlyWhenLoggedOut) {
-    return next('/');
   }
 
   return next();
