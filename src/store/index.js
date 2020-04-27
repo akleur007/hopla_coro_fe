@@ -13,5 +13,7 @@ export default new Vuex.Store({
     users,
     errors,
   },
-  plugins: [createPersistedState()],
+  plugins: [createPersistedState({
+    storage: window.sessionStorage,
+  })],
 });

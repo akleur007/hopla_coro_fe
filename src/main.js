@@ -1,6 +1,10 @@
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+/* import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css'; */
 import Vue from 'vue';
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
 import FlashMessage from '@smartweb/vue-flash-message';
 import TokenService from './services/tokenService';
 import ApiService from './services/apiService';
@@ -24,6 +28,7 @@ const flashMsgConfig = {
 };
 
 Vue.use(FlashMessage, flashMsgConfig);
+Vue.use(BootstrapVue);
 
 new Vue({
   router,

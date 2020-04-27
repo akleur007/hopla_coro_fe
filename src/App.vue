@@ -3,27 +3,24 @@
     <div id="logo">
       <img alt="Vue logo"  class="img-fluid" src="./assets/hopla_kalk_logo_2020.png">
     </div>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mrl-auto">
+    <b-navbar toggleable="sm" type="dark" variant="success" class="navbar-dark bg-dark">
+      <b-container>
+        <b-navbar-brand href="/">Home</b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-collapse id="nav-collapse" is-nav class="navbar-nav">
           <menu-item v-for="(route, i) in mainMenu" :key="i" :route="route"></menu-item>
-        </ul>
-        <!-- <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-        </form> -->
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ml-auto">
+            <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form> -->
             <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link">Logout</router-link>
             <router-link to="/login" v-else class="nav-link">Login</router-link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-container>
+    </b-navbar>
     <router-view />
     <FlashMessage role="alert"></FlashMessage>
   </div>
@@ -83,6 +80,14 @@ export default {
 
 .navbar {
   margin-bottom: 20px;
+}
+
+.navbar-collapse {
+  align-items: start;
+}
+
+.list-group-item {
+  padding: 0;
 }
 
 .col-input {

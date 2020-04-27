@@ -1,4 +1,3 @@
-/*! `Greyson` Bootstrap 4 theme */
 @import url(https://fonts.googleapis.com/css?family=Muli:200,300,400,700);
 $font-family-base:Muli;
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,700);
@@ -13,8 +12,6 @@ $info:#5c8f94;
 $warning:#6e9fa5;
 $light:#eceeec;
 $dark:#1e2b37;
-// @import "bootstrap";
-@import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 .msg {
     border-radius: 4px;;

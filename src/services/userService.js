@@ -14,7 +14,7 @@ const UserService = {
   async getUserList() {
     return ApiService.get('users');
   },
-  async createUser(params) {
+  async addUser(params) {
     return ApiService.post('users', params);
   },
   async getUser(id) {

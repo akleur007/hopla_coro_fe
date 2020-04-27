@@ -19,7 +19,7 @@ const router = new Router({
       name: 'Home',
       component: ViewHome,
       meta: {
-        isMenuItem: true,
+        // isMenuItem: true,
         requiredRole: 'guest',
       },
     },
