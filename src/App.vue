@@ -87,7 +87,7 @@ export default {
 }
 
 .list-group-item {
-  padding: 0;
+  padding: 5px;
 }
 
 .col-input {

@@ -42,7 +42,6 @@ const createRandomHash = () => {
 export default {
   name: 'ViewBons',
   props: {
-    msg: String,
   },
   data() {
     return {

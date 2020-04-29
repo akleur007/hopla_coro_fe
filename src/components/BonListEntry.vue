@@ -16,7 +16,7 @@
             {{ bon.credit }}€
           </div>
           <div class="col-lg-3 col-2 qr-code-wrapper col3">
-            <img id="main-img" :src='newQRCode'/>
+            <img id="main-img" :src='newQRCode'  class="img-fluid" />
           </div>
         </div>
       </div>
@@ -30,7 +30,8 @@
             </button>
           </div>
           <div class="col-lg-12">
-            <button type="submit" class="btn btn-info mr-2" v-on:click="sendEmail">E-Mail</button>
+            <button type="submit" class="btn btn-info mr-2" v-on:click="sendEmail"  v-if="this.bon.initialized" >E-Mail</button>
+            <button type="submit" class="btn btn-light mr-2" v-on:click="sendEmail"  v-else >E-Mail</button>
           </div>
           <div class="col-lg-12">
             <button type="submit" class="btn btn-danger mr-2" v-on:click="deleteEntry">Löschen</button>
@@ -89,7 +90,7 @@ export default {
   }
 
   .credit {
-    font-size: 2.5rem;
+    font-size: 2.0em;
   }
 
   /* .col1 {
@@ -105,11 +106,11 @@ export default {
   } */
 
   .qr-code-wrapper {
-
+    padding:0 auto;
     text-align: right;;
     img {
-      width: 60px;
-      height: 60px;
+      /* max-width: 60px;
+      max-height: 60px; */
     }
   }
 </style>

@@ -7,6 +7,7 @@ import ViewBonEdit from './views/ViewBonEdit.vue';
 import ViewUsers from './views/ViewUsers.vue';
 import ViewUserEdit from './views/ViewUserEdit.vue';
 import ViewError from './views/ViewError.vue';
+import ViewLoadCsv from './views/ViewLoadCsv.vue';
 import TokenService from './services/tokenService';
 
 Vue.use(Router);
@@ -66,6 +67,15 @@ const router = new Router({
       meta: {
         isMenuItem: true,
         requiredRole: 'admin',
+      },
+    },
+    {
+      path: '/load-csv',
+      name: 'Import Csv',
+      component: ViewLoadCsv,
+      meta: {
+        isMenuItem: true,
+        requiredRole: 'manager',
       },
     },
   ],
