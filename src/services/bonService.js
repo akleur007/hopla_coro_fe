@@ -13,6 +13,9 @@ const BonService = {
   async updateBon(params) {
     return ApiService.put(`bons/${params.id}`, params);
   },
+  async updateBons(params) {
+    return ApiService.put('bons/update-multiple', params);
+  },
   async deleteBon(id) {
     return ApiService.delete(`bons/${id}`);
   },

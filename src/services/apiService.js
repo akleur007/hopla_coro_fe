@@ -1,10 +1,12 @@
 import axios from 'axios';
 import TokenService from './tokenService';
 
-axios.interceptors.response.use((response) => response, (error) => Promise.reject(error));
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => Promise.reject(error),
+);
 
 const ApiService = {
-
   init(baseURL) {
     axios.defaults.baseURL = baseURL;
   },
@@ -44,7 +46,7 @@ const ApiService = {
    *  - auth (optional)
    *    - username
    *    - password
-  * */
+   * */
   customRequest(data) {
     return axios(data);
   },

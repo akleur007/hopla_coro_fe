@@ -1,43 +1,50 @@
 <template>
-    <div class="row">
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-lg-6 col-6 col1">
-            <div class="row">
-              <div class="col-lg-12">
-                {{ bon.name }}
-              </div>
-              <div class="col-lg-12">
-                {{ bon.email }}
-              </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-lg-6 col-6 col1">
+          <div class="row">
+            <div class="col-lg-12">
+              {{ bon.name }}
+            </div>
+            <div class="col-lg-12">
+              {{ bon.email }}
             </div>
           </div>
-          <div class="col-lg-3 col-4 credit col2">
-            {{ bon.credit }}€
-          </div>
-          <div class="col-lg-3 col-2 qr-code-wrapper col3">
-            <img id="main-img" :src='newQRCode'  class="img-fluid" />
-          </div>
+        </div>
+        <div class="col-lg-3 col-4 credit col2">{{ bon.credit }}€</div>
+        <div class="col-lg-3 col-2 qr-code-wrapper col3">
+          <img id="main-img" :src="newQRCode" class="img-fluid" />
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="row">
-          <div class="col-lg-12">
-            <button type="submit" class="btn btn-primary mr-2">
-              <router-link :to="`/bon/${bon.id}`">
-                Ändern
-              </router-link>
-            </button>
-          </div>
-          <div class="col-lg-12">
-            <button type="submit" class="btn btn-info mr-2" v-on:click="sendEmail"  v-if="this.bon.initialized" >E-Mail</button>
-            <button type="submit" class="btn btn-light mr-2" v-on:click="sendEmail"  v-else >E-Mail</button>
-          </div>
-          <div class="col-lg-12">
-            <button type="submit" class="btn btn-danger mr-2" v-on:click="deleteEntry">Löschen</button>
-          </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-lg-12">
+          <router-link :to="`/bon/${bon.id}`" class="btn btn-primary mr-2">
+            Ändern
+          </router-link>
+        </div>
+        <div class="col-lg-12">
+          <button
+            type="submit"
+            class="btn btn-info mr-2"
+            v-on:click="sendEmail"
+            v-if="this.bon.initialized"
+          >
+            E-Mail
+          </button>
+          <button type="submit" class="btn btn-light mr-2" v-on:click="sendEmail" v-else>
+            E-Mail
+          </button>
+        </div>
+        <div class="col-lg-12">
+          <button type="submit" class="btn btn-danger mr-2" v-on:click="deleteEntry">
+            Löschen
+          </button>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -72,28 +79,27 @@ export default {
     // this.fetchBons();
   },
 };
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  .btn {
-    margin-bottom: 10px;
-    width: 100%;
+.btn {
+  margin-bottom: 10px;
+  width: 100%;
 
-    a {
-      color: #ffffff;
-      &:hover {
-        text-decoration: none;
-      }
+  a {
+    color: #ffffff;
+    &:hover {
+      text-decoration: none;
     }
   }
+}
 
-  .credit {
-    font-size: 2.0em;
-  }
+.credit {
+  font-size: 2em;
+}
 
-  /* .col1 {
+/* .col1 {
     background: #5c8f94;
   }
 
@@ -105,12 +111,12 @@ export default {
     background: #5c8f94;
   } */
 
-  .qr-code-wrapper {
-    padding:0 auto;
-    text-align: right;;
-    img {
-      /* max-width: 60px;
+.qr-code-wrapper {
+  padding: 0 auto;
+  text-align: right;
+  img {
+    /* max-width: 60px;
       max-height: 60px; */
-    }
   }
+}
 </style>

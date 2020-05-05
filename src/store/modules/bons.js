@@ -37,12 +37,14 @@ const actions = {
 };
 
 const mutations = {
-  setBons: (state, bons) => { state.bons = bons; },
+  setBons: (state, bons) => {
+    state.bons = bons;
+  },
   setActiveBon: (state, activeBon) => {
     state.activeBon = activeBon;
   },
   createBon: (state, bon) => [bon, ...state.bons],
-  deleteBon: (state, id) => (state.bons.filter((bon) => bon.id !== id)),
+  deleteBon: (state, id) => state.bons.filter((bon) => bon.id !== id),
   updateBon: (state, updBon) => {
     console.log('state: ', state);
     const index = state.bons.findIndex((bon) => bon.id === updBon.id);

@@ -62,7 +62,6 @@ export const setMainMenu = async ({ commit, state }) => {
     return userRoleIndex >= i;
   });
   /* console.log(userRole);
-  console.log('routes: ', routes);
   console.log(menuItems);
   console.log(menuReady); */
   // console.log(commit, menuReady);
