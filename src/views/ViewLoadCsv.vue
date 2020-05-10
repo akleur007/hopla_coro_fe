@@ -39,6 +39,11 @@
         <BonImportEntry :bon="bon"></BonImportEntry>
       </li>
     </ul>
+    <ul id="bonList" class="list-group-striped" v-if="this.isProcessed">
+      <li class="bon-list-entry list-group-item" v-for="(bon, i) in newBons" :key="i">
+        <BonImportEntry :bon="bon"></BonImportEntry>
+      </li>
+    </ul>
     <ul id="bonUpdateList" class="list-group-striped">
       <li class="bon-list-entry list-group-item" v-for="(bon, i) in csv" :key="i">
         <BonImportEntry :bon="bon"></BonImportEntry>

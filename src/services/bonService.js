@@ -7,7 +7,7 @@ const BonService = {
   async getBon(id) {
     return ApiService.get(`bons/${id}`);
   },
-  async createBon(params) {
+  async addBon(params) {
     return ApiService.post('bons', params);
   },
   async updateBon(params) {
