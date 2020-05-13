@@ -54,6 +54,7 @@ import { mapGetters, mapActions } from 'vuex';
 import BonService from '../services/bonService';
 import BonListEntry from '../components/BonListEntry.vue';
 import showMessage from '../mixins/messages';
+import errorHandler from '../mixins/errors';
 
 const createRandomHash = () => {
   const currentDate = new Date().valueOf().toString();
@@ -77,8 +78,13 @@ export default {
       credit: '',
     };
   },
-  created() {
-    this.fetchBons();
+  async created() {
+    try {
+      await this.fetchBons();
+      this.handleApiError();
+    } catch (err) {
+      this.handleApiError(err);
+    }
   },
   components: {
     BonListEntry,
@@ -122,7 +128,7 @@ export default {
     },
   },
   computed: mapGetters(['allBons']),
-  mixins: [showMessage],
+  mixins: [showMessage, errorHandler],
 };
 </script>
 

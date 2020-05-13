@@ -25,7 +25,6 @@ const TokenService = {
   async removeRefreshToken() {
     localStorage.removeItem(REFRESH_TOKEN_KEY);
   },
-
 };
 
 export default TokenService;

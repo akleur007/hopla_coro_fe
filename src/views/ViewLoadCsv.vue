@@ -60,6 +60,7 @@ import { mapGetters, mapActions } from 'vuex';
 import BonImportEntry from '../components/BonImportEntry.vue';
 import BonService from '../services/bonService';
 import showMessage from '../mixins/messages';
+import errorHandler from '../mixins/errors';
 
 export default {
   name: 'ViewLoadCsv',
@@ -74,8 +75,13 @@ export default {
       isProcessed: false,
     };
   },
-  created() {
-    this.fetchBons();
+  async created() {
+    try {
+      await this.fetchBons();
+      this.handleApiError();
+    } catch (err) {
+      this.handleApiError(err);
+    }
   },
   methods: {
     ...mapActions(['fetchBons', 'addBon', 'changeBon', 'removeBon']),
@@ -137,7 +143,7 @@ export default {
     BonImportEntry,
   },
   computed: mapGetters(['allBons']),
-  mixins: [showMessage],
+  mixins: [showMessage, errorHandler],
 };
 </script>
 
