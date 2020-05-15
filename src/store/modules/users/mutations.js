@@ -1,4 +1,6 @@
-export const SET_USERS = (state, users) => { state.users = users; };
+export const SET_USERS = (state, users) => {
+  state.users = users;
+};
 
 export const SET_ACTIVE_USER = (state, activeUser) => {
   state.activeUser = activeUser;
@@ -36,7 +38,7 @@ export const LOGOUT_SUCCESS = (state) => {
 
 export const CREATE_USER = (state, user) => [user, ...state.users];
 
-export const DELETE_USER = (state, id) => (state.users.filter((user) => user.id !== id));
+export const DELETE_USER = (state, id) => state.users.filter((user) => user.id !== id);
 
 export const UPDATE_USER = (state, updUser) => {
   const index = state.users.findIndex((user) => user.id === updUser.id);

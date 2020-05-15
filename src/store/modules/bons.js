@@ -10,6 +10,11 @@ const state = {
 const getters = {
   allBons: (state) => state.bons,
   activeBon: (state) => state.activeBon,
+  getBonById: (state) => (id) => {
+    const item = state.bons.filter((bon) => bon.id === id);
+    console.log(item);
+    return item;
+  },
 };
 
 const actions = {
@@ -18,7 +23,8 @@ const actions = {
     commit('setBons', response.data.data.items);
   },
   async fetchBon({ commit }, id) {
-    const response = await BonService.getBon(id);
+    const idInt = parseInt(id, 10);
+    const response = await BonService.getBon(idInt);
     commit('setActiveBon', response.data.data.resource);
   },
   async addBon({ commit }, params) {
@@ -27,7 +33,6 @@ const actions = {
   },
   async updateBon({ commit }, params) {
     const response = await BonService.updateBon(params);
-    console.log(response.data.data);
     commit('updateBon', response.data.data);
   },
   async removeBon({ commit }, id) {
@@ -46,7 +51,6 @@ const mutations = {
   createBon: (state, bon) => [bon, ...state.bons],
   deleteBon: (state, id) => state.bons.filter((bon) => bon.id !== id),
   updateBon: (state, updBon) => {
-    console.log('state: ', state);
     const index = state.bons.findIndex((bon) => bon.id === updBon.id);
     if (index !== -1) {
       state.bons.splice(index, 1, updBon);

@@ -9,6 +9,7 @@ import ViewUserEdit from './views/ViewUserEdit.vue';
 import ViewError from './views/ViewError.vue';
 import ViewLoadCsv from './views/ViewLoadCsv.vue';
 import TokenService from './services/tokenService';
+import ViewQRScanner from './views/ViewQRScanner.vue';
 
 Vue.use(Router);
 
@@ -21,6 +22,15 @@ const router = new Router({
       component: ViewHome,
       meta: {
         // isMenuItem: true,
+        requiredRole: 'guest',
+      },
+    },
+    {
+      path: '/scan',
+      name: 'Scan',
+      component: ViewQRScanner,
+      meta: {
+        isMenuItem: true,
         requiredRole: 'guest',
       },
     },

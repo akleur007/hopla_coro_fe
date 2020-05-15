@@ -1,22 +1,34 @@
 <template>
   <div class="container">
-      <form class="ng-pristine" @submit="login()">
-          <div class="form-group row">
-              <label class="col-lg-2 col-sm-12 col-form-label form-control-label">Name</label>
-              <div class="col-lg-3 col-sm-12">
-                  <input type="test" id="email-input" class="form-control" v-model="user.username" placeholder="Name">
-              </div>
-          </div>
-          <div class="form-group row">
-              <label class="col-lg-2 col-sm-12 col-form-label form-control-label">Passwort</label>
-              <div class="col-lg-3 col-sm-12">
-                  <input type="password" id="credit-input" class="form-control" v-model="user.password" placeholder="Passwort">
-              </div>
-              <div class="col-lg-5 col-sm-12">
-                  <button type="submit" class="btn btn-primary mr-2">Einloggen</button>
-              </div>
-          </div>
-      </form>
+    <form class="ng-pristine" @submit="login()">
+      <div class="form-group row">
+        <label class="col-lg-2 col-sm-12 col-form-label form-control-label">Name</label>
+        <div class="col-lg-3 col-sm-12">
+          <input
+            type="test"
+            id="email-input"
+            class="form-control"
+            v-model="user.username"
+            placeholder="Name"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-lg-2 col-sm-12 col-form-label form-control-label">Passwort</label>
+        <div class="col-lg-3 col-sm-12">
+          <input
+            type="password"
+            id="credit-input"
+            class="form-control"
+            v-model="user.password"
+            placeholder="Passwort"
+          />
+        </div>
+        <div class="col-lg-5 col-sm-12">
+          <button type="submit" class="btn btn-primary mr-2">Einloggen</button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -26,8 +38,7 @@ import showMessage from '../mixins/messages';
 
 export default {
   name: 'ViewLogin',
-  props: {
-  },
+  props: {},
   data() {
     return {
       user: {},
@@ -37,8 +48,7 @@ export default {
   created() {
     this.logout();
   },
-  components: {
-  },
+  components: {},
   computed: mapGetters('users', ['getUser']),
   methods: {
     ...mapActions('users', ['loginUser', 'logoutUser', 'setMainMenu']),
@@ -70,6 +80,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -7,7 +7,7 @@
             <input
               type="text"
               id="name-input"
-              v-model="activeBon.name"
+              v-model="bon.name"
               class="form-control"
               placeholder="Name"
             />
@@ -16,7 +16,7 @@
             <input
               type="text"
               id="email-input"
-              v-model="activeBon.email"
+              v-model="bon.email"
               class="form-control"
               placeholder="E-Mail Adresse"
             />
@@ -26,7 +26,7 @@
               type="number"
               step="0.01"
               id="credit-input"
-              v-model="activeBon.credit"
+              v-model="bon.credit"
               class="form-control"
               placeholder="Betrag in €"
             />
@@ -46,14 +46,20 @@ import showMessage from '../mixins/messages';
 
 export default {
   name: 'ViewBonEdit',
+  props: {
+    bonId: Number,
+    returnPath: String,
+  },
   data() {
     return {
-      bon: {},
       errors: [],
     };
   },
   computed: {
     itemId() {
+      if (this.bonId) {
+        return this.bonId;
+      }
       return parseInt(this.$route.params.id, 10);
     },
     activeBon: {
@@ -64,16 +70,17 @@ export default {
         this.$store.commit('updateBon', params);
       },
     },
+    bon() {
+      return this.$store.getters.getBonById(this.itemId)[0];
+    },
   },
-  mounted() {
-    this.fetchBon(this.itemId);
-  },
+  mounted() {},
   methods: {
     ...mapActions(['fetchBon', 'updateBon']),
     async updateEntry() {
       try {
-        await this.updateBon(this.activeBon);
-        this.$router.push({ path: '/bonlist' });
+        await this.updateBon(this.bon);
+        // this.$router.push({ path: '/bonlist' });
         this.showSimpleMessage('Bon geändert', 'success');
       } catch (err) {
         this.errors.push(err);

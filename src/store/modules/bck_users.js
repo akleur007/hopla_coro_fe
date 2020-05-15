@@ -78,7 +78,9 @@ const actions = {
 };
 
 const mutations = {
-  setUsers: (state, users) => { state.users = users; },
+  setUsers: (state, users) => {
+    state.users = users;
+  },
   setActiveUser: (state, activeUser) => {
     state.activeUser = activeUser;
     state.activeUser.password = '';
@@ -87,7 +89,7 @@ const mutations = {
     console.log(state, user);
   },
   createUser: (state, user) => [user, ...state.users],
-  deleteUser: (state, id) => (state.users.filter((user) => user.id !== id)),
+  deleteUser: (state, id) => state.users.filter((user) => user.id !== id),
   updateUser: (state, updUser) => {
     const index = state.users.findIndex((user) => user.id === updUser.id);
     if (index !== -1) {

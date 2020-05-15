@@ -4,12 +4,8 @@
       <div class="row">
         <div class="col-lg-6 col-6 col1">
           <div class="row">
-            <div class="col-lg-12">
-              {{ bon.name }}
-            </div>
-            <div class="col-lg-12">
-              {{ bon.email }}
-            </div>
+            <div class="col-lg-12">{{ bon.name }}</div>
+            <div class="col-lg-12">{{ bon.email }}</div>
           </div>
         </div>
         <div class="col-lg-3 col-4 credit col2">{{ bon.credit }}€</div>
@@ -17,13 +13,15 @@
           <img id="main-img" :src="newQRCode" class="img-fluid" />
         </div>
       </div>
+      <view-bon-edit :bonId="this.bon.id" v-if="editable"></view-bon-edit>
     </div>
     <div class="col-md-4">
       <div class="row">
         <div class="col-lg-12">
-          <router-link :to="`/bon/${bon.id}`" class="btn btn-primary mr-2">
-            Ändern
-          </router-link>
+          <!-- <router-link :to="`/bon/${bon.id}`" class="btn btn-primary mr-2">Ändern</router-link> -->
+          <button type="submit" class="btn btn-primary mr-2" v-on:click="toggleEditable()">
+            {{ editButtonText }}
+          </button>
         </div>
         <div class="col-lg-12">
           <button
@@ -50,9 +48,19 @@
 
 <script>
 import QRious from 'qrious';
+import ViewBonEdit from '../views/ViewBonEdit.vue';
 
 export default {
   name: 'BonListEntry',
+  components: {
+    ViewBonEdit,
+  },
+  data() {
+    return {
+      editable: false,
+      editButtonText: 'Ändern',
+    };
+  },
   props: {
     msg: String,
     bon: Object,
@@ -72,6 +80,10 @@ export default {
     },
     deleteEntry() {
       this.$emit('deleteEntry', this.bon.id);
+    },
+    toggleEditable() {
+      this.editable = !this.editable;
+      this.editButtonText = this.editable ? 'Abbrechen' : 'Ändern';
     },
   },
   created() {

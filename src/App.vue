@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="logo">
-      <img alt="Vue logo"  class="img-fluid" src="./assets/hopla_kalk_logo_2020.png">
+      <img alt="Vue logo" class="img-fluid" src="./assets/hopla_kalk_logo_2020.png" />
     </div>
     <b-navbar toggleable="sm" type="dark" variant="success" class="navbar-dark bg-dark">
       <b-container>
@@ -15,7 +15,9 @@
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
             </form> -->
-            <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link">Logout</router-link>
+            <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link"
+              >Logout</router-link
+            >
             <router-link to="/login" v-else class="nav-link">Login</router-link>
           </b-navbar-nav>
         </b-collapse>
@@ -35,8 +37,7 @@ import ApiService from './services/apiService';
 export default {
   name: 'App',
   data() {
-    return {
-    };
+    return {};
   },
   async mounted() {
     try {
@@ -75,7 +76,7 @@ export default {
   text-align: center;
   margin-bottom: 10px;
   height: 200px;
-  background-color:#1e2b37;
+  background-color: #1e2b37;
 }
 
 .navbar {
@@ -91,12 +92,12 @@ export default {
 }
 
 .col-input {
-   margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 // [class*="col-"] {
 //   margin-bottom: 15px;
 // }
 
-  @import 'assets/style.css';
+@import 'assets/style.css';
 </style>

@@ -1,27 +1,21 @@
 <template>
   <div class="container">
-      <h1>Home</h1>
-      <p>Zuhause ist es doch auch schön</p>
+    <h1>Home</h1>
+    <p>Zuhause ist es doch auch schön</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ViewHome',
-  props: {
-  },
+  props: {},
   data() {
-    return {
-    };
+    return {};
   },
-  components: {
-  },
-  methods: {
-  },
+  components: {},
+  methods: {},
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

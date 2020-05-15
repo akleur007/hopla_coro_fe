@@ -1,49 +1,69 @@
 <template>
-<div class="container">
-  <div class="row">
-    <form class="ng-pristine" @submit="updateEntry()">
-      <div class="form-group row">
-        <div class="col-lg-5 col-sm-12">
-          <div class="row">
-            <div class="col-lg-12 col-input">
-              <input type="text" id="email-input" v-model="activeUser.email" class="form-control" placeholder="E-Mail Adresse">
-            </div>
-            <div class="col-lg-12 col-input">
-              <input type="password"  id="password-input" v-model="activeUser.password" class="form-control" placeholder="Passwort">
+  <div class="container">
+    <div class="row">
+      <form class="ng-pristine" @submit="updateEntry()">
+        <div class="form-group row">
+          <div class="col-lg-5 col-sm-12">
+            <div class="row">
+              <div class="col-lg-12 col-input">
+                <input
+                  type="text"
+                  id="email-input"
+                  v-model="activeUser.email"
+                  class="form-control"
+                  placeholder="E-Mail Adresse"
+                />
+              </div>
+              <div class="col-lg-12 col-input">
+                <input
+                  type="password"
+                  id="password-input"
+                  v-model="activeUser.password"
+                  class="form-control"
+                  placeholder="Passwort"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-5 col-sm-12 col-input">
-          <div class="row">
-            <div class="col-lg-12 col-input">
-              <input type="text"  id="name-input" v-model="activeUser.username" class="form-control" placeholder="Name">
-            </div>
-            <div class="col-lg-12">
-              <select id="role-input col-input" v-model="activeUser.role" class="form-control">
-                <option selected>Choose...</option>
-                <option v-for="(role) in userRoles" :key="role.id" :value="role.value">{{ role.name }}</option>
+          <div class="col-lg-5 col-sm-12 col-input">
+            <div class="row">
+              <div class="col-lg-12 col-input">
+                <input
+                  type="text"
+                  id="name-input"
+                  v-model="activeUser.username"
+                  class="form-control"
+                  placeholder="Name"
+                />
+              </div>
+              <div class="col-lg-12">
+                <select id="role-input col-input" v-model="activeUser.role" class="form-control">
+                  <option selected>Choose...</option>
+                  <option v-for="role in userRoles" :key="role.id" :value="role.value">{{
+                    role.name
+                  }}</option>
                 </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-sm-12 col-input">
+            <div class="row">
+              <div class="col-lg-12 col-6 col-input">
+                <button class="btn btn-info float-lg-right float-md-left float-left">
+                  <router-link :to="`/userlist`">
+                    Abbrechen
+                  </router-link>
+                </button>
+              </div>
+              <div class="col-lg-12 col-6 col-input">
+                <button type="submit" class="btn btn-primary float-right">Eintragen</button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-2 col-sm-12 col-input">
-          <div class="row">
-            <div class="col-lg-12 col-6 col-input">
-              <button class="btn btn-info float-lg-right float-md-left float-left">
-                <router-link :to="`/userlist`">
-                  Abbrechen
-                </router-link>
-              </button>
-            </div>
-            <div class="col-lg-12 col-6 col-input">
-              <button type="submit" class="btn btn-primary float-right">Eintragen</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -95,9 +115,7 @@ export default {
   },
   mixins: [showMessage],
 };
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>
