@@ -12,7 +12,6 @@ const getters = {
   activeBon: (state) => state.activeBon,
   getBonById: (state) => (id) => {
     const item = state.bons.filter((bon) => bon.id === id);
-    console.log(item);
     return item;
   },
 };
@@ -35,6 +34,10 @@ const actions = {
     const response = await BonService.updateBon(params);
     commit('updateBon', response.data.data);
   },
+  async subtractBon({ commit }, params) {
+    const response = await BonService.subtractBon(params);
+    commit('SUBSTRACT_BON', response);
+  },
   async removeBon({ commit }, id) {
     const response = await BonService.deleteBon(id);
     commit('deleteBon', response.data.data.resource);
@@ -52,6 +55,13 @@ const mutations = {
   deleteBon: (state, id) => state.bons.filter((bon) => bon.id !== id),
   updateBon: (state, updBon) => {
     const index = state.bons.findIndex((bon) => bon.id === updBon.id);
+    if (index !== -1) {
+      state.bons.splice(index, 1, updBon);
+    }
+  },
+  SUBSTRACT_BON: (state, updBon) => {
+    console.log('updBon: ', updBon);
+    const index = state.bons.findIndex((bon) => bon.id === updBon.insertId);
     if (index !== -1) {
       state.bons.splice(index, 1, updBon);
     }

@@ -1,5 +1,6 @@
 <template lang="html">
-  <router-link :to="route.path" class="nav-link">{{ route.name }}</router-link>
+  <b-nav-item :to="route.path">{{ route.name }}</b-nav-item>
+  <!-- <router-link :to="route.path" class="nav-link">{{ route.name }}</router-link> -->
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form class="ng-pristine" @submit="postEntry()">
+    <form class="ng-pristine" @submit="postEntry()" v-if="addNewUser">
       <div class="form-group row">
         <div class="col-lg-4 col-sm-12 col-input">
           <input
@@ -37,21 +37,38 @@
             }}</option>
           </select>
         </div>
-        <div class="col-lg-3 col-sm-12 text-right">
-          <button type="submit" class="btn btn-primary">Eintragen</button>
+        <div class="col-lg-2 col-sm-6 col-input">
+          <button class="btn btn-secondary" v-on:click="toggleNewForm()">
+            Abbrechen
+          </button>
+        </div>
+        <div class="col-lg-2 col-sm-6 col-input text-right">
+          <button id="submit-it" type="submit" class="btn btn-primary">
+            Eintragen
+          </button>
         </div>
       </div>
     </form>
+    <div class="text-right">
+      <button class="btn btn-primary text-right" v-if="!addNewUser" v-on:click="toggleNewForm()">
+        neuer User
+      </button>
+    </div>
     <h2>Angelegte User:</h2>
     <ul id="usersList" class="list-group-striped">
       <li class="users-list-entry list-group-item" v-for="entry in allUsers" :key="entry.id">
         <UserListEntry
           :entry="entry"
-          @deleteEntry="deleteEntry"
+          @addDeleteRequest="addDeleteRequest"
           @sendEmail="sendEntryEmail"
         ></UserListEntry>
       </li>
     </ul>
+    <div>
+      <b-modal id="delete-request" @ok="deleteEntry" @hidden="deleteId = ''">
+        <h2>User löschen?</h2>
+      </b-modal>
+    </div>
   </div>
 </template>
 
@@ -76,6 +93,8 @@ export default {
       password: '',
       role: 'user',
       userRole: [],
+      addNewUser: false,
+      deleteId: '',
     };
   },
   async created() {
@@ -100,15 +119,21 @@ export default {
       };
       try {
         await this.addUser(params);
+        this.toggleNewForm();
         this.showSimpleMessage(`${label} angelegt`, 'success');
         this.fetchUsers();
       } catch (e) {
         this.errors.push(e);
       }
     },
-    async deleteEntry(id) {
+    addDeleteRequest(id) {
+      this.deleteId = id;
+      this.$bvModal.show('delete-request');
+    },
+    async deleteEntry() {
       try {
-        await this.removeUser(id);
+        await this.removeUser(this.deleteId);
+        this.deleteId = '';
         this.fetchUsers();
         this.showSimpleMessage(`${label} gelöscht`, 'success');
       } catch (e) {
@@ -122,6 +147,9 @@ export default {
       } catch (e) {
         this.errors.push(e);
       }
+    },
+    toggleNewForm() {
+      this.addNewUser = !this.addNewUser;
     },
   },
   computed: mapGetters('users', ['allUsers', 'userRoles']),

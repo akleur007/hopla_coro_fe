@@ -13,12 +13,15 @@
           <img id="main-img" :src="newQRCode" class="img-fluid" />
         </div>
       </div>
-      <view-bon-edit :bonId="this.bon.id" v-if="editable"></view-bon-edit>
+      <view-bon-edit
+        :bonId="this.bon.id"
+        v-if="editable"
+        v-on:saved="toggleEditable()"
+      ></view-bon-edit>
     </div>
     <div class="col-md-4">
       <div class="row">
         <div class="col-lg-12">
-          <!-- <router-link :to="`/bon/${bon.id}`" class="btn btn-primary mr-2">Ändern</router-link> -->
           <button type="submit" class="btn btn-primary mr-2" v-on:click="toggleEditable()">
             {{ editButtonText }}
           </button>
@@ -37,7 +40,7 @@
           </button>
         </div>
         <div class="col-lg-12">
-          <button type="submit" class="btn btn-danger mr-2" v-on:click="deleteEntry">
+          <button type="submit" class="btn btn-danger mr-2" v-on:click="addDeleteRequest">
             Löschen
           </button>
         </div>
@@ -78,8 +81,8 @@ export default {
     sendEmail() {
       this.$emit('sendEmail', this.bon.id);
     },
-    deleteEntry() {
-      this.$emit('deleteEntry', this.bon.id);
+    addDeleteRequest() {
+      this.$emit('addDeleteRequest', this.bon.id);
     },
     toggleEditable() {
       this.editable = !this.editable;
@@ -105,6 +108,14 @@ export default {
       text-decoration: none;
     }
   }
+}
+
+.overlay {
+  position: relative;
+  top: 0;
+  background: #cacaca;
+  width: 100%;
+  padding: 0 2rem;
 }
 
 .credit {

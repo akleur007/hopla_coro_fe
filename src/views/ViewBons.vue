@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form class="ng-pristine" @submit="postEntry()">
+    <form v-if="addNewBon" class="ng-pristine" @submit="postEntry()">
       <div class="form-group row justify-content-between">
         <div class="col-lg-4 col-sm-12 col-input">
           <input
@@ -30,21 +30,38 @@
             placeholder="Betrag in €"
           />
         </div>
-        <div class="col-lg-2 col-sm-12 col-input text-right">
-          <button id="submit-it" type="submit" class="btn btn-primary">Eintragen</button>
+        <div class="col-lg-2 text-lg-right col-6 col-input">
+          <button class="btn btn-secondary" v-on:click="toggleNewForm()">
+            Abbrechen
+          </button>
+        </div>
+        <div class="col-lg-2 col-6 text-right col-input offset-lg-10">
+          <button id="submit-it" type="submit" class="btn btn-primary">
+            Eintragen
+          </button>
         </div>
       </div>
     </form>
+    <div class="text-right">
+      <button class="btn btn-primary text-right" v-if="!addNewBon" v-on:click="toggleNewForm()">
+        neuer Bon
+      </button>
+    </div>
     <h2>Angelegte Bons:</h2>
     <ul id="bonList" class="list-group-striped">
       <li class="bon-list-entry list-group-item" v-for="bon in allBons" :key="bon.id">
         <BonListEntry
           :bon="bon"
-          @deleteEntry="deleteEntry"
+          @addDeleteRequest="addDeleteRequest"
           @sendEmail="sendEntryEmail"
         ></BonListEntry>
       </li>
     </ul>
+    <div>
+      <b-modal id="delete-request" @ok="deleteEntry" @hidden="deleteId = ''">
+        <h2>Bon löschen?</h2>
+      </b-modal>
+    </div>
   </div>
 </template>
 
@@ -76,6 +93,8 @@ export default {
       name: '',
       email: '',
       credit: '',
+      addNewBon: false,
+      deleteId: '',
     };
   },
   async created() {
@@ -100,6 +119,7 @@ export default {
       };
       try {
         await this.addBon(params);
+        this.toggleNewForm();
         this.showSimpleMessage('Bon angelegt', 'success');
         this.fetchBons();
       } catch (err) {
@@ -107,9 +127,14 @@ export default {
         this.showSimpleMessage(err.response.data.message, 'warning');
       }
     },
-    async deleteEntry(id) {
+    addDeleteRequest(id) {
+      this.deleteId = id;
+      this.$bvModal.show('delete-request');
+    },
+    async deleteEntry() {
       try {
-        await this.removeBon(id);
+        await this.removeBon(this.deleteId);
+        this.deleteId = '';
         this.fetchBons();
         this.showSimpleMessage('Bon gelöscht', 'success');
       } catch (err) {
@@ -125,6 +150,9 @@ export default {
         this.errors.push(e);
         this.showSimpleMessage('Email konnte nicht gesendet werden', 'warning');
       }
+    },
+    toggleNewForm() {
+      this.addNewBon = !this.addNewBon;
     },
   },
   computed: mapGetters(['allBons']),

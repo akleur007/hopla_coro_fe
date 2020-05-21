@@ -20,7 +20,7 @@
           <button type="submit" class="btn btn-info mr-2" v-on:click="sendEmail">E-Mail</button>
         </div>
         <div class="col-lg-12">
-          <button type="submit" class="btn btn-danger mr-2" v-on:click="deleteEntry">
+          <button type="submit" class="btn btn-danger mr-2" v-on:click="addDeleteRequest">
             Löschen
           </button>
         </div>
@@ -41,8 +41,8 @@ export default {
     sendEmail() {
       this.$emit('sendEmail', this.entry.id);
     },
-    deleteEntry() {
-      this.$emit('deleteEntry', this.entry.id);
+    addDeleteRequest() {
+      this.$emit('addDeleteRequest', this.entry.id);
     },
   },
 };
