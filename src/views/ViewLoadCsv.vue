@@ -2,7 +2,12 @@
   <div class="container">
     <div class="row">
       <div class="col-8">
-        <vue-csv-import v-model="csv" :map-fields="['email', 'credit']" url="" headers="true">
+        <vue-csv-import
+          v-model="csv"
+          :map-fields="['name', 'email', 'credit', 'lastUsed', 'authKey']"
+          url=""
+          headers="true"
+        >
           <template slot="next" slot-scope="{ load }">
             <button @click.prevent="load" class="btn btn-primary">Go</button>
           </template>
@@ -34,16 +39,21 @@
         </button>
       </div>
     </div>
-    <ul id="bonList" class="list-group-striped" v-if="this.isProcessed">
-      <li class="bon-list-entry list-group-item" v-for="(bon, i) in updateBons" :key="i">
-        <BonImportEntry :bon="bon"></BonImportEntry>
-      </li>
-    </ul>
-    <ul id="bonList" class="list-group-striped" v-if="this.isProcessed">
-      <li class="bon-list-entry list-group-item" v-for="(bon, i) in newBons" :key="i">
-        <BonImportEntry :bon="bon"></BonImportEntry>
-      </li>
-    </ul>
+    <div v-if="this.isProcessed">
+      <h2>Bons update</h2>
+      <ul id="updateBonList" class="list-group-striped">
+        <li class="bon-list-entry list-group-item" v-for="(bon, i) in updateBons" :key="i">
+          <BonImportEntry :bon="bon"></BonImportEntry>
+        </li>
+      </ul>
+      <h2>Bons neu</h2>
+      <ul id="newBonList" class="list-group-striped">
+        <li class="bon-list-entry list-group-item" v-for="(bon, i) in newBons" :key="i">
+          <BonImportEntry :bon="bon"></BonImportEntry>
+        </li>
+      </ul>
+    </div>
+    <h2 v-if="this.isProcessed">Alle Bons in CSV</h2>
     <ul id="bonUpdateList" class="list-group-striped">
       <li class="bon-list-entry list-group-item" v-for="(bon, i) in csv" :key="i">
         <BonImportEntry :bon="bon"></BonImportEntry>
@@ -53,7 +63,7 @@
 </template>
 
 <script>
-// :map-fields="['name', 'email', 'credit', 'lastUsed']"
+// :map-fields="['name', 'email', 'credit', 'lastUsed', 'authKey']"
 
 import { VueCsvImport } from 'vue-csv-import';
 import { mapGetters, mapActions } from 'vuex';
@@ -93,9 +103,9 @@ export default {
     },
     async saveEntries() {
       try {
-        const response = await BonService.updateBons(this.updateBons);
-        this.showSimpleMessage(response.data.data.message, 'success');
-        console.log(response);
+        const saveBons = [...this.newBons, ...this.updateBons];
+        const response = await BonService.updateBons(saveBons);
+        this.showSimpleMessage(response.data.message, 'success');
       } catch (err) {
         this.showSimpleMessage('Fehler beim Bon speichern', 'warning');
         console.log('ERR --> ', err);
@@ -119,17 +129,17 @@ export default {
         if (dub) {
           this.duplicates.push(copyItem);
         } else {
+          copyItem.credit = copyItem.credit.replace(',', '.');
           this.newBons.push(copyItem);
         }
       });
     },
     combineDuplicates() {
       this.updateBons = this.duplicates.map((item) => {
-        const copyItem = { ...item };
         const dub = this.allBons.find((key) => key.email === item.email);
-        copyItem.credit = this.addCredits(dub.credit, item.credit);
-        copyItem.id = dub.id;
-        return copyItem;
+        const { credit, ...updateItem } = dub;
+        updateItem.credit = this.addCredits(dub.credit, item.credit);
+        return updateItem;
       });
     },
     addCredits(c1, c2) {
