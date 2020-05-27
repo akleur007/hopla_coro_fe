@@ -25,5 +25,8 @@ const BonService = {
   async sendBonMail(id) {
     return ApiService.get(`bons/${id}/sendmail`);
   },
+  async sendMailBatch(params) {
+    return ApiService.post('bons/sendmail-batch', params);
+  },
 };
 export default BonService;

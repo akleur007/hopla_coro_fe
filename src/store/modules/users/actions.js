@@ -61,10 +61,6 @@ export const setMainMenu = async ({ commit, state }) => {
     const i = state.userRoles.findIndex((element) => element.value === item.meta.requiredRole);
     return userRoleIndex >= i;
   });
-  /* console.log(userRole);
-  console.log(menuItems);
-  console.log(menuReady); */
-  // console.log(commit, menuReady);
   commit('SET_MAIN_MENU', menuReady);
   return true;
 };

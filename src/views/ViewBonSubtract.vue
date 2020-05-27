@@ -19,10 +19,10 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-lg-4 col-sm-6 bon-credit text-right">Guthaben: {{ bon.credit }}</div>
           <div class="col-lg-4 col-sm-6 bon-name">
             {{ bon.name }}
           </div>
-          <div class="col-lg-4 col-sm-6 bon-credit text-right">Guthaben: {{ bon.credit }}</div>
         </div>
       </div>
     </form>

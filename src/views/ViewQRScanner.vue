@@ -34,12 +34,12 @@ export default {
       bonId: '',
     };
   },
-
   methods: {
-    ...mapActions(['fetchBon']),
+    ...mapActions(['fetchBons']),
     async onDecode(result) {
       this.activeScan = false;
       this.result = result;
+      this.fetchBons();
       const bon = this.allBons.find((item) => item.authKey === result);
       this.bonId = bon.id;
     },
@@ -67,7 +67,7 @@ export default {
       }
     },
   },
-  computed: mapGetters(['allBons', 'activeBon']),
+  computed: mapGetters(['allBons']),
 };
 </script>
 

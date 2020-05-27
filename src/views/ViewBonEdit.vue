@@ -3,7 +3,7 @@
     <div class="row">
       <form class="ng-pristine" @submit="updateEntry()">
         <div class="form-group row justify-content-between">
-          <div class="col-lg-4 col-sm-12 col-input">
+          <div class="col-lg-7 col-sm-12 col-input">
             <input
               type="text"
               id="name-input"
@@ -12,7 +12,7 @@
               placeholder="Name"
             />
           </div>
-          <div class="col-lg-4 col-sm-12 col-input">
+          <div class="col-lg-7 col-sm-12 col-input">
             <input
               type="text"
               id="email-input"
@@ -21,7 +21,7 @@
               placeholder="E-Mail Adresse"
             />
           </div>
-          <div class="col-lg-2 col-sm-12 col-input">
+          <div class="col-lg-3 col-sm-12 col-input">
             <input
               type="number"
               step="0.01"

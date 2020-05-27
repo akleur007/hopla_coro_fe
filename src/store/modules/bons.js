@@ -4,12 +4,12 @@ import BonService from '../../services/bonService';
 
 const state = {
   bons: [],
-  activeBon: '',
+  selectedBons: [],
 };
 
 const getters = {
   allBons: (state) => state.bons,
-  activeBon: (state) => state.activeBon,
+  selectedBons: (state) => state.selectedBons,
   getBonById: (state) => (id) => {
     const item = state.bons.filter((bon) => bon.id === id);
     return item;
@@ -19,20 +19,15 @@ const getters = {
 const actions = {
   async fetchBons({ commit }) {
     const response = await BonService.getBonList();
-    commit('setBons', response.data.data.items);
-  },
-  async fetchBon({ commit }, id) {
-    const idInt = parseInt(id, 10);
-    const response = await BonService.getBon(idInt);
-    commit('setActiveBon', response.data.data.resource);
+    commit('SET_BONS', response.data.data.items);
   },
   async addBon({ commit }, params) {
     const response = await BonService.addBon(params);
-    commit('createBon', response.data.data.item);
+    commit('CREATE_BON', response.data.data.item);
   },
   async updateBon({ commit }, params) {
     const response = await BonService.updateBon(params);
-    commit('updateBon', response.data.data);
+    commit('UPDATE_BON', response.data.data);
   },
   async subtractBon({ commit }, params) {
     const response = await BonService.subtractBon(params);
@@ -40,20 +35,23 @@ const actions = {
   },
   async removeBon({ commit }, id) {
     const response = await BonService.deleteBon(id);
-    commit('deleteBon', response.data.data.resource);
+    commit('DELETE_BON', response.data.data.resource);
+  },
+  bonToggleSelection({ commit }, bon) {
+    commit('BON_TOGGLE_SELECTION', bon);
+  },
+  deselectAllBons({ commit }) {
+    commit('DESELECT_ALL_BONS');
   },
 };
 
 const mutations = {
-  setBons: (state, bons) => {
+  SET_BONS: (state, bons) => {
     state.bons = bons;
   },
-  setActiveBon: (state, activeBon) => {
-    state.activeBon = activeBon;
-  },
-  createBon: (state, bon) => [bon, ...state.bons],
-  deleteBon: (state, id) => state.bons.filter((bon) => bon.id !== id),
-  updateBon: (state, updBon) => {
+  CREATE_BON: (state, bon) => [bon, ...state.bons],
+  DELETE_BON: (state, id) => state.bons.filter((bon) => bon.id !== id),
+  UPDATE_BON: (state, updBon) => {
     const index = state.bons.findIndex((bon) => bon.id === updBon.id);
     if (index !== -1) {
       state.bons.splice(index, 1, updBon);
@@ -65,6 +63,19 @@ const mutations = {
     if (index !== -1) {
       state.bons.splice(index, 1, updBon);
     }
+  },
+  BON_TOGGLE_SELECTION: (state, bon) => {
+    const isSelected = state.selectedBons.find((item) => item.id === bon.id);
+    const index = state.selectedBons.findIndex((item) => item.id === bon.id);
+    if (!isSelected) {
+      state.selectedBons.push(bon);
+    } else {
+      state.selectedBons.splice(index, 1);
+    }
+  },
+  DESELECT_ALL_BONS: (state) => {
+    console.log('deselect');
+    state.selectedBons = [];
   },
 };
 

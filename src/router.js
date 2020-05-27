@@ -31,7 +31,7 @@ const router = new Router({
       component: ViewQRScanner,
       meta: {
         isMenuItem: true,
-        requiredRole: 'guest',
+        requiredRole: 'user',
       },
     },
     {

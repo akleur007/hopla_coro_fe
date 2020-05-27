@@ -1,45 +1,63 @@
 <template>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-9">
       <div class="row">
-        <div class="col-lg-6 col-6 col1">
+        <div class="col-9">
           <div class="row">
-            <div class="col-lg-12">{{ bon.name }}</div>
-            <div class="col-lg-12">{{ bon.email }}</div>
+            <div class="col-4 email-button">
+              <button
+                type="submit"
+                class="btn mr-2 btn-primary"
+                :class="{
+                  'btn-info': this.bon.initialized && !this.selected,
+                  'btn-light': !this.bon.initialized && !this.selected,
+                  'btn-success': this.selected,
+                }"
+                v-on:click="selectForEmail"
+              >
+                <b-icon-envelope></b-icon-envelope>
+              </button>
+            </div>
+            <div class="col-8 text-right credit">{{ bon.credit }}€</div>
+            <div class="col">
+              <div class="row">
+                <div class="col-12 bon-name">
+                  <strong>{{ bon.name }}</strong>
+                </div>
+                <div class="col-12">{{ bon.email }}</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-lg-3 col-4 credit col2">{{ bon.credit }}€</div>
-        <div class="col-lg-3 col-2 qr-code-wrapper col3">
+        <div class="col-3 qr-code-wrapper">
           <img id="main-img" :src="newQRCode" class="img-fluid" />
         </div>
       </div>
-      <view-bon-edit
-        :bonId="this.bon.id"
-        v-if="editable"
-        v-on:saved="toggleEditable()"
-      ></view-bon-edit>
+      <div class="col">
+        <view-bon-edit
+          :bonId="this.bon.id"
+          v-if="editable"
+          v-on:saved="toggleEditable()"
+        ></view-bon-edit>
+      </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="row">
-        <div class="col-lg-12">
-          <button type="submit" class="btn btn-primary mr-2" v-on:click="toggleEditable()">
+        <div class="col-md-12 col-6">
+          <button
+            type="submit"
+            class="btn btn-primary mr-2"
+            v-on:click="toggleEditable()"
+            :class="{
+              'btn-primary': !editable,
+              'btn-light': editable,
+            }"
+          >
+            <b-icon-pencil></b-icon-pencil>
             {{ editButtonText }}
           </button>
         </div>
-        <div class="col-lg-12">
-          <button
-            type="submit"
-            class="btn btn-info mr-2"
-            v-on:click="sendEmail"
-            v-if="this.bon.initialized"
-          >
-            E-Mail
-          </button>
-          <button type="submit" class="btn btn-light mr-2" v-on:click="sendEmail" v-else>
-            E-Mail
-          </button>
-        </div>
-        <div class="col-lg-12">
+        <div class="col-md-12 col-6">
           <button type="submit" class="btn btn-danger mr-2" v-on:click="addDeleteRequest">
             Löschen
           </button>
@@ -51,21 +69,25 @@
 
 <script>
 import QRious from 'qrious';
+import { mapActions } from 'vuex';
+import { BIconEnvelope, BIconPencil } from 'bootstrap-vue';
 import ViewBonEdit from '../views/ViewBonEdit.vue';
 
 export default {
   name: 'BonListEntry',
   components: {
     ViewBonEdit,
+    BIconPencil,
+    BIconEnvelope,
   },
   data() {
     return {
       editable: false,
       editButtonText: 'Ändern',
+      selected: false,
     };
   },
   props: {
-    msg: String,
     bon: Object,
   },
   computed: {
@@ -78,8 +100,13 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['bonToggleSelection']),
     sendEmail() {
       this.$emit('sendEmail', this.bon.id);
+    },
+    selectForEmail() {
+      this.bonToggleSelection(this.bon);
+      this.selected = !this.selected;
     },
     addDeleteRequest() {
       this.$emit('addDeleteRequest', this.bon.id);
@@ -89,10 +116,7 @@ export default {
       this.editButtonText = this.editable ? 'Abbrechen' : 'Ändern';
     },
   },
-  created() {
-    // this.listEntries();
-    // this.fetchBons();
-  },
+  created() {},
 };
 </script>
 
@@ -118,28 +142,24 @@ export default {
   padding: 0 2rem;
 }
 
-.credit {
-  font-size: 2em;
+.email-button {
+  max-width: 80px;
 }
 
-/* .col1 {
-    background: #5c8f94;
-  }
+.bon-name {
+  font-size: 1.3rem;
+}
 
-  .col2 {
-    border: 1px solid #5c8f94;
-  }
-
-  .col3 {
-    background: #5c8f94;
-  } */
+.credit {
+  font-size: 2rem;
+}
 
 .qr-code-wrapper {
   padding: 0 auto;
   text-align: right;
   img {
-    /* max-width: 60px;
-      max-height: 60px; */
+    max-width: 3.6rem;
+    max-height: 3.6rem;
   }
 }
 </style>

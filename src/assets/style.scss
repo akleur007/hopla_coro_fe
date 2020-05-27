@@ -6,12 +6,16 @@ $headings-font-family:Open Sans;
 $enable-grid-classes:false;
 $primary:#1e2b37;
 $secondary:#6f7f8c;
-$success:#3e4d59;
+$success:#6fad64;
 $danger:#cc330d;
 $info:#5c8f94;
 $warning:#6e9fa5;
 $light:#eceeec;
 $dark:#1e2b37;
+$border: #ced4da;
+
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import '../../node_modules/bootstrap-vue/src/index.scss';
 
 .msg {
     border-radius: 4px;;
@@ -63,4 +67,18 @@ $dark:#1e2b37;
     color: #1b1e21;
     background-color: #d6d8d9;
     border-color: #c6c8ca;
+}
+
+.ProseMirror {
+  //@extend .form-control;
+  min-height: 120px;
+  border: 1px solid $border;
+  border-bottom: 1px dotted $border;
+  border-radius: 0.25rem;;
+  padding: 6px 12px;
+  margin-bottom: 20px;
+}
+
+.menubar {
+  margin-bottom: 20px;
 }

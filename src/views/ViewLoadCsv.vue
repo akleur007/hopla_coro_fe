@@ -137,7 +137,7 @@ export default {
     combineDuplicates() {
       this.updateBons = this.duplicates.map((item) => {
         const dub = this.allBons.find((key) => key.email === item.email);
-        const { credit, ...updateItem } = dub;
+        const updateItem = { ...dub };
         updateItem.credit = this.addCredits(dub.credit, item.credit);
         return updateItem;
       });
