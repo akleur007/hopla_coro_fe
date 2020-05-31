@@ -2,11 +2,6 @@ export const SET_USERS = (state, users) => {
   state.users = users;
 };
 
-export const SET_ACTIVE_USER = (state, activeUser) => {
-  state.activeUser = activeUser;
-  state.activeUser.password = '';
-};
-
 export const AUTH_USER = (state, user) => () => {
   console.log(state, user);
 };
