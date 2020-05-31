@@ -37,7 +37,7 @@ export const logoutUser = async ({ commit }) => {
 
 export const addUser = async ({ commit }, params) => {
   const response = await UserService.addUser(params);
-  commit('CREATE_USER', response.data.data.item);
+  commit('CREATE_USER', response.data.data.resource);
 };
 
 export const updateUser = async ({ commit }, params) => {
@@ -68,4 +68,12 @@ export const setMainMenu = async ({ commit, state }) => {
 export const getUserRoles = async ({ commit }) => {
   const response = await UserService.getUserRoles();
   commit('SET_USER_ROLES', response.data.data.userRoles);
+};
+
+export const userToggleSelection = ({ commit }, user) => {
+  commit('USER_TOGGLE_SELECTION', user);
+};
+
+export const deselectAllBons = ({ commit }) => {
+  commit('DESELECT_ALL_USERS');
 };

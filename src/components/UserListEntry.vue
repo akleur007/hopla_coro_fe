@@ -1,27 +1,57 @@
 <template>
   <div class="row">
-    <div class="col-lg-3 col-sm-12">
-      {{ entry.username }}
+    <div class="col-md-9">
+      <div class="row" v-if="!editable">
+        <div class="col-4 email-button">
+          <button
+            type="submit"
+            class="btn mr-2 btn-primary"
+            :class="{
+              'btn-success': this.selected,
+              'btn-primary': !this.selected,
+            }"
+            v-on:click="selectForEmail"
+          >
+            <b-icon-envelope></b-icon-envelope>
+          </button>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="col-8">
+              {{ entry.username }}
+            </div>
+            <div class="col-4">
+              {{ entry.role }}
+            </div>
+            <div class="col">
+              {{ entry.email }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <user-edit :user="this.entry" v-if="editable" v-on:saved="toggleEditable()"></user-edit>
+      </div>
     </div>
-    <div class="col-lg-3 col-sm-12">
-      {{ entry.email }}
-    </div>
-    <div class="col-lg-3 col-sm-12">
-      {{ entry.role }}
-    </div>
-    <div class="col-lg-3 col-sm-12">
+    <div class="col-md-3">
       <div class="row">
-        <div class="col-lg-12">
-          <router-link :to="`/user/${entry.id}`" class="btn btn-primary mr-2">
-            Ändern
-          </router-link>
-        </div>
-        <div class="col-lg-12">
-          <button type="submit" class="btn btn-info mr-2" v-on:click="sendEmail">E-Mail</button>
-        </div>
-        <div class="col-lg-12">
+        <div class="col-md-12 col-4">
           <button type="submit" class="btn btn-danger mr-2" v-on:click="addDeleteRequest">
             Löschen
+          </button>
+        </div>
+        <div class="col-md-12 col-8">
+          <button
+            type="submit"
+            class="btn btn-primary mr-2"
+            v-on:click="toggleEditable()"
+            :class="{
+              'btn-primary': !editable,
+              'btn-light': editable,
+            }"
+          >
+            <b-icon-pencil></b-icon-pencil>
+            {{ editButtonText }}
           </button>
         </div>
       </div>
@@ -30,19 +60,43 @@
 </template>
 
 <script>
+import { BIconEnvelope, BIconPencil } from 'bootstrap-vue';
+import { mapActions } from 'vuex';
+import UserEdit from './UserEdit.vue';
+
 export default {
-  name: 'BonListEntry',
+  name: 'UserListEntry',
+  components: {
+    UserEdit,
+    BIconPencil,
+    BIconEnvelope,
+  },
   props: {
-    msg: String,
     entry: Object,
+  },
+  data() {
+    return {
+      editable: false,
+      editButtonText: 'Ändern',
+      selected: false,
+    };
   },
   computed: {},
   methods: {
+    ...mapActions('users', ['userToggleSelection']),
     sendEmail() {
       this.$emit('sendEmail', this.entry.id);
     },
+    selectForEmail() {
+      this.userToggleSelection(this.entry);
+      this.selected = !this.selected;
+    },
     addDeleteRequest() {
       this.$emit('addDeleteRequest', this.entry.id);
+    },
+    toggleEditable() {
+      this.editable = !this.editable;
+      this.editButtonText = this.editable ? 'Abbrechen' : 'Ändern';
     },
   },
 };

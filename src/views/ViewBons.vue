@@ -77,7 +77,6 @@
         </button>
       </div>
     </div>
-    <h2>Angelegte Bons:</h2>
     <ul id="bonList" class="list-group-striped">
       <li class="bon-list-entry list-group-item" v-for="bon in allBons" :key="bon.id">
         <BonListEntry
@@ -232,9 +231,6 @@ ul {
 }
 #bonList {
   list-style-type: none;
-}
-ul.list-group-striped li:nth-of-type(even) {
-  background: #e4e4e4;
 }
 
 #subject {

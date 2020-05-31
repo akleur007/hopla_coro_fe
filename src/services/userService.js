@@ -95,6 +95,9 @@ const UserService = {
   async sendUserEmail(id) {
     return ApiService.get(`users/${id}/sendmail`);
   },
+  async sendMailBatch(params) {
+    return ApiService.post('users/sendmail-batch', params);
+  },
 };
 
 export default UserService;

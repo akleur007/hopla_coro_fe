@@ -45,7 +45,6 @@ export const UPDATE_USER = (state, updUser) => {
   if (index !== -1) {
     state.users.splice(index, 1, updUser);
   }
-  // state.activeUser = {};
 };
 
 export const SET_USER_ROLES = (state, userRoles) => {
@@ -54,4 +53,19 @@ export const SET_USER_ROLES = (state, userRoles) => {
 
 export const SET_MAIN_MENU = (state, menu) => {
   state.mainMenu = menu;
+};
+
+export const USER_TOGGLE_SELECTION = (state, user) => {
+  console.log('WA --> : USER_TOGGLE_SELECTION -> user', user);
+  const isSelected = state.selectedUsers.find((item) => item.id === user.id);
+  const index = state.selectedUsers.findIndex((item) => item.id === user.id);
+  if (!isSelected) {
+    state.selectedUsers.push(user);
+  } else {
+    state.selectedUsers.splice(index, 1);
+  }
+};
+
+export const DESELECT_ALL_USERS = (state) => {
+  state.selectedUsers = [];
 };

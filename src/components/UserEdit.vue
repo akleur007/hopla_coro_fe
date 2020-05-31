@@ -9,7 +9,7 @@
                 <input
                   type="text"
                   id="email-input"
-                  v-model="activeUser.email"
+                  v-model="user.email"
                   class="form-control"
                   placeholder="E-Mail Adresse"
                 />
@@ -18,7 +18,7 @@
                 <input
                   type="password"
                   id="password-input"
-                  v-model="activeUser.password"
+                  v-model="user.password"
                   class="form-control"
                   placeholder="Passwort"
                 />
@@ -31,13 +31,13 @@
                 <input
                   type="text"
                   id="name-input"
-                  v-model="activeUser.username"
+                  v-model="user.username"
                   class="form-control"
                   placeholder="Name"
                 />
               </div>
               <div class="col-lg-12">
-                <select id="role-input col-input" v-model="activeUser.role" class="form-control">
+                <select id="role-input col-input" v-model="user.role" class="form-control">
                   <option selected>Choose...</option>
                   <option v-for="role in userRoles" :key="role.id" :value="role.value">{{
                     role.name
@@ -46,19 +46,8 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2 col-sm-12 col-input">
-            <div class="row">
-              <div class="col-lg-12 col-6 col-input">
-                <button class="btn btn-info float-lg-right float-md-left float-left">
-                  <router-link :to="`/userlist`">
-                    Abbrechen
-                  </router-link>
-                </button>
-              </div>
-              <div class="col-lg-12 col-6 col-input">
-                <button type="submit" class="btn btn-primary float-right">Eintragen</button>
-              </div>
-            </div>
+          <div class="col-lg-2 col-sm-12 col-input text-right">
+            <button id="submit" type="submit" class="btn btn-primary">Speichern</button>
           </div>
         </div>
       </form>
@@ -73,7 +62,11 @@ import showMessage from '../mixins/messages';
 const label = 'User';
 
 export default {
-  name: 'ViewUserEdit',
+  name: 'UserEdit',
+  mixins: [showMessage],
+  props: {
+    user: Object,
+  },
   data() {
     return {
       entry: {},
@@ -82,29 +75,16 @@ export default {
   },
   computed: {
     ...mapGetters('users', ['userRoles']),
-    itemId() {
-      return this.$route.params.id;
-    },
-    activeUser: {
-      get() {
-        return this.$store.state.users.activeUser;
-      },
-      set(params) {
-        this.$store.commit('updateUser', params);
-      },
-    },
   },
   mounted() {
-    this.fetchUser(this.itemId);
+    console.log(this.user.id);
     this.getUserRoles();
   },
   methods: {
     ...mapActions('users', ['fetchUser', 'getUserRoles', 'updateUser']),
     async updateEntry() {
       try {
-        await this.updateUser(this.activeUser);
-        // await this.activeUser.set(this.activeUser);
-        this.$router.push({ path: '/userlist' });
+        await this.updateUser(this.user);
         this.showSimpleMessage(`${label} geändert`, 'success');
       } catch (e) {
         console.log(`E: ${e}`);
@@ -113,7 +93,6 @@ export default {
       }
     },
   },
-  mixins: [showMessage],
 };
 </script>
 

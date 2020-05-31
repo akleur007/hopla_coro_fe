@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-9">
-      <div class="row">
+      <div class="row" v-if="!editable">
         <div class="col-9">
           <div class="row">
             <div class="col-4 email-button">
@@ -9,8 +9,8 @@
                 type="submit"
                 class="btn mr-2 btn-primary"
                 :class="{
-                  'btn-info': this.bon.initialized && !this.selected,
-                  'btn-light': !this.bon.initialized && !this.selected,
+                  'btn-info': !this.bon.initialized && !this.selected,
+                  'btn-primary': this.bon.initialized && !this.selected,
                   'btn-success': this.selected,
                 }"
                 v-on:click="selectForEmail"
@@ -34,16 +34,17 @@
         </div>
       </div>
       <div class="col">
-        <view-bon-edit
-          :bonId="this.bon.id"
-          v-if="editable"
-          v-on:saved="toggleEditable()"
-        ></view-bon-edit>
+        <bon-edit :bonId="this.bon.id" v-if="editable" v-on:saved="toggleEditable()"></bon-edit>
       </div>
     </div>
     <div class="col-md-3">
       <div class="row">
-        <div class="col-md-12 col-6">
+        <div class="col-md-12 col-4">
+          <button type="submit" class="btn btn-danger mr-2" v-on:click="addDeleteRequest">
+            Löschen
+          </button>
+        </div>
+        <div class="col-md-12 col-8">
           <button
             type="submit"
             class="btn btn-primary mr-2"
@@ -57,11 +58,6 @@
             {{ editButtonText }}
           </button>
         </div>
-        <div class="col-md-12 col-6">
-          <button type="submit" class="btn btn-danger mr-2" v-on:click="addDeleteRequest">
-            Löschen
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -71,12 +67,12 @@
 import QRious from 'qrious';
 import { mapActions } from 'vuex';
 import { BIconEnvelope, BIconPencil } from 'bootstrap-vue';
-import ViewBonEdit from '../views/ViewBonEdit.vue';
+import BonEdit from './BonEdit.vue';
 
 export default {
   name: 'BonListEntry',
   components: {
-    ViewBonEdit,
+    BonEdit,
     BIconPencil,
     BIconEnvelope,
   },

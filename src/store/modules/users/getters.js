@@ -1,5 +1,5 @@
 export const allUsers = (state) => state.users;
-export const activeUser = (state) => state.activeUser;
+export const selectedUsers = (state) => state.selectedUsers;
 
 export const loggedIn = (state) => !!state.accessToken;
 export const getUser = (state) => state.user;

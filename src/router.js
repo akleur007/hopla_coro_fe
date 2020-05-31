@@ -3,9 +3,7 @@ import Router from 'vue-router';
 import ViewHome from './views/ViewHome.vue';
 import ViewLogin from './views/ViewLogin.vue';
 import ViewBons from './views/ViewBons.vue';
-import ViewBonEdit from './views/ViewBonEdit.vue';
 import ViewUsers from './views/ViewUsers.vue';
-import ViewUserEdit from './views/ViewUserEdit.vue';
 import ViewError from './views/ViewError.vue';
 import ViewLoadCsv from './views/ViewLoadCsv.vue';
 import TokenService from './services/tokenService';
@@ -52,11 +50,6 @@ const router = new Router({
       },
     },
     {
-      path: '/bon/:id',
-      name: 'bon-edit',
-      component: ViewBonEdit,
-    },
-    {
       path: '/userlist',
       name: 'Users',
       component: ViewUsers,
@@ -64,11 +57,6 @@ const router = new Router({
         isMenuItem: true,
         requiredRole: 'manager',
       },
-    },
-    {
-      path: '/user/:id',
-      name: 'user-edit',
-      component: ViewUserEdit,
     },
     {
       path: '/error',

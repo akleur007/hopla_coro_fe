@@ -3,19 +3,56 @@ $font-family-base:Muli;
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,700);
 $headings-font-family:Open Sans;
 
+$body-bg: #0f1518;
+$body-color: #d8d8d8;
+
 $enable-grid-classes:false;
 $primary:#1e2b37;
+$primary:#1E2B37;
 $secondary:#6f7f8c;
 $success:#6fad64;
-$danger:#cc330d;
-$info:#5c8f94;
+$danger:#97270b;
+$info:#6a9e95;
 $warning:#6e9fa5;
 $light:#eceeec;
+$middle: #97a0a8;
 $dark:#1e2b37;
+$less-dark:#414e5a;
 $border: #ced4da;
 
 @import '../../node_modules/bootstrap/scss/bootstrap';
 @import '../../node_modules/bootstrap-vue/src/index.scss';
+
+h1,h2,h3,h4,h5,h6,p {
+    color:$body-color;
+}
+
+.form-control, .form-control:focus, .form-control-file {
+    background-color: $body-bg;
+    color:$body-color;
+    option {
+        padding: 4px;
+        background-color: $body-bg;
+        color:$body-color;
+    }
+    option:hover {
+        background-color: $danger;
+        color:$body-color;
+    }
+}
+
+.btn-primary {
+    border-color: $middle;
+}
+
+.list-group-item {
+    background: $dark;
+    color: $body-color;
+}
+
+ul.list-group-striped li:nth-of-type(even) {
+  background: $less-dark;
+}
 
 .msg {
     border-radius: 4px;;
