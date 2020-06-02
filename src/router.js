@@ -4,6 +4,7 @@ import ViewHome from './views/ViewHome.vue';
 import ViewLogin from './views/ViewLogin.vue';
 import ViewBons from './views/ViewBons.vue';
 import ViewUsers from './views/ViewUsers.vue';
+import ViewNotes from './views/ViewNotes.vue';
 import ViewError from './views/ViewError.vue';
 import ViewLoadCsv from './views/ViewLoadCsv.vue';
 import TokenService from './services/tokenService';
@@ -53,6 +54,15 @@ const router = new Router({
       path: '/userlist',
       name: 'Users',
       component: ViewUsers,
+      meta: {
+        isMenuItem: true,
+        requiredRole: 'manager',
+      },
+    },
+    {
+      path: '/notelist',
+      name: 'Notes',
+      component: ViewNotes,
       meta: {
         isMenuItem: true,
         requiredRole: 'manager',

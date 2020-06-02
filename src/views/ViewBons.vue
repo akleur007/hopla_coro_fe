@@ -55,8 +55,14 @@
         </div>
       </form>
     </div>
+    <div v-if="seeStatistic" class="mb-4">
+      <h2 v-if="seeStatistic">
+        <b-icon-people></b-icon-people> {{ allBons.length - 2 }} | {{ creditSum }}€ | ~
+        {{ averageCredit }}
+      </h2>
+    </div>
     <div class="row mb-5">
-      <div class="col-6">
+      <div class="col-4">
         <button
           class="btn btn-primary"
           v-if="!addNewEmail && !addNewBon"
@@ -66,7 +72,16 @@
           <b-icon-pencil></b-icon-pencil>
         </button>
       </div>
-      <div class="text-right col-6">
+      <div class="col-4">
+        <button
+          class="btn btn-primary"
+          v-if="!addNewEmail && !addNewBon"
+          v-on:click="toggleSeeStatistic()"
+        >
+          <b-icon-people></b-icon-people> Statistic
+        </button>
+      </div>
+      <div class="text-right col-4">
         <button
           class="btn btn-primary"
           v-if="!addNewBon && !addNewEmail"
@@ -97,7 +112,13 @@
 <script>
 import crypto from 'crypto';
 import { mapGetters, mapActions } from 'vuex';
-import { BIconEnvelope, BIconPlusSquare, BIconPencil, BIconCreditCard } from 'bootstrap-vue';
+import {
+  BIconEnvelope,
+  BIconPlusSquare,
+  BIconPencil,
+  BIconCreditCard,
+  BIconPeople,
+} from 'bootstrap-vue';
 import BonService from '../services/bonService';
 import BonListEntry from '../components/BonListEntry.vue';
 import TextEditor from '../components/TextEditor.vue';
@@ -123,6 +144,7 @@ export default {
     BIconPlusSquare,
     BIconPencil,
     BIconCreditCard,
+    BIconPeople,
   },
   mixins: [showMessage, errorHandler],
   props: {},
@@ -135,6 +157,7 @@ export default {
       credit: '',
       addNewBon: false,
       addNewEmail: false,
+      seeStatistic: false,
       deleteId: '',
       emailContent: {
         subject: '',
@@ -214,12 +237,19 @@ export default {
     toggleNewEmail() {
       this.addNewEmail = !this.addNewEmail;
     },
+    toggleSeeStatistic() {
+      this.seeStatistic = !this.seeStatistic;
+    },
     getEditorHtml(html) {
       this.emailContent.text = html;
     },
   },
   computed: {
-    ...mapGetters(['allBons', 'selectedBons']),
+    ...mapGetters(['allBons', 'selectedBons', 'creditSum']),
+    averageCredit() {
+      const average = this.creditSum / (this.allBons.length - 2);
+      return Math.round(average * 100) / 100;
+    },
   },
 };
 </script>

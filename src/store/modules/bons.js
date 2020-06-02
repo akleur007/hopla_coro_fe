@@ -14,6 +14,7 @@ const getters = {
     const item = state.bons.filter((bon) => bon.id === id);
     return item;
   },
+  creditSum: (state) => state.bons.reduce((total, bon) => total + parseFloat(bon.credit), 0),
 };
 
 const actions = {

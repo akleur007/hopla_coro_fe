@@ -9,7 +9,7 @@
           headers="true"
         >
           <template slot="next" slot-scope="{ load }">
-            <button @click.prevent="load" class="btn btn-primary">Go</button>
+            <button @click.prevent="load" class="btn btn-primary">Map fields</button>
           </template>
           <template slot="submit" slot-scope="{ submit }">
             <button @click.prevent="submit" class="btn btn-primary">send!</button>
@@ -28,7 +28,7 @@
           v-if="!this.isProcessed"
           class="btn btn-secondary float-right"
         >
-          Eintragen
+          Berechnen
         </button>
         <button
           @click="this.saveEntries"
