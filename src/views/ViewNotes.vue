@@ -3,10 +3,16 @@
     <div v-if="addNewNote" class="mb-4">
       <form class="ng-pristine" @submit="postEntry()">
         <div class="form-group row justify-content-between">
-          <div class="col-lg-4 col-sm-12 col-input">
-            <input type="Number" v-model="newNoteContent.toId" />
+          <div class="col-lg-5 col-sm-12 col-input">
+            <label for="to-user">An:</label>
+            <select name="to-user" v-model="newNoteContent.toId" class="form-control">
+              <option selected value="0">Alle</option>
+              <option v-for="user in allUsers" :key="user.id" :value="user.id">{{
+                user.username
+              }}</option>
+            </select>
           </div>
-          <div class="col-lg-4 col-sm-12 col-input">
+          <div class="col-12 col-input">
             <input type="text" v-model="newNoteContent.text" placeholder="Text" />
           </div>
           <div class="col-lg-2 text-lg-right col-6 col-input">
@@ -22,14 +28,14 @@
         </div>
       </form>
     </div>
-    <div v-if="seeStatistic" class="mb-4"></div>
+    <div v-if="seeFilter" class="mb-4">ToDo</div>
     <div class="row mb-5">
       <div class="col-4">
-        <button class="btn btn-primary" v-if="!addNewNote" v-on:click="toggleSeeStatistic()">
-          <b-icon-people></b-icon-people> Statistic
+        <button class="btn btn-primary" v-if="!addNewNote" v-on:click="toggleSeeFilter()">
+          <b-icon-people></b-icon-people> Filter
         </button>
       </div>
-      <div class="text-right col-4">
+      <div class="text-right col-8">
         <button class="btn btn-primary" v-if="!addNewNote" v-on:click="toggleNewForm()">
           <b-icon-plus-square class="mr-2"></b-icon-plus-square>
           <b-icon-credit-card></b-icon-credit-card>
@@ -37,7 +43,7 @@
       </div>
     </div>
     <ul id="noteList" class="list-group-striped">
-      <li class="note-list-entry list-group-item" v-for="note in allNotes" :key="note.id">
+      <li class="note-list-entry list-group-item" v-for="note in filteredNotes" :key="note.id">
         <NoteListEntry :note="note" @addDeleteRequest="addDeleteRequest"></NoteListEntry>
       </li>
     </ul>
@@ -65,13 +71,15 @@ export default {
     BIconPeople,
   },
   mixins: [showMessage, errorHandler],
-  props: {},
+  props: {
+    searchString: String,
+  },
   data() {
     return {
       notes: [],
       errors: [],
       addNewNote: false,
-      seeStatistic: false,
+      seeFilter: false,
       deleteId: '',
       newNoteContent: {
         fromId: 0,
@@ -83,6 +91,7 @@ export default {
   },
   async created() {
     try {
+      await this.fetchUsers();
       await this.fetchNotes();
       this.handleApiError();
     } catch (err) {
@@ -98,6 +107,7 @@ export default {
       'removeNote',
       'deselectAllNotes',
     ]),
+    ...mapActions('users', ['fetchUsers']),
     async postEntry() {
       this.newNoteContent.fromId = this.getUser.id;
       try {
@@ -128,13 +138,18 @@ export default {
     toggleNewForm() {
       this.addNewNote = !this.addNewNote;
     },
-    toggleSeeStatistic() {
-      this.seeStatistic = !this.seeStatistic;
+    toggleSeeFilter() {
+      this.seeFilter = !this.seeFilter;
     },
   },
   computed: {
     ...mapGetters('notes', ['allNotes', 'selectedNotes']),
-    ...mapGetters('users', ['getUser']),
+    ...mapGetters('users', ['getUser', 'allUsers']),
+    filteredNotes() {
+      return this.allNotes.filter((note) => {
+        return note.text.toLowerCase().match(this.searchString.toLowerCase());
+      });
+    },
   },
 };
 </script>

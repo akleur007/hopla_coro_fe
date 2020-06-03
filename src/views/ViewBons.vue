@@ -93,7 +93,7 @@
       </div>
     </div>
     <ul id="bonList" class="list-group-striped">
-      <li class="bon-list-entry list-group-item" v-for="bon in allBons" :key="bon.id">
+      <li class="bon-list-entry list-group-item" v-for="bon in filteredBons" :key="bon.id">
         <BonListEntry
           :bon="bon"
           @addDeleteRequest="addDeleteRequest"
@@ -147,7 +147,9 @@ export default {
     BIconPeople,
   },
   mixins: [showMessage, errorHandler],
-  props: {},
+  props: {
+    searchString: String,
+  },
   data() {
     return {
       bons: [],
@@ -249,6 +251,16 @@ export default {
     averageCredit() {
       const average = this.creditSum / (this.allBons.length - 2);
       return Math.round(average * 100) / 100;
+    },
+    filteredBons() {
+      return this.allBons.filter((bon) => {
+        const nameFit = bon.name.toLowerCase().match(this.searchString.toLowerCase());
+        const emailFit = bon.email.toLowerCase().match(this.searchString.toLowerCase());
+        if (nameFit || emailFit) {
+          return true;
+        }
+        return false;
+      });
     },
   },
 };

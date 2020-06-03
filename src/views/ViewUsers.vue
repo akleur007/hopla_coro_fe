@@ -85,7 +85,7 @@
       </div>
     </div>
     <ul id="usersList" class="list-group-striped">
-      <li class="users-list-entry list-group-item" v-for="entry in allUsers" :key="entry.id">
+      <li class="users-list-entry list-group-item" v-for="entry in filteredUsers" :key="entry.id">
         <UserListEntry
           :entry="entry"
           @addDeleteRequest="addDeleteRequest"
@@ -122,7 +122,9 @@ export default {
     BIconPencil,
     BIconCreditCard,
   },
-  props: {},
+  props: {
+    searchString: String,
+  },
   data() {
     return {
       entrys: [],
@@ -217,7 +219,20 @@ export default {
       }
     },
   },
-  computed: mapGetters('users', ['allUsers', 'userRoles', 'selectedUsers']),
+  computed: {
+    ...mapGetters('users', ['allUsers', 'userRoles', 'selectedUsers']),
+    filteredUsers() {
+      return this.allUsers.filter((user) => {
+        const nameFit = user.username.toLowerCase().match(this.searchString.toLowerCase());
+        const emailFit = user.email.toLowerCase().match(this.searchString.toLowerCase());
+        const roleFit = user.role.toLowerCase().match(this.searchString.toLowerCase());
+        if (nameFit || emailFit || roleFit) {
+          return true;
+        }
+        return false;
+      });
+    },
+  },
   mixins: [showMessage, errorHandler],
 };
 </script>

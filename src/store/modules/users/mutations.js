@@ -51,7 +51,6 @@ export const SET_MAIN_MENU = (state, menu) => {
 };
 
 export const USER_TOGGLE_SELECTION = (state, user) => {
-  console.log('WA --> : USER_TOGGLE_SELECTION -> user', user);
   const isSelected = state.selectedUsers.find((item) => item.id === user.id);
   const index = state.selectedUsers.findIndex((item) => item.id === user.id);
   if (!isSelected) {

@@ -65,7 +65,7 @@ const router = new Router({
       component: ViewNotes,
       meta: {
         isMenuItem: true,
-        requiredRole: 'manager',
+        requiredRole: 'user',
       },
     },
     {
@@ -83,7 +83,7 @@ const router = new Router({
       component: ViewLoadCsv,
       meta: {
         isMenuItem: true,
-        requiredRole: 'manager',
+        requiredRole: 'admin',
       },
     },
   ],

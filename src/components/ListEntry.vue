@@ -2,21 +2,36 @@
   <div class="row">
     <div class="col-md-9">
       <div class="row" v-if="!editable">
-        <div class="col-9">
+        <div class="col-4 email-button">
+          <button
+            type="submit"
+            class="btn mr-2 btn-primary"
+            :class="{
+              'btn-success': this.selected,
+              'btn-primary': !this.selected,
+            }"
+            v-on:click="selectForEmail"
+          >
+            <b-icon-envelope></b-icon-envelope>
+          </button>
+        </div>
+        Content
+        <!-- <div class="col">
           <div class="row">
+            <div class="col-8">
+              {{ entry.username }}
+            </div>
+            <div class="col-4">
+              {{ entry.role }}
+            </div>
             <div class="col">
-              <div class="row">
-                <div class="col-12 note-name">
-                  <strong>{{ fromUser }} -> {{ toUser }}</strong>
-                </div>
-                <div class="col-12">{{ note.text }}</div>
-              </div>
+              {{ entry.email }}
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col">
-        <note-edit :note="note" v-if="editable" v-on:saved="toggleEditable()"></note-edit>
+        <user-edit :user="this.entry" v-if="editable" v-on:saved="toggleEditable()"></user-edit>
       </div>
     </div>
     <div class="col-md-3">
@@ -46,15 +61,19 @@
 </template>
 
 <script>
+import { BIconEnvelope, BIconPencil } from 'bootstrap-vue';
 import { mapActions } from 'vuex';
-import { BIconPencil } from 'bootstrap-vue';
-import NoteEdit from './NoteEdit.vue';
+import UserEdit from './UserEdit.vue';
 
 export default {
-  name: 'NoteListEntry',
+  name: 'UserListEntry',
   components: {
-    NoteEdit,
+    UserEdit,
     BIconPencil,
+    BIconEnvelope,
+  },
+  props: {
+    entry: Object,
   },
   data() {
     return {
@@ -63,39 +82,24 @@ export default {
       selected: false,
     };
   },
-  props: {
-    note: Object,
-  },
-  computed: {
-    fromUser() {
-      const user = this.$store.getters['users/getUserById'](this.note.fromId)[0];
-      if (user) {
-        return user.username;
-      }
-      return 'Unbekannt';
-    },
-    toUser() {
-      const user = this.$store.getters['users/getUserById'](this.note.toId)[0];
-      if (user) {
-        return user.username;
-      }
-      if (this.note.toId === 0) {
-        return 'Alle';
-      }
-      return 'Unbekannt';
-    },
-  },
+  computed: {},
   methods: {
-    ...mapActions('notes', ['noteToggleSelection']),
+    ...mapActions('users', ['userToggleSelection']),
+    sendEmail() {
+      this.$emit('sendEmail', this.entry.id);
+    },
+    selectForEmail() {
+      this.userToggleSelection(this.entry);
+      this.selected = !this.selected;
+    },
     addDeleteRequest() {
-      this.$emit('addDeleteRequest', this.note.id);
+      this.$emit('addDeleteRequest', this.entry.id);
     },
     toggleEditable() {
       this.editable = !this.editable;
       this.editButtonText = this.editable ? 'Abbrechen' : 'Ändern';
     },
   },
-  mounted() {},
 };
 </script>
 

@@ -4,7 +4,13 @@
       <form class="ng-pristine" @submit="updateEntry()">
         <div class="form-group row justify-content-between">
           <div class="col-lg-7 col-sm-12 col-input">
-            <input type="text" v-model="note.fromId" class="form-control" />
+            <label for="to-user">An:</label>
+            <select name="to-user" v-model="note.toId" class="form-control">
+              <option selected value="0">Alle</option>
+              <option v-for="user in allUsers" :key="user.id" :value="user.id">{{
+                user.username
+              }}</option>
+            </select>
           </div>
           <div class="col-lg-7 col-sm-12 col-input">
             <input type="text" v-model="note.text" class="form-control" />
@@ -19,7 +25,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import showMessage from '../mixins/messages';
 
 export default {
@@ -32,7 +38,9 @@ export default {
       errors: [],
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters('users', ['allUsers']),
+  },
   mounted() {},
   methods: {
     ...mapActions('notes', ['updateNote']),

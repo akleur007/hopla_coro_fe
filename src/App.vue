@@ -17,10 +17,16 @@
         <menu-item v-for="(route, i) in mainMenu" :key="i" :route="route"></menu-item>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <!-- <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-            </form> -->
+          <form class="form-inline">
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              v-model="searchString"
+            />
+            <!-- <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button> -->
+          </form>
           <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link"
             >Logout</router-link
           >
@@ -28,7 +34,7 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <router-view />
+    <router-view :searchString="searchString" />
     <FlashMessage role="alert"></FlashMessage>
   </div>
 </template>
@@ -44,6 +50,7 @@ export default {
   data() {
     return {
       showCollapse: false,
+      searchString: '',
     };
   },
   watch: {
