@@ -5,12 +5,12 @@
         <div class="col-4 email-button">
           <button
             type="submit"
-            class="btn mr-2 btn-primary"
+            class="btn mr-2 btn-primary email-buttonres"
             :class="{
               'btn-success': this.selected,
               'btn-primary': !this.selected,
             }"
-            v-on:click="selectForEmail"
+            v-on:click="toggleEmailSelect"
           >
             <b-icon-envelope></b-icon-envelope>
           </button>
@@ -34,43 +34,29 @@
       </div>
     </div>
     <div class="col-md-3">
-      <div class="row">
-        <div class="col-md-12 col-4">
-          <button type="submit" class="btn btn-danger mr-2" v-on:click="addDeleteRequest">
-            Löschen
-          </button>
-        </div>
-        <div class="col-md-12 col-8">
-          <button
-            type="submit"
-            class="btn btn-primary mr-2"
-            v-on:click="toggleEditable()"
-            :class="{
-              'btn-primary': !editable,
-              'btn-light': editable,
-            }"
-          >
-            <b-icon-pencil></b-icon-pencil>
-            {{ editButtonText }}
-          </button>
-        </div>
-      </div>
+      <list-entry-menu
+        @delete-request="deleteRequest"
+        @edit-request="toggleEditable"
+      ></list-entry-menu>
     </div>
   </div>
 </template>
 
 <script>
-import { BIconEnvelope, BIconPencil } from 'bootstrap-vue';
+import { BIconEnvelope } from 'bootstrap-vue';
 import { mapActions } from 'vuex';
 import UserEdit from './UserEdit.vue';
+import ListEntryMenu from './ListEntryMenu.vue';
+import listEntryMenuLogic from '../mixins/listEntryHelper';
 
 export default {
   name: 'UserListEntry',
   components: {
     UserEdit,
-    BIconPencil,
+    ListEntryMenu,
     BIconEnvelope,
   },
+  mixins: [listEntryMenuLogic],
   props: {
     entry: Object,
   },
@@ -84,19 +70,9 @@ export default {
   computed: {},
   methods: {
     ...mapActions('users', ['userToggleSelection']),
-    sendEmail() {
-      this.$emit('sendEmail', this.entry.id);
-    },
-    selectForEmail() {
+    toggleEmailSelect() {
       this.userToggleSelection(this.entry);
       this.selected = !this.selected;
-    },
-    addDeleteRequest() {
-      this.$emit('addDeleteRequest', this.entry.id);
-    },
-    toggleEditable() {
-      this.editable = !this.editable;
-      this.editButtonText = this.editable ? 'Abbrechen' : 'Ändern';
     },
   },
 };
@@ -114,5 +90,9 @@ export default {
       text-decoration: none;
     }
   }
+}
+
+.email-button {
+  max-width: 80px;
 }
 </style>

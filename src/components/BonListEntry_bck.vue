@@ -1,8 +1,8 @@
 <template>
-  <div class="d-flex flex-row justify-content-between">
-    <div class="flex-fill mr-1 mr-md-4">
+  <div class="row">
+    <div class="col-md-9 col-9">
       <div class="row" v-if="!editable">
-        <div class="col-12 col-md-9">
+        <div class="col-9">
           <div class="row">
             <div class="col-4 email-button">
               <button
@@ -37,7 +37,7 @@
         <bon-edit :bonId="this.entry.id" v-if="editable" v-on:saved="toggleEditable()"></bon-edit>
       </div>
     </div>
-    <div class="">
+    <div class="col-md-3 col-3">
       <list-entry-menu
         @delete-request="deleteRequest"
         @edit-request="toggleEditable"

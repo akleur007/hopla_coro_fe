@@ -22,9 +22,6 @@ const BonService = {
   async deleteBon(id) {
     return ApiService.delete(`bons/${id}`);
   },
-  async sendBonMail(id) {
-    return ApiService.get(`bons/${id}/sendmail`);
-  },
   async sendMailBatch(params) {
     return ApiService.post('bons/sendmail-batch', params);
   },

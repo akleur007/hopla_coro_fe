@@ -55,24 +55,27 @@
         </div>
       </form>
     </div>
-    <div v-if="seeStatistic" class="mb-4">
-      <h2 v-if="seeStatistic">
-        <b-icon-people></b-icon-people> {{ allBons.length - 2 }} | {{ creditSum }}€ | ~
-        {{ averageCredit }}
-      </h2>
+    <div v-if="seeStatistic" class="mb-4 view-statistic">
+      <div class="d-flex justify-content-between">
+        <div><b-icon-people></b-icon-people> {{ allBons.length - 2 }}</div>
+        <div>|</div>
+        <div>{{ creditSum }}€</div>
+        <div>|</div>
+        <div>~ {{ averageCredit }}</div>
+      </div>
     </div>
-    <div class="row mb-5">
-      <div class="col-4">
+    <div class="d-flex justify-content-between mb-5">
+      <div class="">
         <button
           class="btn btn-primary"
           v-if="!addNewEmail && !addNewBon"
           v-on:click="toggleNewEmail()"
         >
-          <b-icon-envelope class="mr-2"></b-icon-envelope>
-          <b-icon-pencil></b-icon-pencil>
+          <b-icon-pencil class="mr-1 ml-1"></b-icon-pencil>
+          <b-icon-envelope class="mr-1 ml-1"></b-icon-envelope>
         </button>
       </div>
-      <div class="col-4">
+      <div class="">
         <button
           class="btn btn-primary"
           v-if="!addNewEmail && !addNewBon"
@@ -81,24 +84,20 @@
           <b-icon-people></b-icon-people> Statistic
         </button>
       </div>
-      <div class="text-right col-4">
+      <div class="">
         <button
-          class="btn btn-primary"
+          class="btn btn-primary text-center"
           v-if="!addNewBon && !addNewEmail"
           v-on:click="toggleNewForm()"
         >
-          <b-icon-plus-square class="mr-2"></b-icon-plus-square>
-          <b-icon-credit-card></b-icon-credit-card>
+          <b-icon-plus-square class="mr-1 ml-1"></b-icon-plus-square>
+          <b-icon-credit-card class="mr-1 ml-1"></b-icon-credit-card>
         </button>
       </div>
     </div>
     <ul id="bonList" class="list-group-striped">
       <li class="bon-list-entry list-group-item" v-for="bon in filteredBons" :key="bon.id">
-        <BonListEntry
-          :bon="bon"
-          @addDeleteRequest="addDeleteRequest"
-          @sendEmail="sendEntryEmail"
-        ></BonListEntry>
+        <BonListEntry :entry="bon" @add-delete-request="addDeleteRequest"></BonListEntry>
       </li>
     </ul>
     <div>
@@ -211,15 +210,6 @@ export default {
         this.showSimpleMessage(err.response.data.message, 'warning');
       }
     },
-    async sendEntryEmail(id) {
-      try {
-        await BonService.sendBonMail(id);
-        this.showSimpleMessage('Email gesendet', 'success');
-      } catch (e) {
-        this.errors.push(e);
-        this.showSimpleMessage('Email konnte nicht gesendet werden', 'warning');
-      }
-    },
     async sendMailBatch() {
       const params = {
         content: this.emailContent,
@@ -277,5 +267,9 @@ ul {
 
 #subject {
   margin-bottom: 20px;
+}
+
+.view-statistic {
+  font-size: 1.5rem;
 }
 </style>

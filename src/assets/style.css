@@ -12322,6 +12322,22 @@ h1, h2, h3, h4, h5, h6, p {
   border-color: #97a0a8;
 }
 
+.btn-primary .dropdown-item, .btn-danger .dropdown-item {
+  color: #eceeec;
+}
+
+.btn-primary .dropdown-item:hover, .btn-danger .dropdown-item:hover {
+  color: #1e2b37;
+}
+
+.dropdown-menu {
+  padding: 0.2rem;
+}
+
+.dropdown-menu .dropdown-item {
+  padding: 1rem 4rem;
+}
+
 .list-group-item {
   background: #1e2b37;
   color: #d8d8d8;
@@ -12329,6 +12345,10 @@ h1, h2, h3, h4, h5, h6, p {
 
 ul.list-group-striped li:nth-of-type(even) {
   background: #414e5a;
+}
+
+.btn-primary .dropdown-item, .btn-danger .dropdown-item {
+  color: #eceeec;
 }
 
 .msg {

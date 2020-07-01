@@ -1,61 +1,38 @@
 <template>
-  <div class="row">
-    <div class="col-md-9">
+  <div class="d-flex justify-content-between">
+    <div class="">
       <div class="row" v-if="!editable">
-        <div class="col-9">
-          <div class="row">
-            <div class="col">
-              <div class="row">
-                <div class="col-12 note-name">
-                  <strong>{{ fromUser }} -> {{ toUser }}</strong>
-                </div>
-                <div class="col-12">{{ note.text }}</div>
-              </div>
-            </div>
-          </div>
+        <div class="col-12 note-name">
+          <strong>{{ fromUser }} -> {{ toUser }}</strong>
         </div>
+        <div class="col-12">{{ entry.text }}</div>
       </div>
       <div class="col">
-        <note-edit :note="note" v-if="editable" v-on:saved="toggleEditable()"></note-edit>
+        <note-edit :note="entry" v-if="editable" v-on:saved="toggleEditable()"></note-edit>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="row">
-        <div class="col-md-12 col-4">
-          <button type="submit" class="btn btn-danger mr-2" v-on:click="addDeleteRequest">
-            Löschen
-          </button>
-        </div>
-        <div class="col-md-12 col-8">
-          <button
-            type="submit"
-            class="btn btn-primary mr-2"
-            v-on:click="toggleEditable()"
-            :class="{
-              'btn-primary': !editable,
-              'btn-light': editable,
-            }"
-          >
-            <b-icon-pencil></b-icon-pencil>
-            {{ editButtonText }}
-          </button>
-        </div>
-      </div>
+    <div class="">
+      <list-entry-menu
+        @delete-request="deleteRequest"
+        @edit-request="toggleEditable"
+      ></list-entry-menu>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import { BIconPencil } from 'bootstrap-vue';
 import NoteEdit from './NoteEdit.vue';
+import ListEntryMenu from './ListEntryMenu.vue';
+import listEntryMenuLogic from '../mixins/listEntryHelper';
 
 export default {
   name: 'NoteListEntry',
   components: {
     NoteEdit,
-    BIconPencil,
+    ListEntryMenu,
   },
+  mixins: [listEntryMenuLogic],
   data() {
     return {
       editable: false,
@@ -64,22 +41,22 @@ export default {
     };
   },
   props: {
-    note: Object,
+    entry: Object,
   },
   computed: {
     fromUser() {
-      const user = this.$store.getters['users/getUserById'](this.note.fromId)[0];
+      const user = this.$store.getters['users/getUserById'](this.entry.fromId)[0];
       if (user) {
         return user.username;
       }
       return 'Unbekannt';
     },
     toUser() {
-      const user = this.$store.getters['users/getUserById'](this.note.toId)[0];
+      const user = this.$store.getters['users/getUserById'](this.entry.toId)[0];
       if (user) {
         return user.username;
       }
-      if (this.note.toId === 0) {
+      if (this.entry.toId === 0) {
         return 'Alle';
       }
       return 'Unbekannt';
@@ -87,13 +64,6 @@ export default {
   },
   methods: {
     ...mapActions('notes', ['noteToggleSelection']),
-    addDeleteRequest() {
-      this.$emit('addDeleteRequest', this.note.id);
-    },
-    toggleEditable() {
-      this.editable = !this.editable;
-      this.editButtonText = this.editable ? 'Abbrechen' : 'Ändern';
-    },
   },
   mounted() {},
 };

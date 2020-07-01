@@ -37,14 +37,14 @@
       </div>
       <div class="text-right col-8">
         <button class="btn btn-primary" v-if="!addNewNote" v-on:click="toggleNewForm()">
-          <b-icon-plus-square class="mr-2"></b-icon-plus-square>
-          <b-icon-credit-card></b-icon-credit-card>
+          <b-icon-plus-square class="mr-1 ml-1"></b-icon-plus-square>
+          <b-icon-credit-card class="mr-1 ml-1"></b-icon-credit-card>
         </button>
       </div>
     </div>
     <ul id="noteList" class="list-group-striped">
       <li class="note-list-entry list-group-item" v-for="note in filteredNotes" :key="note.id">
-        <NoteListEntry :note="note" @addDeleteRequest="addDeleteRequest"></NoteListEntry>
+        <NoteListEntry :entry="note" @add-delete-request="addDeleteRequest"></NoteListEntry>
       </li>
     </ul>
     <div>

@@ -17,16 +17,13 @@
         <menu-item v-for="(route, i) in mainMenu" :key="i" :route="route"></menu-item>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <form class="form-inline">
-            <input
-              class="form-control mr-sm-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              v-model="searchString"
-            />
-            <!-- <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button> -->
-          </form>
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            v-model="searchString"
+          />
           <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link"
             >Logout</router-link
           >

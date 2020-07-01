@@ -69,8 +69,8 @@
           v-if="!addNewEmail && !addNewUser"
           v-on:click="toggleNewEmail()"
         >
-          <b-icon-envelope class="mr-2"></b-icon-envelope>
-          <b-icon-pencil></b-icon-pencil>
+          <b-icon-pencil class="mr-1 ml-1"></b-icon-pencil>
+          <b-icon-envelope class="mr-1 ml-1"></b-icon-envelope>
         </button>
       </div>
       <div class="text-right col-6">
@@ -79,18 +79,14 @@
           v-if="!addNewUser && !addNewEmail"
           v-on:click="toggleNewForm()"
         >
-          <b-icon-plus-square class="mr-2"></b-icon-plus-square>
-          <b-icon-credit-card></b-icon-credit-card>
+          <b-icon-plus-square class="mr-1 ml-1"></b-icon-plus-square>
+          <b-icon-credit-card class="mr-1 ml-1"></b-icon-credit-card>
         </button>
       </div>
     </div>
     <ul id="usersList" class="list-group-striped">
       <li class="users-list-entry list-group-item" v-for="entry in filteredUsers" :key="entry.id">
-        <UserListEntry
-          :entry="entry"
-          @addDeleteRequest="addDeleteRequest"
-          @sendEmail="sendEntryEmail"
-        ></UserListEntry>
+        <UserListEntry :entry="entry" @add-delete-request="addDeleteRequest"></UserListEntry>
       </li>
     </ul>
     <div>
@@ -180,14 +176,6 @@ export default {
         this.deleteId = '';
         this.fetchUsers();
         this.showSimpleMessage(`${label} gelöscht`, 'success');
-      } catch (e) {
-        this.errors.push(e);
-      }
-    },
-    async sendEntryEmail(id) {
-      try {
-        await UserService.sendUserEmail(id);
-        this.showSimpleMessage(`Email an ${label} gesendet`, 'success');
       } catch (e) {
         this.errors.push(e);
       }

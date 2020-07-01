@@ -92,9 +92,6 @@ const UserService = {
   async getUserRole() {
     return ApiService.get('users/user-role');
   },
-  async sendUserEmail(id) {
-    return ApiService.get(`users/${id}/sendmail`);
-  },
   async sendMailBatch(params) {
     return ApiService.post('users/sendmail-batch', params);
   },
