@@ -23,7 +23,7 @@
     </div>
     <div class="d-md-none list-menu">
       <button class="btn btn-secondary" v-if="editable" v-on:click="toggleEditable()">
-        Abbrechen
+        X
       </button>
       <b-dropdown text="..." dropright no-caret class="m-md-2 list-item-menu" v-if="!editable">
         <b-dropdown-item

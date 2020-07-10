@@ -50,6 +50,11 @@ export const removeUser = async ({ commit }, id) => {
   commit('DELETE_USER', response.data.data.resource);
 };
 
+export const uploadFile = async ({ commit }, params) => {
+  const response = await UserService.uploadFile(params);
+  commit('UPLOAD_FILE', response.data.data.resource);
+};
+
 export const setMainMenu = async ({ commit, state }) => {
   const { routes } = router.options;
   const r = await UserService.getUserRole();
@@ -74,6 +79,6 @@ export const userToggleSelection = ({ commit }, user) => {
   commit('USER_TOGGLE_SELECTION', user);
 };
 
-export const deselectAllBons = ({ commit }) => {
+export const deselectAllUsers = ({ commit }) => {
   commit('DESELECT_ALL_USERS');
 };

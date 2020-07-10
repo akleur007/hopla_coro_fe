@@ -37,7 +37,7 @@
         <bon-edit :bonId="this.entry.id" v-if="editable" v-on:saved="toggleEditable()"></bon-edit>
       </div>
     </div>
-    <div class="">
+    <div class="text-right">
       <list-entry-menu
         @delete-request="deleteRequest"
         @edit-request="toggleEditable"

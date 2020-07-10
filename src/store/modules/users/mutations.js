@@ -42,6 +42,11 @@ export const UPDATE_USER = (state, updUser) => {
   }
 };
 
+export const UPLOAD_FILE = (state, upldFile) => {
+  const index = state.users.findIndex((user) => user.id === upldFile.id);
+  console.log('WA --> : UPLOAD_FILE -> index', index);
+};
+
 export const SET_USER_ROLES = (state, userRoles) => {
   state.userRoles = userRoles;
 };
