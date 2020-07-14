@@ -92,8 +92,11 @@ const UserService = {
   async getUserRole() {
     return ApiService.get('users/user-role');
   },
-  async uploadFile(params) {
+  async uploadFiles(params) {
     return ApiService.post(`users/${params.id}/file-upload`, params);
+  },
+  async getFiles(id) {
+    return ApiService.get(`users/${id}/files`, id);
   },
   async sendMailBatch(params) {
     return ApiService.post('users/sendmail-batch', params);

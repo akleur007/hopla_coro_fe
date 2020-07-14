@@ -91,7 +91,6 @@ export default {
   },
   async created() {
     try {
-      await this.fetchUsers();
       await this.fetchNotes();
       this.handleApiError();
     } catch (err) {
@@ -107,7 +106,6 @@ export default {
       'removeNote',
       'deselectAllNotes',
     ]),
-    ...mapActions('users', ['fetchUsers']),
     async postEntry() {
       this.newNoteContent.fromId = this.getUser.id;
       try {

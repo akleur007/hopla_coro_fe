@@ -28,16 +28,52 @@
       </div>
       <div class="mb-5" v-if="editable">
         <user-edit :user="this.entry" v-on:saved="toggleEditable()"></user-edit>
+        <h5>Dokumente</h5>
+        <div>
+          <ul class="list-group-striped">
+            <li class="list-group-item" v-for="file in this.entry.files" :key="file.id">
+              {{ file.showname }}
+            </li>
+          </ul>
+        </div>
         <b-form-file
-          v-model="file"
-          :state="Boolean(file)"
+          class="mt-5"
+          multiple
+          v-model="files"
+          ref="file-input"
           placeholder="Datei hochladen"
           drop-placeholder="Datei hier hin ziehen"
-        ></b-form-file>
-        <div class="mt-3 row" v-if="files.length > 0">
-          <div class="col-lg-10 col-sm-9">Ausgewählte Datei: {{ files ? files.name : '' }}</div>
-          <div class="col-lg-2 col-sm-3 col-input text-right">
-            <button id="upload" class="btn btn-primary">Upload</button>
+        >
+          <template slot="file-name" slot-scope="{ names }" variant="dark">
+            <b-badge variant="dark">{{ names[0] }}</b-badge>
+            <b-badge v-if="names.length > 1" variant="dark" class="ml-1">
+              + {{ names.length - 1 }} More files
+            </b-badge>
+          </template>
+        </b-form-file>
+        <div class="mt-3" v-if="files.length > 0">
+          <div class="">
+            <h5 v-if="files.length > 1">Ausgewählte Dateien:</h5>
+            <h5 v-else>Ausgewählte Datei:</h5>
+            <ul class="list-group-striped mb-3">
+              <upload-document-entry
+                v-for="(file, index) in files"
+                :key="index"
+                :filename="file.name"
+                :index="index"
+                v-on:getShowname="changeShowname"
+              ></upload-document-entry>
+            </ul>
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>
+              <button class="btn btn-secondary" @click="clearFiles">
+                Auswahl löschen
+              </button>
+            </div>
+            <div>
+              <button class="btn btn-primary flex-shrink" v-on:click="doUploadFiles">Upload</button>
+            </div>
           </div>
         </div>
       </div>
@@ -57,6 +93,7 @@ import { mapActions } from 'vuex';
 import UserEdit from './UserEdit.vue';
 import ListEntryMenu from './ListEntryMenu.vue';
 import listEntryMenuLogic from '../mixins/listEntryHelper';
+import UploadDocumentEntry from './UploadDocumentEntry.vue';
 
 export default {
   name: 'UserListEntry',
@@ -65,6 +102,7 @@ export default {
     ListEntryMenu,
     BIconEnvelope,
     BFormFile,
+    UploadDocumentEntry,
   },
   mixins: [listEntryMenuLogic],
   props: {
@@ -79,14 +117,38 @@ export default {
     };
   },
   computed: {},
+  async created() {
+    await this.fetchFiles(this.entry.id);
+  },
+  async mounted() {
+    await this.fetchFiles(this.entry.id);
+  },
   methods: {
-    ...mapActions('users', ['userToggleSelection', 'uploadFile']),
+    ...mapActions('users', ['userToggleSelection', 'uploadFiles', 'fetchFiles']),
     toggleEmailSelect() {
       this.userToggleSelection(this.entry);
       this.selected = !this.selected;
     },
-    uploadFiles() {
-      this.uploadFile(this.files);
+    doUploadFiles() {
+      const formData = new FormData();
+      const filesData = [];
+      this.files.forEach((file, i) => {
+        const fileData = {
+          filename: file.name,
+          showname: file.showname,
+        };
+        formData.append(`files[${i}]`, file);
+        filesData.push(fileData);
+      });
+      formData.append(`filesData`, JSON.stringify(filesData));
+      formData.append(`userId`, this.entry.id);
+      this.uploadFiles(formData);
+    },
+    changeShowname(resp) {
+      this.files[resp.index].showname = resp.showname;
+    },
+    clearFiles() {
+      this.$refs['file-input'].reset();
     },
   },
 };
@@ -108,5 +170,9 @@ export default {
 
 .email-button {
   max-width: 50px;
+}
+
+ul {
+  padding-left: 0;
 }
 </style>

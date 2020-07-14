@@ -2,7 +2,6 @@ import TokenService from '../../../services/tokenService';
 
 export default {
   users: [],
-  selectedUsers: [],
   user: {},
   userRoles: [],
   authenticating: false,

@@ -42,9 +42,21 @@ export const UPDATE_USER = (state, updUser) => {
   }
 };
 
-export const UPLOAD_FILE = (state, upldFile) => {
-  const index = state.users.findIndex((user) => user.id === upldFile.id);
-  console.log('WA --> : UPLOAD_FILE -> index', index);
+export const UPLOAD_FILES = (state, upldFile) => {
+  console.log('WA --> : UPLOAD_FILES -> upldFile', upldFile);
+};
+
+export const GET_FILES = (state, files) => {
+  const index = state.users.findIndex((user) => user.id === files[0].userId);
+  let updUser = state.users[index];
+  updUser = { ...updUser, files };
+  if (index !== -1) {
+    state.users.splice(index, 1, updUser);
+  }
+};
+
+export const CHANGE_SHOWNAME = (state, params) => {
+  console.log('WA --> : CHANGE_SHOWNAME -> params', params);
 };
 
 export const SET_USER_ROLES = (state, userRoles) => {

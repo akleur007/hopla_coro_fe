@@ -6,11 +6,6 @@ export const fetchUsers = async ({ commit }) => {
   commit('SET_USERS', response.data.data.items);
 };
 
-export const fetchUser = async ({ commit }, id) => {
-  const response = await UserService.getUser(id);
-  commit('SET_ACTIVE_USER', response.data.data.resource);
-};
-
 export const loginUser = async ({ commit }, params) => {
   commit('LOGIN_REQUEST');
   try {
@@ -50,9 +45,18 @@ export const removeUser = async ({ commit }, id) => {
   commit('DELETE_USER', response.data.data.resource);
 };
 
-export const uploadFile = async ({ commit }, params) => {
-  const response = await UserService.uploadFile(params);
-  commit('UPLOAD_FILE', response.data.data.resource);
+export const uploadFiles = async ({ commit }, params) => {
+  const response = await UserService.uploadFiles(params);
+  commit('UPLOAD_FILES', response.data.data);
+};
+
+export const fetchFiles = async ({ commit }, id) => {
+  const response = await UserService.getFiles(id);
+  commit('GET_FILES', response.data.data.resource);
+};
+
+export const changeShowname = ({ commit }, params) => {
+  commit('CHANGE_SHOWNAME', params);
 };
 
 export const setMainMenu = async ({ commit, state }) => {
