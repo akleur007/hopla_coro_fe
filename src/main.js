@@ -11,6 +11,7 @@ import ApiService from './services/apiService';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import wb from './registerServiceWorker';
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ const apiBaseUrl = process.env.IS_ONLINE
 console.log('WA --> : apiBaseUrl', apiBaseUrl);
 
 ApiService.init(apiBaseUrl);
+
+Vue.prototype.$workbox = wb;
 
 if (TokenService.getToken()) {
   ApiService.setHeader();

@@ -50,6 +50,13 @@ export default {
       searchString: '',
     };
   },
+  created() {
+    if (this.$workbox) {
+      this.$workbox.addEventListener('waiting', () => {
+        this.showUpdateUI = true;
+      });
+    }
+  },
   watch: {
     $route() {
       this.showCollapse = false;
