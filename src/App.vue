@@ -50,6 +50,13 @@ export default {
       searchString: '',
     };
   },
+  created() {
+    if (this.$workbox) {
+      this.$workbox.addEventListener('waiting', () => {
+        this.showUpgradeUI = true;
+      });
+    }
+  },
   watch: {
     $route() {
       this.showCollapse = false;
@@ -67,6 +74,10 @@ export default {
   },
   methods: {
     ...mapActions('users', ['setMainMenu', 'getUserRoles']),
+    async accept() {
+      this.showUpgradeUI = false;
+      await this.$workbox.messageSW({ type: 'SKIP_WAITING' });
+    },
   },
   computed: {
     ...mapGetters('users', ['getUser', 'mainMenu']),
