@@ -1,4 +1,4 @@
-const { GenerateSW } = require('workbox-webpack-plugin');
+import GenerateSW from 'workbox-webpack-plugin';
 
 module.exports = {
   devServer: {

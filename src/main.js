@@ -11,7 +11,7 @@ import ApiService from './services/apiService';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import wb from './registerServiceWorker';
+import './registerServiceWorker';
 
 dotenv.config();
 
@@ -28,8 +28,6 @@ ApiService.init(apiBaseUrl);
 if (TokenService.getToken()) {
   ApiService.setHeader();
 }
-
-Vue.prototype.$workbox = wb;
 
 Vue.config.productionTip = false;
 const flashMsgConfig = {
