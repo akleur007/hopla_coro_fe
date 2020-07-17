@@ -91,7 +91,7 @@
     </ul>
     <div>
       <b-modal id="delete-request" @ok="deleteEntry" @hidden="deleteId = ''">
-        <h2>User löschen?</h2>
+        <h2>User {{ this.deleteEntryObject.title }} löschen?</h2>
       </b-modal>
     </div>
   </div>
@@ -132,7 +132,7 @@ export default {
       userRole: [],
       addNewUser: false,
       addNewEmail: false,
-      deleteId: '',
+      deleteEntryObject: {},
       emailContent: {
         subject: '',
         text: '',
@@ -166,14 +166,14 @@ export default {
         this.errors.push(e);
       }
     },
-    addDeleteRequest(id) {
-      this.deleteId = id;
+    addDeleteRequest(user) {
+      this.deleteEntryObject = { ...user };
       this.$bvModal.show('delete-request');
     },
     async deleteEntry() {
       try {
-        await this.removeUser(this.deleteId);
-        this.deleteId = '';
+        await this.removeUser(this.deleteEntryObject.id);
+        this.deleteEntryObject = {};
         this.fetchUsers();
         this.showSimpleMessage(`${label} gelöscht`, 'success');
       } catch (e) {

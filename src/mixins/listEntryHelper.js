@@ -5,8 +5,8 @@ const listEntryMenuLogic = {
     };
   },
   methods: {
-    deleteRequest() {
-      this.$emit('add-delete-request', this.entry.id);
+    deleteRequest(params) {
+      this.$emit('add-delete-request', params);
     },
     toggleEditable() {
       this.editable = !this.editable;

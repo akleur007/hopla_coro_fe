@@ -31,8 +31,41 @@
         <h5>Dokumente</h5>
         <div>
           <ul class="list-group-striped">
-            <li class="list-group-item" v-for="file in this.entry.files" :key="file.id">
-              {{ file.showname }}
+            <li
+              class="list-group-item d-flex justify-content-between"
+              v-for="file in this.entry.files"
+              :key="file.id"
+            >
+              <h5 v-if="file.showname">{{ file.showname }}</h5>
+              <h5 v-else>{{ file.file }}</h5>
+              <div class="d-flex justify-content-end">
+                <button
+                  class="btn btn-danger ml-1"
+                  v-on:click="addDeleteFileRequest({ id: file.id, title: file.showname })"
+                  title="löschen"
+                >
+                  <b-icon-trash></b-icon-trash>
+                </button>
+                <a
+                  :href="file.dir + '/' + file.file"
+                  class="btn btn-primary ml-1"
+                  target="_blank"
+                  rel="noreferrer"
+                  title="ändern"
+                >
+                  <b-icon-pencil></b-icon-pencil
+                ></a>
+                <a
+                  :href="file.dir + '/' + file.file"
+                  :download="file.showname + '-' + file.file"
+                  class="btn btn-secondary ml-1"
+                  target="_blank"
+                  rel="noreferrer"
+                  title="download"
+                >
+                  <b-icon-download></b-icon-download
+                ></a>
+              </div>
             </li>
           </ul>
         </div>
@@ -80,15 +113,20 @@
     </div>
     <div class="">
       <list-entry-menu
-        @delete-request="deleteRequest"
+        @delete-request="deleteRequest({ id: entry.id, title: entry.username })"
         @edit-request="toggleEditable"
       ></list-entry-menu>
+    </div>
+    <div>
+      <b-modal :id="'delete-request-' + entry.id" @ok="doDeleteFile()" @hidden="deleteId = ''">
+        <h2>File {{ this.deleteFileObject.title }} löschen?</h2>
+      </b-modal>
     </div>
   </div>
 </template>
 
 <script>
-import { BIconEnvelope, BFormFile } from 'bootstrap-vue';
+import { BIconEnvelope, BIconPencil, BIconTrash, BIconDownload, BFormFile } from 'bootstrap-vue';
 import { mapActions } from 'vuex';
 import UserEdit from './UserEdit.vue';
 import ListEntryMenu from './ListEntryMenu.vue';
@@ -101,6 +139,9 @@ export default {
     UserEdit,
     ListEntryMenu,
     BIconEnvelope,
+    BIconPencil,
+    BIconTrash,
+    BIconDownload,
     BFormFile,
     UploadDocumentEntry,
   },
@@ -113,6 +154,7 @@ export default {
       editable: false,
       editButtonText: 'Ändern',
       selected: false,
+      deleteFileObject: {},
       files: [],
     };
   },
@@ -124,28 +166,43 @@ export default {
     await this.fetchFiles(this.entry.id);
   },
   methods: {
-    ...mapActions('users', ['userToggleSelection', 'uploadFiles', 'fetchFiles']),
+    ...mapActions('users', ['userToggleSelection', 'uploadFiles', 'fetchFiles', 'deleteFile']),
     toggleEmailSelect() {
       this.userToggleSelection(this.entry);
       this.selected = !this.selected;
     },
-    doUploadFiles() {
+    async doUploadFiles() {
       const formData = new FormData();
       const filesData = [];
       this.files.forEach((file, i) => {
         const fileData = {
           filename: file.name,
-          showname: file.showname,
+          showname: file.showname ? file.showname : file.name,
         };
         formData.append(`files[${i}]`, file);
         filesData.push(fileData);
       });
       formData.append(`filesData`, JSON.stringify(filesData));
       formData.append(`userId`, this.entry.id);
-      this.uploadFiles(formData);
+      const params = {
+        formData,
+        id: this.entry.id,
+      };
+      await this.uploadFiles(params);
+      this.clearFiles();
+      this.fetchFiles(this.entry.id);
     },
     changeShowname(resp) {
       this.files[resp.index].showname = resp.showname;
+    },
+    async addDeleteFileRequest(file) {
+      this.deleteFileObject = { ...file };
+      this.$bvModal.show(`delete-request-${this.entry.id}`);
+    },
+    async doDeleteFile() {
+      await this.deleteFile(this.deleteFileObject.id);
+      this.deleteFileObject = {};
+      this.fetchFiles(this.entry.id);
     },
     clearFiles() {
       this.$refs['file-input'].reset();

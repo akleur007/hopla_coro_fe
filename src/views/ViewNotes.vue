@@ -49,7 +49,7 @@
     </ul>
     <div>
       <b-modal id="delete-request" @ok="deleteEntry" @hidden="deleteId = ''">
-        <h2>Note löschen?</h2>
+        <h2>Note an {{ deleteEntryObject.title }} löschen?</h2>
       </b-modal>
     </div>
   </div>
@@ -80,7 +80,7 @@ export default {
       errors: [],
       addNewNote: false,
       seeFilter: false,
-      deleteId: '',
+      deleteEntryObject: {},
       newNoteContent: {
         fromId: 0,
         toId: 0,
@@ -118,14 +118,14 @@ export default {
         this.showSimpleMessage(err.response.data.message, 'warning');
       }
     },
-    addDeleteRequest(id) {
-      this.deleteId = id;
+    addDeleteRequest(note) {
+      this.deleteEntryObject = { ...note };
       this.$bvModal.show('delete-request');
     },
     async deleteEntry() {
       try {
-        await this.removeNote(this.deleteId);
-        this.deleteId = '';
+        await this.removeNote(this.deleteEntryObject.id);
+        this.deleteEntryObject = {};
         this.fetchNotes();
         this.showSimpleMessage('Note gelöscht', 'success');
       } catch (err) {

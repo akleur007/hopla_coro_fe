@@ -13,7 +13,7 @@
     </div>
     <div class="">
       <list-entry-menu
-        @delete-request="deleteRequest"
+        @delete-request="deleteRequest({ id: entry.id, title: toUser })"
         @edit-request="toggleEditable"
       ></list-entry-menu>
     </div>

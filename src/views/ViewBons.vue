@@ -102,7 +102,7 @@
     </ul>
     <div>
       <b-modal id="delete-request" @ok="deleteEntry" @hidden="deleteId = ''">
-        <h2>Bon löschen?</h2>
+        <h2>Bon von {{ deleteEntryObject.title }} löschen?</h2>
       </b-modal>
     </div>
   </div>
@@ -159,7 +159,7 @@ export default {
       addNewBon: false,
       addNewEmail: false,
       seeStatistic: false,
-      deleteId: '',
+      deleteEntryObject: {},
       emailContent: {
         subject: '',
         text: '',
@@ -195,14 +195,14 @@ export default {
         this.showSimpleMessage(err.response.data.message, 'warning');
       }
     },
-    addDeleteRequest(id) {
-      this.deleteId = id;
+    addDeleteRequest(bon) {
+      this.deleteEntryObject = { ...bon };
       this.$bvModal.show('delete-request');
     },
     async deleteEntry() {
       try {
-        await this.removeBon(this.deleteId);
-        this.deleteId = '';
+        await this.removeBon(this.deleteEntryObject.id);
+        this.deleteEntryObject = {};
         this.fetchBons();
         this.showSimpleMessage('Bon gelöscht', 'success');
       } catch (err) {

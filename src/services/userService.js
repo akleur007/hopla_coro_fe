@@ -93,10 +93,13 @@ const UserService = {
     return ApiService.get('users/user-role');
   },
   async uploadFiles(params) {
-    return ApiService.post(`users/${params.id}/file-upload`, params);
+    return ApiService.post(`users/${params.id}/file-upload`, params.formData);
   },
   async getFiles(id) {
     return ApiService.get(`users/${id}/files`, id);
+  },
+  async deleteFile(id) {
+    return ApiService.post('users/file-delete', id);
   },
   async sendMailBatch(params) {
     return ApiService.post('users/sendmail-batch', params);

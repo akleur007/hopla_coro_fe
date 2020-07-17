@@ -32,6 +32,15 @@
       </b-collapse>
     </b-navbar>
     <router-view :searchString="searchString" />
+    <div
+      v-if="showUpdateUI"
+      class="service-worker-message alert-info d-flex justify-content-between"
+    >
+      <div>
+        Update verfügbar
+      </div>
+      <button class="btn btn-warning" v-on:click="accept()">OK</button>
+    </div>
     <FlashMessage role="alert"></FlashMessage>
   </div>
 </template>
@@ -48,6 +57,7 @@ export default {
     return {
       showCollapse: false,
       searchString: '',
+      showUpdateUI: false,
     };
   },
   created() {
@@ -74,6 +84,10 @@ export default {
   },
   methods: {
     ...mapActions('users', ['setMainMenu', 'getUserRoles']),
+    async accept() {
+      this.showUpdateUI = false;
+      await this.$workbox.messageSW({ type: 'SKIP_WAITING' });
+    },
   },
   computed: {
     ...mapGetters('users', ['getUser', 'mainMenu']),
@@ -127,6 +141,18 @@ export default {
 // [class*="col-"] {
 //   margin-bottom: 15px;
 // }
+
+.service-worker-message {
+  width: 400px;
+  min-height: 100px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+
+  div {
+    padding: 10px;
+  }
+}
 
 @import 'assets/style.css';
 </style>

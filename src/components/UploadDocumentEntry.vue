@@ -2,12 +2,12 @@
   <div>
     <li class="list-group-item">
       {{ filename }}
-      <b-input
+      <b-form-input
         type="text"
         v-model="showname"
         v-on:keyup="emitShowname"
         placeholder="Anzeigename ändern?"
-      ></b-input>
+      ></b-form-input>
     </li>
   </div>
 </template>

@@ -43,11 +43,13 @@ export const UPDATE_USER = (state, updUser) => {
 };
 
 export const UPLOAD_FILES = (state, upldFile) => {
-  console.log('WA --> : UPLOAD_FILES -> upldFile', upldFile);
+  console.log('uplFiles: ', upldFile);
 };
 
-export const GET_FILES = (state, files) => {
-  const index = state.users.findIndex((user) => user.id === files[0].userId);
+export const GET_FILES = (state, params) => {
+  const { files } = params;
+
+  const index = state.users.findIndex((user) => user.id === params.userId);
   let updUser = state.users[index];
   updUser = { ...updUser, files };
   if (index !== -1) {
@@ -55,8 +57,12 @@ export const GET_FILES = (state, files) => {
   }
 };
 
+export const DELETE_FILE = (state, file) => {
+  console.log('deleteFile: ', file);
+};
+
 export const CHANGE_SHOWNAME = (state, params) => {
-  console.log('WA --> : CHANGE_SHOWNAME -> params', params);
+  console.log(params);
 };
 
 export const SET_USER_ROLES = (state, userRoles) => {

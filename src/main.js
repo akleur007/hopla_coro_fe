@@ -1,5 +1,12 @@
 import Vue from 'vue';
-import BootstrapVue from 'bootstrap-vue';
+// import BootstrapVue from 'bootstrap-vue';
+import {
+  NavbarPlugin,
+  ModalPlugin,
+  FormFilePlugin,
+  FormInputPlugin,
+  BadgePlugin,
+} from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './assets/style.css';
@@ -15,13 +22,10 @@ import wb from './registerServiceWorker';
 
 dotenv.config();
 
-// const apiBaseUrl = './api';
-const apiBaseUrl = process.env.IS_ONLINE
-  ? 'https://localhost:3000/api'
-  : 'https://192.168.178.20:3000/api';
-// const apiBaseUrl = 'https://192.168.178.20:3000/api';
-
-console.log('WA --> : apiBaseUrl', apiBaseUrl);
+const apiBaseUrl =
+  process.env.NODE_ENV === 'production'
+    ? 'https://hopla.kalkattak.de/api'
+    : `https://192.168.178.20:3000/api`;
 
 ApiService.init(apiBaseUrl);
 
@@ -38,7 +42,12 @@ const flashMsgConfig = {
 };
 
 Vue.use(FlashMessage, flashMsgConfig);
-Vue.use(BootstrapVue);
+// Vue.use(BootstrapVue);
+Vue.use(NavbarPlugin);
+Vue.use(ModalPlugin);
+Vue.use(FormFilePlugin);
+Vue.use(FormInputPlugin);
+Vue.use(BadgePlugin);
 
 new Vue({
   router,

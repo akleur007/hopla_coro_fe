@@ -1,13 +1,15 @@
 import { Workbox } from 'workbox-window';
 
-let wb;
+let wbTmp = null;
 if ('serviceWorker' in navigator) {
-  wb = new Workbox(`${process.env.BASE_URL}service-worker.js`);
-  wb.addEventListener('controlling', () => {
+  wbTmp = new Workbox(`${process.env.BASE_URL}service-worker.js`);
+  wbTmp.addEventListener('controlling', () => {
     window.location.reload();
   });
-  wb.register();
-} else {
-  wb = null;
+  wbTmp.register();
 }
+
+// Not allowed to export let so...
+const wb = wbTmp;
+
 export default wb;

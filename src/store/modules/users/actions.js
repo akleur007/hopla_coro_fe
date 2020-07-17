@@ -52,7 +52,16 @@ export const uploadFiles = async ({ commit }, params) => {
 
 export const fetchFiles = async ({ commit }, id) => {
   const response = await UserService.getFiles(id);
-  commit('GET_FILES', response.data.data.resource);
+  const params = {
+    files: response.data.data.resource,
+    userId: id,
+  };
+  commit('GET_FILES', params);
+};
+
+export const deleteFile = async ({ commit }, id) => {
+  const response = await UserService.deleteFile({ id });
+  commit('DELETE_FILE', response);
 };
 
 export const changeShowname = ({ commit }, params) => {

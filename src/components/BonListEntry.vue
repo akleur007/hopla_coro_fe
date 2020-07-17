@@ -39,7 +39,7 @@
     </div>
     <div class="text-right">
       <list-entry-menu
-        @delete-request="deleteRequest"
+        @delete-request="deleteRequest({ id: entry.id, title: entry.name })"
         @edit-request="toggleEditable"
       ></list-entry-menu>
     </div>
