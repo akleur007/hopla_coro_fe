@@ -1,0 +1,129 @@
+@import url(https://fonts.googleapis.com/css?family=Muli:200,300,400,700);
+$font-family-base:Muli;
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,700);
+$headings-font-family:Open Sans;
+
+$enable-grid-classes:false;
+
+@import './colors.scss';
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import '../../node_modules/bootstrap-vue/src/index.scss';
+
+h1,h2,h3,h4,h5,h6,p {
+    color:$body-color;
+}
+
+.form-control, .form-control:focus, .form-control-file {
+    background-color: $body-bg;
+    color:$body-color;
+    option {
+        padding: 4px;
+        background-color: $body-bg;
+        color:$body-color;
+    }
+    option:hover {
+        background-color: $danger;
+        color:$body-color;
+    }
+}
+
+.btn-primary {
+    border-color: $middle;
+}
+
+.btn-primary, .btn-danger {
+    .dropdown-item {
+        color: $light;
+    }
+    .dropdown-item:hover {
+        color: $dark;
+    }
+}
+
+.dropdown-menu {
+    padding: 0.2rem;
+    .dropdown-item {
+        padding: 1rem 4rem;;
+    }
+}
+
+.list-group-item {
+    background: $dark;
+    color: $body-color;
+}
+
+ul.list-group-striped li:nth-of-type(even) {
+  background: $less-dark;
+}
+
+.btn-primary, .btn-danger {
+    .dropdown-item {
+        color: $light;
+    }
+}
+
+.msg {
+    border-radius: 4px;;
+}
+
+.alert-primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+.alert-secondary {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border-color: #d6d8db;
+}
+
+.alert-success {
+    color: #e2f89e;
+    background-color: #a2bf4d;
+    border-color: #6b802d;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-warning {
+    color: #9e6c3c;
+    background-color: #e29e60;
+    border-color: #9e6c3c;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.alert-light {
+    color: #818182;
+    background-color: #fefefe;
+    border-color: #fdfdfe;
+}
+
+.alert-dark {
+    color: #1b1e21;
+    background-color: #d6d8d9;
+    border-color: #c6c8ca;
+}
+
+.ProseMirror {
+  //@extend .form-control;
+  min-height: 120px;
+  border: 1px solid $border;
+  border-bottom: 1px dotted $border;
+  border-radius: 0.25rem;;
+  padding: 6px 12px;
+  margin-bottom: 20px;
+}
+
+.menubar {
+  margin-bottom: 20px;
+}

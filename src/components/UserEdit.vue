@@ -1,0 +1,100 @@
+<template>
+  <div class="container">
+    <div class="row">
+      <form class="ng-pristine" @submit="updateEntry()">
+        <div class="form-group row">
+          <div class="col-lg-5 col-sm-12">
+            <div class="row">
+              <div class="col-lg-12 col-input">
+                <input
+                  type="text"
+                  id="email-input"
+                  v-model="user.email"
+                  class="form-control"
+                  placeholder="E-Mail Adresse"
+                />
+              </div>
+              <div class="col-lg-12 col-input">
+                <input
+                  type="password"
+                  id="password-input"
+                  v-model="user.password"
+                  class="form-control"
+                  placeholder="Passwort"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 col-sm-12 col-input">
+            <div class="row">
+              <div class="col-lg-12 col-input">
+                <input
+                  type="text"
+                  id="name-input"
+                  v-model="user.username"
+                  class="form-control"
+                  placeholder="Name"
+                />
+              </div>
+              <div class="col-lg-12">
+                <select id="role-input col-input" v-model="user.role" class="form-control">
+                  <option selected>Choose...</option>
+                  <option v-for="role in userRoles" :key="role.id" :value="role.value">{{
+                    role.name
+                  }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-sm-12 col-input text-right">
+            <button id="submit" type="submit" class="btn btn-primary">Speichern</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+import showMessage from '../mixins/messages';
+
+const label = 'User';
+
+export default {
+  name: 'UserEdit',
+  mixins: [showMessage],
+  props: {
+    user: Object,
+  },
+  data() {
+    return {
+      entry: {},
+      errors: [],
+    };
+  },
+  computed: {
+    ...mapGetters('users', ['userRoles']),
+  },
+  mounted() {
+    console.log(this.user.id);
+    this.getUserRoles();
+  },
+  methods: {
+    ...mapActions('users', ['fetchUser', 'getUserRoles', 'updateUser']),
+    async updateEntry() {
+      try {
+        await this.updateUser(this.user);
+        this.showSimpleMessage(`${label} geändert`, 'success');
+      } catch (e) {
+        console.log(`E: ${e}`);
+        this.errors.push(e);
+        this.showSimpleMessage(`${label} konnte nicht geändert werden`, 'warning');
+      }
+    },
+  },
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss"></style>

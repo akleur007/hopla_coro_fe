@@ -1,18 +1,101 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="logo" class="d-none d-sm-block">
+      <img alt="Hopla BG" class="img-fluid filler" src="./assets/hopla_kalk_filler_2020.svg" />
+      <img alt="Hopla logo" class="img-fluid" src="./assets/hopla_kalk_logo_2020.svg" />
+    </div>
+    <b-navbar toggleable="sm" type="dark" variant="success" class="navbar-dark bg-dark">
+      <b-navbar-brand href="/"
+        ><img
+          alt="Vue logo"
+          class="img-fluid d-sm-none"
+          src="./assets/hopla_kalk_logo_2020.svg"
+        /><span class="d-none d-sm-block">Home</span></b-navbar-brand
+      >
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse v-model="showCollapse" id="nav-collapse" is-nav class="navbar-nav">
+        <menu-item v-for="(route, i) in mainMenu" :key="i" :route="route"></menu-item>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            v-model="searchString"
+          />
+          <router-link to="/login" v-if="this.getUser.loggedIn" class="nav-link"
+            >Logout</router-link
+          >
+          <router-link to="/login" v-else class="nav-link">Login</router-link>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+    <router-view :searchString="searchString" />
+    <div
+      v-if="showUpdateUI"
+      class="service-worker-message alert-info d-flex justify-content-between"
+    >
+      <div>
+        Update verfügbar
+      </div>
+      <button class="btn btn-warning" v-on:click="accept()">OK</button>
+    </div>
+    <FlashMessage role="alert"></FlashMessage>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import { mapActions, mapGetters } from 'vuex';
+import MenuItem from './components/MenuItem.vue';
+import errorHandler from './mixins/errors';
+import ApiService from './services/apiService';
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      showCollapse: false,
+      searchString: '',
+      showUpdateUI: false,
+    };
   },
+  created() {
+    if (this.$workbox) {
+      this.$workbox.addEventListener('waiting', () => {
+        this.showUpdateUI = true;
+      });
+    }
+  },
+  watch: {
+    $route() {
+      this.showCollapse = false;
+    },
+  },
+  async mounted() {
+    try {
+      await ApiService.setHeader();
+      await this.getUserRoles();
+      await this.setMainMenu();
+      this.handleApiError();
+    } catch (err) {
+      this.handleApiError(err);
+    }
+  },
+  methods: {
+    ...mapActions('users', ['setMainMenu', 'getUserRoles']),
+    async accept() {
+      this.showUpdateUI = false;
+      await this.$workbox.messageSW({ type: 'SKIP_WAITING' });
+    },
+  },
+  computed: {
+    ...mapGetters('users', ['getUser', 'mainMenu']),
+  },
+  components: {
+    MenuItem,
+  },
+  mixins: [errorHandler],
 };
 </script>
 
@@ -21,8 +104,55 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  text-align: left;
+  // color: #2c3e50;
+  margin-top: 0;
 }
+
+#logo {
+  text-align: center;
+  margin-bottom: 10px;
+  height: 100px;
+  background-color: #1e2b37;
+  img {
+    height: 100px;
+  }
+}
+
+.navbar {
+  margin-bottom: 20px;
+  img {
+    height: 40px;
+  }
+}
+
+.navbar-collapse {
+  align-items: start;
+}
+
+.list-group-item {
+  padding: 5px;
+}
+
+.col-input {
+  margin-bottom: 15px;
+}
+
+// [class*="col-"] {
+//   margin-bottom: 15px;
+// }
+
+.service-worker-message {
+  width: 400px;
+  min-height: 100px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+
+  div {
+    padding: 10px;
+  }
+}
+
+@import 'assets/style.css';
 </style>
